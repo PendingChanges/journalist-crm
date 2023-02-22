@@ -1,1 +1,1 @@
-FROM neo4j:5.5.0-enterprise
+FROM neo4j
