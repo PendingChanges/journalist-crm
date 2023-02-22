@@ -1,0 +1,7 @@
+<ng-container *transloco="let t; read: 'clients'">
+  <h1>{{ t("title") }}</h1>
+  <div class="action-list">
+    <app-clients-action-menu></app-clients-action-menu>
+  </div>
+  <app-client-list [clients]="clients$ | async"></app-client-list>
+</ng-container>

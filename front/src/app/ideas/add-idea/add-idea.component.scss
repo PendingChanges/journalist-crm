@@ -1,0 +1,14 @@
+#form-area {
+  margin: 20px;
+
+  #idea-form {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  #button-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}

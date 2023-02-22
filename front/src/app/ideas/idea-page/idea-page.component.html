@@ -1,0 +1,11 @@
+<ng-container *ngIf="idea | async; let idea">
+  <ng-container *transloco="let t">
+    <h1>{{ idea.name }}</h1>
+    <app-idea-action-menu [idea]="idea"></app-idea-action-menu>
+    <h2>{{ t("pitches.title") }}</h2>
+    <app-pitch-list
+      [pitches]="idea.pitches"
+      [showClient]="true"
+    ></app-pitch-list>
+  </ng-container>
+</ng-container>

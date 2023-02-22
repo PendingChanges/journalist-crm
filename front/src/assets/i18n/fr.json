@@ -1,0 +1,40 @@
+{
+  "clients": {
+    "title": "Clients",
+    "table": {
+      "name": "Nom",
+      "nbOfPitches": "Nb de pitches",
+      "select": "Sélectionner"
+    },
+    "add_client": "Ajouter un client"
+  },
+  "ideas": {
+    "title": "Idées",
+    "table": {
+      "name": "Nom",
+      "description": "Description"
+    },
+    "add_idea": "Ajouter une idée"
+  },
+  "pitches": {
+    "title": "Pitches",
+    "add_pitch": "Ajouter un pitch",
+    "table": {
+      "title": "Titre",
+      "content": "Synopsis",
+      "idea": "Idée",
+      "client": "Client"
+    }
+  },
+  "common": {
+    "delete": "Supprimer",
+    "items_per_page": "Nb d'éléménts par page",
+    "range_page": "Page {{first}} sur {{last}}",
+    "first_page": "Première page",
+    "last_page": "Dernière page",
+    "next_page": "Page suivante",
+    "previous_page": "Page précédente",
+    "newt": "Suivant",
+    "previous": "Précédent"
+  }
+}

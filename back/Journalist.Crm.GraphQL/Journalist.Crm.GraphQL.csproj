@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="HotChocolate.AspNetCore" Version="12.15.2" />
+		<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.16.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Journalist.Crm\Journalist.Crm.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+<ng-container *transloco="let t">
+  <mat-stepper linear #stepper>
+    <mat-step label="Fill the client" *ngIf="!client">
+      <app-client-list
+        [clients]="clients$ | async"
+        [isSelectable]="true"
+      ></app-client-list>
+      <div class="action-list">
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          {{ t("next") }}
+        </button>
+      </div>
+    </mat-step>
+    <mat-step label="Fill the idea" *ngIf="!idea">
+      <app-idea-list
+        [ideas]="ideas$ | async"
+        [isSelectable]="true"
+      ></app-idea-list>
+      <div class="action-list">
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          {{ t("next") }}
+        </button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div class="action-list">
+        <button mat-button (click)="stepper.reset()" mat-raised-button>
+          Reset
+        </button>
+        <button mat-button matStepperNext mat-raised-button>
+          {{ t("previous") }}
+        </button>
+        <button mat-button matStepperNext mat-raised-button color="warn">
+          {{ t("save") }}
+        </button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</ng-container>

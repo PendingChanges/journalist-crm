@@ -1,0 +1,10 @@
+<ng-container *ngIf="languages">
+  <button
+    *ngFor="let language of languages"
+    mat-icon-button
+    (click)="onLanguageClick(language)"
+    [ngClass]="{ bold: language == currentLanguage }"
+  >
+    {{ language }}
+  </button>
+</ng-container>

@@ -1,0 +1,34 @@
+{
+  "clients": {
+    "title": "Clients",
+    "table": {
+      "name": "Name"
+    }
+  },
+  "ideas": {
+    "title": "Ideas",
+    "table": {
+      "name": "Name",
+      "description": "Description"
+    }
+  },
+  "pitches": {
+    "title": "Pitches",
+    "add_pitch": "Add Pitch",
+    "table": {
+      "title": "Title",
+      "content": "Synopsis",
+      "idea": "Idea",
+      "client": "Client"
+    }
+  },
+  "common": {
+    "delete": "Delete",
+    "items_per_page": "Items per page",
+    "range_page": "Page {{first}} on {{last}}",
+    "first_page": "First page",
+    "last_page": "Last page",
+    "next_page": "Next page",
+    "previous_page": "Previous page"
+  }
+}

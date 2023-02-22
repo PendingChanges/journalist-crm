@@ -1,0 +1,11 @@
+<ng-container *transloco="let t; read: 'pitches'">
+  <h1>{{ t("title") }}</h1>
+  <div class="action-list">
+    <app-pitches-action-menu></app-pitches-action-menu>
+  </div>
+  <app-pitch-list
+    [pitches]="pitches$ | async"
+    [showClient]="true"
+    [showIdea]="true"
+  ></app-pitch-list>
+</ng-container>

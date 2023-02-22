@@ -1,0 +1,49 @@
+<ng-container *transloco="let t; read: 'pitches.table'">
+  <table mat-table [dataSource]="dataSource!" class="mat-elevation-z8">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>{{ t("title") }}</th>
+      <td mat-cell *matCellDef="let element">
+        <span class="client-name">
+          {{ element.title }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="content">
+      <th mat-header-cell *matHeaderCellDef>{{ t("content") }}</th>
+      <td mat-cell *matCellDef="let element">
+        <span class="client-name">
+          {{ element.content }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="idea">
+      <th mat-header-cell *matHeaderCellDef>{{ t("idea") }}</th>
+      <td mat-cell *matCellDef="let element">
+          {{ element.ideas[0].name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef>{{ t("client") }}</th>
+      <td mat-cell *matCellDef="let element">
+          {{ element.clients[0].name }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="row"
+      (click)="navigate(row)"
+    ></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[10, 50]"
+    showFirstLastButtons
+    class="mat-elevation-z8"
+  >
+  </mat-paginator>
+</ng-container>
