@@ -117,7 +117,7 @@ import { AuthGuard } from './auth.guard';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: 'https://localhost:7172/graphql',
+            uri: '/graphql',
           }),
         };
       },

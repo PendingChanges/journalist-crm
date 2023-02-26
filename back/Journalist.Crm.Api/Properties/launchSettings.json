@@ -8,7 +8,16 @@
       "launchUrl": "weatherforecast",
       "applicationUrl": "https://localhost:7172;http://localhost:5099",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Logging__LogLevel__Default": "Information",
+        "Logging__LogLevel_Microsoft.AspNetCore": "Warning",
+        "Neo4j__BoltUrl": "bolt://localhost:7687",
+        "Neo4j__Username": "neo4j",
+        "Neo4j__Password": "changeit",
+        "Keycloak__KeycloakUrlRealm": "https://app-38fe6a67-2a9e-4e27-b735-b3dd1c3e4698.cleverapps.io/realms/JOURNALIST-CRM",
+        "Keycloak_SslRequired": "None",
+        "Keycloak__Resource": "account",
+        "Keycloak__VerifyTokenAudience": "false"
       }
     }
   }
