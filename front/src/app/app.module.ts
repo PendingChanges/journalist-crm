@@ -57,6 +57,7 @@ import { DeleteIdeaButtonComponent } from './ideas/delete-idea-button/delete-ide
 import { initializeKeycloak } from './initializeKeycloak';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthGuard } from './auth.guard';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,7 @@ import { AuthGuard } from './auth.guard';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: '/graphql',
+            uri: environment.graphqlUrl,
           }),
         };
       },

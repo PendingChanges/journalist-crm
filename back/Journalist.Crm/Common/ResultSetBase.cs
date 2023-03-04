@@ -10,7 +10,7 @@ namespace Journalist.Crm.Domain.Common
     {
         protected ResultSetBase(
             IReadOnlyCollection<T> data,
-            int totalItemCount,
+            long totalItemCount,
             bool hasNextPage,
             bool hasPreviousPage)
         {
@@ -21,7 +21,7 @@ namespace Journalist.Crm.Domain.Common
         }
 
         public IReadOnlyCollection<T> Data { get; }
-        public int TotalItemCount { get; }
+        public long TotalItemCount { get; }
         public bool HasNextPage { get; }
         public bool HasPreviousPage { get; }
     }

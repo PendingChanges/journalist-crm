@@ -40,7 +40,7 @@ CancellationToken cancellationToken = default)
         var collectionSegment = new CollectionSegment<Idea>(
             pitchesResultSet.Data,
             pageInfo,
-            ct => ValueTask.FromResult(pitchesResultSet.TotalItemCount));
+            ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
 
         return collectionSegment;
     }
@@ -63,7 +63,7 @@ CancellationToken cancellationToken = default)
         var collectionSegment = new CollectionSegment<Client>(
             clientsResultSet.Data,
             pageInfo,
-            ct => ValueTask.FromResult(clientsResultSet.TotalItemCount));
+            ct => ValueTask.FromResult((int)clientsResultSet.TotalItemCount));
 
         return collectionSegment;
     }

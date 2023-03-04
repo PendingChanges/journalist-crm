@@ -2,7 +2,7 @@ using Journalist.Crm.Api;
 using Journalist.Crm.Api.Infrastructure;
 using Journalist.Crm.Domain;
 using Journalist.Crm.GraphQL;
-using Journalist.Crm.Neo4j;
+using Journalist.Crm.MongoDB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -17,10 +17,11 @@ var authenticationOptions = configuration
     .GetSection(KeycloakAuthenticationOptions.Section)
     .Get<KeycloakAuthenticationOptions>();
 
-var neo4jConfigurationSection = configuration.GetSection("Neo4j");
+//var neo4jConfigurationSection = configuration.GetSection("Neo4j");
+var mongoDBConfigurationSection = configuration.GetSection("MongoDB");
 // Add services to the container.
 builder.Services
-     .AddNeo4j(neo4jConfigurationSection)
+     .AddMongoDB(mongoDBConfigurationSection)
     .AddJournalistGraphQL()
     .AddHealthChecks();
 

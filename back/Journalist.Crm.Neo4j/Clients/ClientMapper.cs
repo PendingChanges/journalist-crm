@@ -13,7 +13,8 @@ namespace Journalist.Crm.Neo4j.Clients
         public static Client ToClient(this INode node)
             => new Client(
                 node.Properties[nameof(Client.Id)].As<string>(),
-                node.Properties[nameof(Client.Name)].As<string>()
+                node.Properties[nameof(Client.Name)].As<string>(),
+                string.Empty
                 );
 
         public static IReadOnlyCollection<Client> ToClients(this IEnumerable<IRecord> records)

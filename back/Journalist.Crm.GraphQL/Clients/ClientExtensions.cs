@@ -20,9 +20,10 @@ public class ClientExtensions
         _context = context;
     }
 
-    public Task<int> NbOfPitchesAsync(
+    public Task<long> NbOfPitchesAsync(
         [Parent] Client client,
-        [Service] IReadPitches pitchesReader) => pitchesReader.GetPitchesNbAsyncByClientIdAsync(client.Id, _context.UserId);
+        [Service] IReadPitches pitchesReader,
+        CancellationToken cancellationToken = default) => pitchesReader.GetPitchesNbAsyncByClientIdAsync(client.Id, _context.UserId, cancellationToken);
 
 
     [UseOffsetPaging(IncludeTotalCount = true)]
@@ -42,7 +43,7 @@ public class ClientExtensions
         var collectionSegment = new CollectionSegment<Pitch>(
             pitchesResultSet.Data,
             pageInfo,
-            ct => ValueTask.FromResult(pitchesResultSet.TotalItemCount));
+            ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
 
         return collectionSegment;
     }

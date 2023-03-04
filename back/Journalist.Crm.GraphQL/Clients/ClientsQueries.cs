@@ -39,7 +39,7 @@ public class ClientsQueries
         var collectionSegment = new CollectionSegment<Client>(
             clientResultSet.Data,
             pageInfo,
-            ct => ValueTask.FromResult(clientResultSet.TotalItemCount));
+            ct => ValueTask.FromResult((int)clientResultSet.TotalItemCount));
 
         return collectionSegment;
     }

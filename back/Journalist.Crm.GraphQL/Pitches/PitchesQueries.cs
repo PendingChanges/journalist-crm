@@ -38,7 +38,7 @@ public class PitchesQueries
         var collectionSegment = new CollectionSegment<Pitch>(
             pitchesResultSet.Data,
             pageInfo,
-            ct => ValueTask.FromResult(pitchesResultSet.TotalItemCount));
+            ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
 
         return collectionSegment;
     }

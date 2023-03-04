@@ -5,13 +5,13 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journalist.Crm.Api", "Journalist.Crm.Api\Journalist.Crm.Api.csproj", "{B453EAFD-8B98-486E-98F2-52049626C480}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journalist.Crm.Neo4j", "Journalist.Crm.Neo4j\Journalist.Crm.Neo4j.csproj", "{9A3BFD9E-C422-413F-A3A1-4933C50E4F22}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journalist.Crm.Domain", "Journalist.Crm\Journalist.Crm.Domain.csproj", "{33AB6E82-0710-43AF-B7F1-E474A5981DC1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journalist.Crm.UnitTests", "Journalist.Crm.UnitTests\Journalist.Crm.UnitTests.csproj", "{C8DB5A2A-B3B7-41F1-AE2B-DCDB4D555824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Journalist.Crm.GraphQL", "Journalist.Crm.GraphQL\Journalist.Crm.GraphQL.csproj", "{647A7DF9-E52A-4954-8A2A-14FE63DDDE9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Journalist.Crm.GraphQL", "Journalist.Crm.GraphQL\Journalist.Crm.GraphQL.csproj", "{647A7DF9-E52A-4954-8A2A-14FE63DDDE9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Journalist.Crm.MongoDB", "Journalist.Crm.MongoDB\Journalist.Crm.MongoDB.csproj", "{692D3296-3F1F-4B34-ADE2-6B9127E160D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{B453EAFD-8B98-486E-98F2-52049626C480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B453EAFD-8B98-486E-98F2-52049626C480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B453EAFD-8B98-486E-98F2-52049626C480}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A3BFD9E-C422-413F-A3A1-4933C50E4F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A3BFD9E-C422-413F-A3A1-4933C50E4F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A3BFD9E-C422-413F-A3A1-4933C50E4F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A3BFD9E-C422-413F-A3A1-4933C50E4F22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33AB6E82-0710-43AF-B7F1-E474A5981DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33AB6E82-0710-43AF-B7F1-E474A5981DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33AB6E82-0710-43AF-B7F1-E474A5981DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{647A7DF9-E52A-4954-8A2A-14FE63DDDE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647A7DF9-E52A-4954-8A2A-14FE63DDDE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647A7DF9-E52A-4954-8A2A-14FE63DDDE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692D3296-3F1F-4B34-ADE2-6B9127E160D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692D3296-3F1F-4B34-ADE2-6B9127E160D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692D3296-3F1F-4B34-ADE2-6B9127E160D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692D3296-3F1F-4B34-ADE2-6B9127E160D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

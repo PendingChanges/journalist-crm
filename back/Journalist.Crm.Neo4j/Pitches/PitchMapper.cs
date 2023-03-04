@@ -16,7 +16,8 @@ namespace Journalist.Crm.Neo4j.Pitches
         node.Properties[nameof(Pitch.Content)].As<string>(),
         node.Properties[nameof(Pitch.DeadLineDate)].As<DateTime>(),
         node.Properties[nameof(Pitch.IssueDate)].As<DateTime>(),
-        node.Properties[nameof(Pitch.StatusCode)].As<string>()
+        node.Properties[nameof(Pitch.StatusCode)].As<string>(),
+        string.Empty
         );
 
         public static IReadOnlyCollection<Pitch> ToPitches(this IEnumerable<IRecord> records)

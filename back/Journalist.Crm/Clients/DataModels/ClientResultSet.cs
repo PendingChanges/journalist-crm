@@ -7,7 +7,7 @@ public class ClientResultSet : ResultSetBase<Client>
 {
     public ClientResultSet(
         IReadOnlyCollection<Client> data,
-        int totalItemCount,
+        long totalItemCount,
         bool hasNextPage,
         bool hasPreviousPage)
         : base(

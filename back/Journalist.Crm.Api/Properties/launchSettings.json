@@ -11,13 +11,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "Logging__LogLevel__Default": "Information",
         "Logging__LogLevel_Microsoft.AspNetCore": "Warning",
-        "Neo4j__BoltUrl": "bolt://localhost:7687",
+        " ": "bolt://localhost:7687",
         "Neo4j__Username": "neo4j",
         "Neo4j__Password": "changeit",
         "Keycloak__KeycloakUrlRealm": "https://app-38fe6a67-2a9e-4e27-b735-b3dd1c3e4698.cleverapps.io/realms/JOURNALIST-CRM",
         "Keycloak_SslRequired": "None",
         "Keycloak__Resource": "account",
-        "Keycloak__VerifyTokenAudience": "false"
+        "Keycloak__VerifyTokenAudience": "false",
+        "MongoDB__ConnectionString": "mongodb://uxhreiw5eilxmctslfkv:NEPaTOaODkpJ3cHA0Xlw@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017,n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017/bm0amalwbke8u9k?replicaSet=rs0",
+        "MongoDB__DatabaseName": "bm0amalwbke8u9k"
       }
     }
   }
