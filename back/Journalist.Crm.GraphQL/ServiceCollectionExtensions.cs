@@ -21,6 +21,8 @@ namespace Journalist.Crm.GraphQL
                 .AddTypeExtension<ClientExtensions>()
                 .AddTypeExtension<PitchExtensions>();
 
+            services.AddErrorFilter<GraphQLErrorFilter>();
+
             return services;
         }
     }
