@@ -1,10 +1,12 @@
 ﻿using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Pagination;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.DataModels;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,12 +22,14 @@ public class ClientExtensions
         _context = context;
     }
 
+    [Authorize(Roles = new[] { "user" })]
     public Task<long> NbOfPitchesAsync(
         [Parent] Client client,
         [Service] IReadPitches pitchesReader,
         CancellationToken cancellationToken = default) => pitchesReader.GetPitchesNbAsyncByClientIdAsync(client.Id, _context.UserId, cancellationToken);
 
 
+    [Authorize(Roles = new[] { "user" })]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Pitch>> GetPitchesAsync(
         [Parent] Client client,

@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Security.Claims;
 
 namespace Journalist.Crm.Api
 {
     public static class ServiceCollectionExtensions
     {
         public static AuthenticationBuilder AddKeycloackAuthentication(this IServiceCollection services, KeycloakAuthenticationOptions options,
-             Action<JwtBearerOptions>? configureOptions = default) {
+             Action<JwtBearerOptions>? configureOptions = default)
+        {
 
-            const string roleClaimType = "role";
+            const string roleClaimType = ClaimTypes.Role;
             var validationParameters = new TokenValidationParameters
             {
                 ClockSkew = options.TokenClockSkew,

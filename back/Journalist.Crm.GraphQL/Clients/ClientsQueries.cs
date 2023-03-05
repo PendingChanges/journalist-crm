@@ -20,7 +20,7 @@ public class ClientsQueries
         _context = context;
     }
 
-    [Authorize]
+    [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allClients")]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Client>> GetClientsAcync(

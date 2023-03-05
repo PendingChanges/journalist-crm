@@ -21,7 +21,7 @@ public class IdeasQueries
         _context = context;
     }
 
-    [Authorize]
+    [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allIdeas")]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Idea>> GetIdeas(

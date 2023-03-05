@@ -1,7 +1,9 @@
 ﻿using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +19,7 @@ public class ClientsMutations
         _context = context;
     }
 
+    [Authorize(Roles = new[] { "user" })]
     public async Task<ClientAddedPayload> AddClientAsync(
         [Service] IWriteClients _clientWriter,
         ClientInput clientInput,
@@ -28,6 +31,7 @@ public class ClientsMutations
         return new ClientAddedPayload { ClientId = id };
     }
 
+    [Authorize(Roles = new[] { "user" })]
     public async Task<string> RemoveClientAsync(
         [Service] IWriteClients _clientWriter,
         string id,

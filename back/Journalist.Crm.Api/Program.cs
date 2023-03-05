@@ -34,6 +34,8 @@ builder.Services.AddAuthorization((options)=>
 {
     options.DefaultPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser().Build();
+    options.AddPolicy("Administrators", policy => policy.RequireClaim("roles", "[admin]"));
+    options.AddPolicy("Users", policy => policy.RequireClaim("roles", "[user]"));
 });
 
 

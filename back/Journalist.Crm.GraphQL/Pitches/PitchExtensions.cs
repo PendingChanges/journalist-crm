@@ -1,4 +1,5 @@
 ﻿using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Pagination;
 using Journalist.Crm.Domain;
@@ -7,6 +8,7 @@ using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
 using Journalist.Crm.Domain.Pitches.DataModels;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +25,7 @@ public class PitchExtensions
         _context = context;
     }
 
+    [Authorize(Roles = new[] { "user" })]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Idea>> GetIdeasAsync(
 [Parent] Pitch pitch,
@@ -45,6 +48,7 @@ CancellationToken cancellationToken = default)
         return collectionSegment;
     }
 
+    [Authorize(Roles = new[] { "user" })]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Client>> GetClientsAsync(
 [Parent] Pitch pitch,

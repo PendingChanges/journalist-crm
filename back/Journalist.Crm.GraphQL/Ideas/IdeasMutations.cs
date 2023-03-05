@@ -1,7 +1,9 @@
 ﻿using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Ideas;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +19,7 @@ public class IdeasMutations
         _context = context;
     }
 
+    [Authorize(Roles = new[] { "user" })]
     public async Task<IdeaAddedPayload> AddIdeaAsync(
         [Service] IWriteIdeas _ideasWriter,
         IdeaInput ideaInput,
@@ -27,6 +30,7 @@ public class IdeasMutations
         return new IdeaAddedPayload { IdeaId = id };
     }
 
+    [Authorize(Roles = new[] { "user" })]
     public async Task<string> RemoveIdeaAsync(
         [Service] IWriteIdeas _ideasWriter,
         string id,

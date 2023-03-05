@@ -21,7 +21,7 @@ public class PitchesQueries
         _context = context;
     }
 
-    [Authorize]
+    [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allPitches")]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Pitch>> GetPitches(
