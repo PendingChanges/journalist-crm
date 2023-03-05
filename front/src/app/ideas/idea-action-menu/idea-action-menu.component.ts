@@ -7,5 +7,5 @@ import { Idea } from 'src/models/Idea';
   styleUrls: ['./idea-action-menu.component.scss'],
 })
 export class IdeaActionMenuComponent {
-  @Input() public idea?: Idea;
+  @Input() public idea: Idea | null = null;
 }

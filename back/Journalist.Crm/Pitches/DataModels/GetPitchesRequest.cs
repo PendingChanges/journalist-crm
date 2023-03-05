@@ -10,6 +10,7 @@ namespace Journalist.Crm.Domain.Pitches.DataModels
 
         public GetPitchesRequest(
              string? clientId,
+             string? ideaId,
             int? skip,
             int? take,
             string? sortBy,
@@ -20,8 +21,11 @@ namespace Journalist.Crm.Domain.Pitches.DataModels
                 userId)
         {
             ClientId = clientId;
+            IdeaId = ideaId;
         }
 
         public string? ClientId { get; }
+
+        public string? IdeaId { get; set; }
     }
 }

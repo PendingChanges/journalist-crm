@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
 import { Pitch } from 'src/models/Pitch';
 
-export interface Response {
-  clients: Pitch[];
+export interface AllPitchedResponse {
+  pitches: Pitch[];
+}
+
+export interface AllPitchesInput {
+  clientId: string | null;
+  ideaId: string | null;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class AllPitchesQuery extends Query<Response> {
+export class AllPitchesQuery extends Query<
+  AllPitchedResponse,
+  AllPitchesInput
+> {
   override document = gql`
-    query {
-      allPitches {
+    query allPitches($clientId: String, $ideaId: String) {
+      allPitches(clientId: $clientId, ideaId: $ideaId) {
         items {
           id
           title
@@ -20,18 +28,14 @@ export class AllPitchesQuery extends Query<Response> {
           deadLineDate
           issueDate
           statusCode
-          ideas {
-            items {
-              id
-              name
-              description
-            }
+          idea {
+            id
+            name
+            description
           }
-          clients {
-            items {
-              id
-              name
-            }
+          client {
+            id
+            name
           }
         }
       }

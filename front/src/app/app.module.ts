@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { EditorModule } from '@tinymce/tinymce-angular';
+
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,6 +24,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { ClientsComponent } from './clients/clients-page/clients-page.component';
@@ -94,6 +98,7 @@ import { environment } from 'src/environments/environment';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    EditorModule,
     MatSidenavModule,
     MatIconModule,
     MatToolbarModule,
@@ -107,6 +112,8 @@ import { environment } from 'src/environments/environment';
     MatMenuModule,
     MatStepperModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ApolloModule,
     TranslocoRootModule,
     KeycloakAngularModule,

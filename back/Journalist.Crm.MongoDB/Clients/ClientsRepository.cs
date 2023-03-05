@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Journalist.Crm.Domain.Clients;
+﻿using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Pitches.DataModels;
 using Microsoft.Extensions.Options;
@@ -7,7 +6,6 @@ using MongoDB.Driver;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Journalist.Crm.MongoDB.Clients
 {
@@ -63,15 +61,18 @@ namespace Journalist.Crm.MongoDB.Clients
             return new ClientResultSet(clients, totalCount, request.Skip + clients.Count < totalCount, request.Skip > 0 && clients.Count > 0);
         }
 
-        public Task RemoveClientAsync(string id, string userId, CancellationToken cancellationToken = default)
+        public Task RemoveClientAsync(string id, string userId, CancellationToken cancellationToken = 
+default) => _database.GetCollection<Client>(ClientCollectionName).DeleteOneAsync(BuildOneClientFilter(id, userId), cancellationToken);
+
+        public Task<Client?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken) 
+            => _database.GetCollection<Client>(ClientCollectionName).Find(BuildOneClientFilter(clientId, userId)).FirstOrDefaultAsync<Client?>(cancellationToken);
+
+        private FilterDefinition<Client> BuildOneClientFilter(string clientId, string userId)
         {
-            var clientCollection = _database.GetCollection<Client>(ClientCollectionName);
             var filterBuilder = Builders<Client>.Filter;
             var userFiler = filterBuilder.Eq((c) => c.UserId, userId);
-            var clientFilter = filterBuilder.Eq(c => c.Id, id);
-            var filter = filterBuilder.And(userId, clientFilter);
-
-            return clientCollection.DeleteOneAsync(filter, cancellationToken);
+            var clientFilter = filterBuilder.Eq(c => c.Id, clientId);
+            return filterBuilder.And(userFiler, clientFilter);
         }
     }
 }

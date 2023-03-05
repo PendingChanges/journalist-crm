@@ -12,22 +12,9 @@ export interface Response {
 export class ClientQuery extends Query<Response> {
   override document = gql`
     query client($id: String!) {
-      allClients(where: { id: { eq: $id } }) {
+      client(id: $id) {
         id
         name
-        pitches {
-          id
-          title
-          content
-          deadLineDate
-          issueDate
-          status
-          ideas{
-            id
-            name
-            description
-          }
-        }
       }
     }
   `;

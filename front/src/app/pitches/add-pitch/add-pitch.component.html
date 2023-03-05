@@ -1,9 +1,10 @@
 <ng-container *transloco="let t">
   <mat-stepper linear #stepper>
-    <mat-step label="Fill the client" *ngIf="!client">
+    <mat-step label="Fill the client" [stepControl]="clientFormGroup">
       <app-client-list
         [clients]="clients$ | async"
         [isSelectable]="true"
+        (clientsSelected)="onClientsSelected($event)"
       ></app-client-list>
       <div class="action-list">
         <button mat-button matStepperNext mat-raised-button color="primary">
@@ -11,28 +12,74 @@
         </button>
       </div>
     </mat-step>
-    <mat-step label="Fill the idea" *ngIf="!idea">
+    <mat-step label="Fill the idea" [stepControl]="ideaFormGroup">
       <app-idea-list
         [ideas]="ideas$ | async"
         [isSelectable]="true"
+        (ideasSelected)="onIdeasSelected($event)"
       ></app-idea-list>
       <div class="action-list">
+        <button mat-button matStepperPrevious mat-raised-button>
+          {{ t("previous") }}
+        </button>
         <button mat-button matStepperNext mat-raised-button color="primary">
           {{ t("next") }}
         </button>
       </div>
     </mat-step>
-    <mat-step>
+    <mat-step [stepControl]="pitchFormGroup">
       <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
+      <form id="pitch-form" [formGroup]="pitchFormGroup">
+        <mat-form-field class="field">
+          <mat-label>{{ t("pitches.form.title") }}</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+        <editor
+          formControlName="content"
+          apiKey="fwchc6cj4rtoiczv5xliaf7hvcuakqift147gd9hwtk1b9xz"
+          [init]="{ plugins: 'link' }"
+        ></editor>
+        <mat-form-field appearance="fill" class="field">
+          <mat-label>{{ t("pitches.form.deadLineDate") }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="deadLineDatepicker"
+            formControlName="deadLineDate"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="deadLineDatepicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #deadLineDatepicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="field">
+          <mat-label>{{ t("pitches.form.deadLineDate") }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="issueDatePicker"
+            formControlName="issueDate"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="issueDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #issueDatePicker></mat-datepicker>
+        </mat-form-field>
+      </form>
       <div class="action-list">
         <button mat-button (click)="stepper.reset()" mat-raised-button>
           Reset
         </button>
-        <button mat-button matStepperNext mat-raised-button>
+        <button mat-button matStepperPrevious mat-raised-button>
           {{ t("previous") }}
         </button>
-        <button mat-button matStepperNext mat-raised-button color="warn">
+        <button
+          mat-button
+          matStepperNext
+          mat-raised-button
+          color="warn"
+          (click)="onSaveClick()"
+        >
           {{ t("save") }}
         </button>
       </div>

@@ -26,49 +26,16 @@ public class PitchExtensions
     }
 
     [Authorize(Roles = new[] { "user" })]
-    [UseOffsetPaging(IncludeTotalCount = true)]
-    public async Task<CollectionSegment<Idea>> GetIdeasAsync(
+    public Task<Idea?> GetIdeaAsync(
 [Parent] Pitch pitch,
 [Service] IReadIdeas ideasReader,
-    int? skip,
-    int? take,
-    string? sortBy,
 CancellationToken cancellationToken = default)
-    {
-        var request = new GetIdeasRequest(pitch.Id, skip, take, sortBy, _context.UserId);
-        var pitchesResultSet = await ideasReader.GetIdeasAsync(request, cancellationToken);
-
-        var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
-
-        var collectionSegment = new CollectionSegment<Idea>(
-            pitchesResultSet.Data,
-            pageInfo,
-            ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
-
-        return collectionSegment;
-    }
+    => ideasReader.GetIdeaAsync(pitch.IdeaId, _context.UserId, cancellationToken);
 
     [Authorize(Roles = new[] { "user" })]
-    [UseOffsetPaging(IncludeTotalCount = true)]
-    public async Task<CollectionSegment<Client>> GetClientsAsync(
+    public Task<Client?> GetClientAsync(
 [Parent] Pitch pitch,
 [Service] IReadClients clientsReader,
-int? skip,
-int? take,
-string? sortBy,
 CancellationToken cancellationToken = default)
-    {
-        var request = new GetClientsRequest(pitch.Id, skip, take, sortBy, _context.UserId);
-        var clientsResultSet = await clientsReader.GetClientsAsync(request, cancellationToken);
-
-
-        var pageInfo = new CollectionSegmentInfo(clientsResultSet.HasNextPage, clientsResultSet.HasPreviousPage);
-
-        var collectionSegment = new CollectionSegment<Client>(
-            clientsResultSet.Data,
-            pageInfo,
-            ct => ValueTask.FromResult((int)clientsResultSet.TotalItemCount));
-
-        return collectionSegment;
-    }
+    => clientsReader.GetClientAsync(pitch.ClientId, _context.UserId, cancellationToken);
 }

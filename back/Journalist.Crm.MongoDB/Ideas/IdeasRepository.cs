@@ -65,15 +65,17 @@ namespace Journalist.Crm.MongoDB.Ideas
             return new IdeaResultSet(ideas, totalCount, request.Skip + ideas.Count < totalCount, request.Skip > 0 && ideas.Count > 0);
         }
 
-        public Task RemoveIdeaAsync(string id, string userId, CancellationToken cancellationToken = default)
-        {
-            var ideaCollection = _database.GetCollection<Client>(IdeaCollectionName);
-            var filterBuilder = Builders<Client>.Filter;
-            var userFiler = filterBuilder.Eq((c) => c.UserId, userId);
-            var clientFilter = filterBuilder.Eq(c => c.Id, id);
-            var filter = filterBuilder.And(userId, clientFilter);
+        public Task RemoveIdeaAsync(string id, string userId, CancellationToken cancellationToken = default) => _database.GetCollection<Idea>(IdeaCollectionName).DeleteOneAsync(BuildOneIdeaFilter(id, userId), cancellationToken);
 
-            return ideaCollection.DeleteOneAsync(filter, cancellationToken);
+        public Task<Idea?> GetIdeaAsync(string ideaId, string userId, CancellationToken cancellationToken =
+ default) => _database.GetCollection<Idea>(IdeaCollectionName).Find(BuildOneIdeaFilter(ideaId, userId)).FirstOrDefaultAsync<Idea?>(cancellationToken);
+
+        private FilterDefinition<Idea> BuildOneIdeaFilter(string ideaId, string userId)
+        {
+            var filterBuilder = Builders<Idea>.Filter;
+            var userFiler = filterBuilder.Eq((c) => c.UserId, userId);
+            var ideaFilter = filterBuilder.Eq(c => c.Id, ideaId);
+            return filterBuilder.And(userFiler, ideaFilter);
         }
     }
 }

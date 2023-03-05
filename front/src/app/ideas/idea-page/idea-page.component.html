@@ -4,7 +4,7 @@
     <app-idea-action-menu [idea]="idea"></app-idea-action-menu>
     <h2>{{ t("pitches.title") }}</h2>
     <app-pitch-list
-      [pitches]="idea.pitches"
+      [pitches]="pitches$ | async"
       [showClient]="true"
     ></app-pitch-list>
   </ng-container>

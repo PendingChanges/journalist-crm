@@ -18,7 +18,9 @@ namespace Journalist.Crm.GraphQL
                 .AddMutationType(m => m.Name("Mutation"))
                             .AddType<ClientsMutations>()
                             .AddType<IdeasMutations>()
+                            .AddType<PitchesMutations>()
                 .AddTypeExtension<ClientExtensions>()
+                .AddTypeExtension<IdeaExtensions>()
                 .AddTypeExtension<PitchExtensions>();
 
             services.AddErrorFilter<GraphQLErrorFilter>();

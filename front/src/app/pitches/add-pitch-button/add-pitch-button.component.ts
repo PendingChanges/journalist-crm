@@ -13,8 +13,8 @@ import {
   styleUrls: ['./add-pitch-button.component.scss'],
 })
 export class AddPitchButtonComponent {
-  @Input() public client?: Client;
-  @Input() public idea?: Idea;
+  @Input() public client: Client | null = null;
+  @Input() public idea: Idea | null = null;
 
   constructor(public dialog: MatDialog) {}
 

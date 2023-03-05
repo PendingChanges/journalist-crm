@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { IdeaInput } from 'src/mutations/AddIdeaMutation';
 import { IdeasService } from 'src/services/IdeasService';
 
 interface IdeaForm {
@@ -33,7 +34,7 @@ export class AddIdeaComponent {
 
   public onSubmit(): void {
     if (this.ideaFormGroup.valid) {
-      this._ideasService.addIdea(this.ideaFormGroup.value);
+      this._ideasService.addIdea(<IdeaInput>this.ideaFormGroup.value);
       this._dialogRef.close();
     }
   }

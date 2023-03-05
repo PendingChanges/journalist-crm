@@ -19,7 +19,8 @@ namespace Journalist.Crm.MongoDB
                     .AddTransient<IWriteClients, ClientsRepository>()
                     .AddTransient<IReadIdeas, IdeasRepository>()
                     .AddTransient<IWriteIdeas, IdeasRepository>()
-                    .AddTransient<IReadPitches, PitchesRepository>();
+                    .AddTransient<IReadPitches, PitchesRepository>()
+                    .AddTransient<IWritePitches, PitchesRepository>();
 
             return services;
         }

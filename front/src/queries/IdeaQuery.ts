@@ -12,22 +12,10 @@ export interface Response {
 export class IdeaQuery extends Query<Response> {
   override document = gql`
     query idea($id: String!) {
-      allIdeas(where: { id: { eq: $id } }) {
+      idea(id: $id) {
         id
         name
         description
-        pitches {
-          id
-          title
-          content
-          deadLineDate
-          issueDate
-          status
-          clients {
-            id
-            name
-          }
-        }
       }
     }
   `;

@@ -26,12 +26,14 @@ public class PitchesQueries
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Pitch>> GetPitches(
          [Service] IReadPitches pitchesReader,
+            string? clientId,
+            string? ideaId,
             int? skip,
     int? take,
     string? sortBy,
             CancellationToken cancellationToken = default)
     {
-        var request = new GetPitchesRequest(null, skip, take, sortBy, _context.UserId);
+        var request = new GetPitchesRequest(clientId, ideaId, skip, take, sortBy, _context.UserId);
         var pitchesResultSet = await pitchesReader.GetPitchesAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);

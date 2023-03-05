@@ -19,6 +19,9 @@
   "pitches": {
     "title": "Pitches",
     "add_pitch": "Ajouter un pitch",
+    "form":{
+      "title": "Title"
+    },
     "table": {
       "title": "Titre",
       "content": "Synopsis",

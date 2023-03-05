@@ -43,4 +43,10 @@ public class IdeasQueries
 
         return collectionSegment;
     }
+
+
+    [Authorize(Roles = new[] { "user" })]
+    [GraphQLName("idea")]
+    public Task<Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, string id, CancellationToken cancellationToken = default)
+        => ideasReader.GetIdeaAsync(id, _context.UserId, cancellationToken);
 }

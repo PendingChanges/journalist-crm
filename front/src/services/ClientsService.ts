@@ -3,7 +3,10 @@ import { Observable } from '@apollo/client/core';
 import { QueryRef } from 'apollo-angular';
 import { map } from 'rxjs';
 import { Client } from 'src/models/Client';
-import { AddClientMutation } from 'src/mutations/AddClientMutation';
+import {
+  AddClientMutation,
+  ClientInput,
+} from 'src/mutations/AddClientMutation';
 import { DeleteClientMutation } from 'src/mutations/DeleteClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
@@ -40,17 +43,13 @@ export class ClientsService {
       .watch({
         id: id,
       })
-      .valueChanges.pipe(map((result: any) => result.data.allClients[0]));
+      .valueChanges.pipe(map((result: any) => result.data.client));
   }
 
-  public addClient(value: any) {
-    this._addClientMutation
-      .mutate({
-        name: value.name,
-      })
-      .subscribe(() => {
-        this.refreshClients();
-      });
+  public addClient(value: ClientInput) {
+    this._addClientMutation.mutate(value).subscribe(() => {
+      this.refreshClients();
+    });
   }
 
   public deleteClient(id: string) {

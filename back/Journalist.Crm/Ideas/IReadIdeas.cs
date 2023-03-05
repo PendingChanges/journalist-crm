@@ -7,6 +7,7 @@ namespace Journalist.Crm.Domain.Ideas
 {
     public interface IReadIdeas
     {
+        Task<Idea?> GetIdeaAsync(string ideaId, string userId, CancellationToken cancellationToken = default);
         Task<IdeaResultSet> GetIdeasAsync(GetIdeasRequest request, CancellationToken cancellationToken = default);
     }
 }

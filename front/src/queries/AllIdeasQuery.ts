@@ -17,6 +17,7 @@ export class AllIdeasQuery extends Query<Response> {
           id
           name
           description
+          nbOfPitches
         }
       }
     }

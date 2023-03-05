@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AddClientMutation } from 'src/mutations/AddClientMutation';
+import {
+  AddClientMutation,
+  ClientInput,
+} from 'src/mutations/AddClientMutation';
 import { ClientsService } from 'src/services/ClientsService';
 
 interface ClientForm {
@@ -32,7 +35,7 @@ export class AddClientComponent {
 
   public onSubmit(): void {
     if (this.clientFormGroup.valid) {
-      this._clientsService.addClient(this.clientFormGroup.value);
+      this._clientsService.addClient(<ClientInput>this.clientFormGroup.value);
       this._dialogRef.close();
     }
   }

@@ -14,7 +14,7 @@ import { ClientsService } from 'src/services/ClientsService';
   styleUrls: ['./client-delete-button.component.scss'],
 })
 export class ClientDeleteButtonComponent {
-  @Input() public client?: Client;
+  @Input() public client: Client | null = null;
 
   constructor(
     private _dialog: MatDialog,

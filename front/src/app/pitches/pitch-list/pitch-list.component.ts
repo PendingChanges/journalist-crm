@@ -24,7 +24,7 @@ export class PitchListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   constructor(private router: Router) {}
   ngOnInit(): void {
-    this.displayedColumns = ['title', 'content'];
+    this.displayedColumns = ['title'];
     if (this.showIdea) {
       this.displayedColumns.push('idea');
     }

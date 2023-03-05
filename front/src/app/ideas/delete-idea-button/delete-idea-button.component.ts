@@ -14,7 +14,7 @@ import { IdeasService } from 'src/services/IdeasService';
   styleUrls: ['./delete-idea-button.component.scss'],
 })
 export class DeleteIdeaButtonComponent {
-  @Input() public idea?: Idea;
+  @Input() public idea: Idea | null = null;
 
   constructor(
     private _dialog: MatDialog,

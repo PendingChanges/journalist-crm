@@ -1,5 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -16,6 +23,10 @@ export class ClientListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'nbOfPitches'];
   public dataSource: MatTableDataSource<Client> | null = null;
+
+  @Output() public clientsSelected: EventEmitter<Client[]> = new EventEmitter<
+    Client[]
+  >();
 
   @Input() public isSelectable: boolean = false;
   @Input() public set clients(value: Client[] | null) {
@@ -37,7 +48,12 @@ export class ClientListComponent implements OnInit {
     if (!this.isSelectable) {
       this.router.navigate(['/client', client.id]);
     } else {
-      this.selection.toggle(client);
+      this.toggleClientSelection(client);
     }
+  }
+
+  public toggleClientSelection(client: Client) {
+    this.selection.toggle(client);
+    this.clientsSelected.emit(this.selection.selected);
   }
 }

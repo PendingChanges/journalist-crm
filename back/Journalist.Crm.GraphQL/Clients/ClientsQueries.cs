@@ -43,4 +43,9 @@ public class ClientsQueries
 
         return collectionSegment;
     }
+
+    [Authorize(Roles = new[] { "user" })]
+    [GraphQLName("client")]
+    public Task<Client?> GetClientAsync([Service] IReadClients clientReader, string id, CancellationToken cancellationToken = default)
+        => clientReader.GetClientAsync(id, _context.UserId, cancellationToken);
 }

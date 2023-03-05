@@ -7,5 +7,5 @@ import { Client } from 'src/models/Client';
   styleUrls: ['./client-action-menu.component.scss'],
 })
 export class ClientActionMenuComponent {
-  @Input() public client?: Client;
+  @Input() public client: Client | null = null;
 }
