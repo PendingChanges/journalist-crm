@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
-using HotChocolate.AspNetCore.Authorization;
 using Journalist.Crm.Domain;
+using HotChocolate.Authorization;
 
 namespace Journalist.Crm.GraphQL.Clients;
 

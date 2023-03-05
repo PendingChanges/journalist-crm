@@ -7,6 +7,7 @@ using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
 using Journalist.Crm.Domain;
 using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Authorization;
 
 namespace Journalist.Crm.GraphQL.Ideas;
 
