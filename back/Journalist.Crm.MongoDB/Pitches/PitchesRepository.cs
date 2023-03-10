@@ -86,5 +86,16 @@ namespace Journalist.Crm.MongoDB.Pitches
 
             return totalCount;
         }
+
+        public Task<Pitch?> GetPitchAsync(string id, string userId, CancellationToken cancellationToken =
+default) => _database.GetCollection<Pitch>(PicthCollectionName).Find(BuildOnePitchFilter(id, userId)).FirstOrDefaultAsync<Pitch?>(cancellationToken);
+
+        private FilterDefinition<Pitch> BuildOnePitchFilter(string pitchId, string userId)
+        {
+            var filterBuilder = Builders<Pitch>.Filter;
+            var userFiler = filterBuilder.Eq((c) => c.UserId, userId);
+            var pitchFilter = filterBuilder.Eq(c => c.Id, pitchId);
+            return filterBuilder.And(userFiler, pitchFilter);
+        }
     }
 }

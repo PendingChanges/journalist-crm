@@ -12,15 +12,22 @@
     "title": "Idées",
     "table": {
       "name": "Nom",
-      "description": "Description"
+      "description": "Description",
+      "nbOfPitches": "Nb de pitches",
+      "select": "Sélectionner"
     },
     "add_idea": "Ajouter une idée"
   },
   "pitches": {
     "title": "Pitches",
     "add_pitch": "Ajouter un pitch",
-    "form":{
-      "title": "Title"
+    "fill_the_client": "Sélectionner un client",
+    "fill_the_idea": "Sélectionner une idée",
+    "fill_the_pitch": "Fill the pitch",
+    "form": {
+      "title": "Title",
+      "deadLineDate": "Deadline Date",
+      "issueDate": "Issue Date"
     },
     "table": {
       "title": "Titre",
@@ -37,7 +44,9 @@
     "last_page": "Dernière page",
     "next_page": "Page suivante",
     "previous_page": "Page précédente",
-    "newt": "Suivant",
-    "previous": "Précédent"
+    "next": "Suivant",
+    "previous": "Précédent",
+    "save": "Sauvegarder",
+    "cancel": "Annuler"
   }
 }

@@ -1,1 +1,5 @@
-<p>pitch-page works!</p>
+<ng-container *ngIf="pitch | async; let pitch">
+  <ng-container *transloco="let t">
+    <h1>{{ pitch.title }}</h1>
+  </ng-container>
+</ng-container>

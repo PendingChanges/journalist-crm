@@ -7,6 +7,7 @@ import {
   AllPitchesInput,
   AllPitchesQuery,
 } from 'src/queries/AllPitchesQuery';
+import { PitchQuery } from 'src/queries/PitchQuery';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ import {
 export class PitchesService {
   constructor(
     private _allPitchesQuery: AllPitchesQuery,
+    private _pitchQuery: PitchQuery,
     private _addPitchMutation: AddPitchMutation
   ) {}
 
@@ -67,6 +69,14 @@ export class PitchesService {
 
   public refreshPitches(): void {
     this._allPitchesQueryRef?.refetch();
+  }
+
+  public getPitch(id: string) {
+    return this._pitchQuery
+      .watch({
+        id: id,
+      })
+      .valueChanges.pipe(map((result: any) => result.data.pitch));
   }
 
   public addPitch(value: PitchInput) {

@@ -1,6 +1,9 @@
 <ng-container *transloco="let t">
   <mat-stepper linear #stepper>
-    <mat-step label="Fill the client" [stepControl]="clientFormGroup">
+    <mat-step
+      [label]="t('pitches.fill_the_client')"
+      [stepControl]="clientFormGroup"
+    >
       <app-client-list
         [clients]="clients$ | async"
         [isSelectable]="true"
@@ -8,11 +11,14 @@
       ></app-client-list>
       <div class="action-list">
         <button mat-button matStepperNext mat-raised-button color="primary">
-          {{ t("next") }}
+          {{ t("common.next") }}
         </button>
       </div>
     </mat-step>
-    <mat-step label="Fill the idea" [stepControl]="ideaFormGroup">
+    <mat-step
+      [label]="t('pitches.fill_the_idea')"
+      [stepControl]="ideaFormGroup"
+    >
       <app-idea-list
         [ideas]="ideas$ | async"
         [isSelectable]="true"
@@ -20,15 +26,17 @@
       ></app-idea-list>
       <div class="action-list">
         <button mat-button matStepperPrevious mat-raised-button>
-          {{ t("previous") }}
+          {{ t("common.previous") }}
         </button>
         <button mat-button matStepperNext mat-raised-button color="primary">
-          {{ t("next") }}
+          {{ t("common.next") }}
         </button>
       </div>
     </mat-step>
-    <mat-step [stepControl]="pitchFormGroup">
-      <ng-template matStepLabel>Done</ng-template>
+    <mat-step
+      [stepControl]="pitchFormGroup"
+      [label]="t('pitches.fill_the_pitch')"
+    >
       <form id="pitch-form" [formGroup]="pitchFormGroup">
         <mat-form-field class="field">
           <mat-label>{{ t("pitches.form.title") }}</mat-label>
@@ -53,7 +61,7 @@
           <mat-datepicker #deadLineDatepicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="fill" class="field">
-          <mat-label>{{ t("pitches.form.deadLineDate") }}</mat-label>
+          <mat-label>{{ t("pitches.form.issueDate") }}</mat-label>
           <input
             matInput
             [matDatepicker]="issueDatePicker"
@@ -71,7 +79,7 @@
           Reset
         </button>
         <button mat-button matStepperPrevious mat-raised-button>
-          {{ t("previous") }}
+          {{ t("common.previous") }}
         </button>
         <button
           mat-button
@@ -80,7 +88,7 @@
           color="warn"
           (click)="onSaveClick()"
         >
-          {{ t("save") }}
+          {{ t("common.save") }}
         </button>
       </div>
     </mat-step>

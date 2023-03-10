@@ -2,19 +2,33 @@
   "clients": {
     "title": "Clients",
     "table": {
-      "name": "Name"
-    }
+      "name": "Name",
+      "nbOfPitches": "Nb of pitches",
+      "select": "Select"
+    },
+    "add_client": "Add a client"
   },
   "ideas": {
     "title": "Ideas",
     "table": {
       "name": "Name",
-      "description": "Description"
-    }
+      "description": "Description",
+      "nbOfPitches": "Nb of pitches",
+      "select": "Select"
+    },
+    "add_idea": "Add an idea"
   },
   "pitches": {
     "title": "Pitches",
     "add_pitch": "Add Pitch",
+    "fill_the_client": "Select a client",
+    "fill_the_idea": "Select an idea",
+    "fill_the_pitch": "Fill the pitch",
+    "form": {
+      "title": "Title",
+      "deadLineDate": "Deadline Date",
+      "issueDate": "Issue Date"
+    },
     "table": {
       "title": "Title",
       "content": "Synopsis",
@@ -29,6 +43,10 @@
     "first_page": "First page",
     "last_page": "Last page",
     "next_page": "Next page",
-    "previous_page": "Previous page"
+    "previous_page": "Previous page",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "cancel": "Cancel"
   }
 }

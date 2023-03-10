@@ -45,4 +45,10 @@ public class PitchesQueries
 
         return collectionSegment;
     }
+
+
+    [Authorize(Roles = new[] { "user" })]
+    [GraphQLName("pitch")]
+    public Task<Pitch> GetPitchAsync([Service] IReadPitches pitchesReader, string id, CancellationToken cancellationToken = default)
+        => pitchesReader.GetPitchAsync(id, _context.UserId, cancellationToken);
 }
