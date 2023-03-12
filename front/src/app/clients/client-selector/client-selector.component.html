@@ -1,0 +1,16 @@
+<input
+  #input
+  type="text"
+  placeholder="Pick one"
+  aria-label="Number"
+  matInput
+  [matAutocomplete]="auto"
+/>
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option
+    *ngFor="let client of filteredClients$ | async"
+    [value]="client.id"
+  >
+    {{ client.name }}
+  </mat-option>
+</mat-autocomplete>

@@ -7,6 +7,8 @@ using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain;
 using HotChocolate.Authorization;
+using HotChocolate.Data.Filters;
+using System.Collections.Generic;
 
 namespace Journalist.Crm.GraphQL.Clients;
 
@@ -48,4 +50,9 @@ public class ClientsQueries
     [GraphQLName("client")]
     public Task<Client?> GetClientAsync([Service] IReadClients clientReader, string id, CancellationToken cancellationToken = default)
         => clientReader.GetClientAsync(id, _context.UserId, cancellationToken);
+
+    [Authorize(Roles = new[] { "user" })]
+    [GraphQLName("autoCompleteClient")]
+    public Task<IEnumerable<Client>> AutoCompleteClientAsync([Service] IReadClients clientReader, string text, CancellationToken cancellationToken = default)
+        => clientReader.AutoCompleteClientasync(text, _context.UserId, cancellationToken);
 }

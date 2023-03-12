@@ -18,6 +18,7 @@ interface IdeaForm {
 }
 
 interface PitchForm {
+  client: FormControl<string>;
   title: FormControl<string>;
   content: FormControl<string>;
   deadLineDate: FormControl<Date | null>;
@@ -48,6 +49,10 @@ export class AddPitchComponent implements OnInit {
   });
 
   public pitchFormGroup = new FormGroup<PitchForm>({
+    client: new FormControl('', {
+      nonNullable: true,
+      validators: Validators.required,
+    }),
     title: new FormControl('', {
       nonNullable: true,
       validators: Validators.required,

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from '@apollo/client/core';
 import { QueryRef } from 'apollo-angular';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Client } from 'src/models/Client';
 import {
   AddClientMutation,
@@ -9,6 +8,7 @@ import {
 } from 'src/mutations/AddClientMutation';
 import { DeleteClientMutation } from 'src/mutations/DeleteClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
+import { AutoCompleteClientQuery } from 'src/queries/AutoCompleteClientQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
 
 @Injectable({
@@ -19,7 +19,8 @@ export class ClientsService {
     private _allClientsQuery: AllClientsQuery,
     private _clientQuery: ClientQuery,
     private _addClientMutation: AddClientMutation,
-    private _deleteClientMutation: DeleteClientMutation
+    private _deleteClientMutation: DeleteClientMutation,
+    private _autoCompleteClientQuery: AutoCompleteClientQuery
   ) {}
 
   private _allClientsQueryRef: QueryRef<any> | null = null;
@@ -60,5 +61,11 @@ export class ClientsService {
       .subscribe(() => {
         this.refreshClients();
       });
+  }
+
+  public autoComplete(text: string): Observable<Client[]> {
+    return this._autoCompleteClientQuery
+      .fetch({ text: text })
+      .pipe(map((result) => result.data.autoCompleteClient));
   }
 }

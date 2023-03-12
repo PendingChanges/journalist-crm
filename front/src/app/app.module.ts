@@ -25,7 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { ClientsComponent } from './clients/clients-page/clients-page.component';
@@ -62,6 +63,7 @@ import { initializeKeycloak } from './initializeKeycloak';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthGuard } from './auth.guard';
 import { environment } from 'src/environments/environment';
+import { ClientSelectorComponent } from './clients/client-selector/client-selector.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +93,7 @@ import { environment } from 'src/environments/environment';
     IdeaActionMenuComponent,
     AddPitchComponent,
     DeleteIdeaButtonComponent,
+    ClientSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +112,7 @@ import { environment } from 'src/environments/environment';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatAutocompleteModule,
     MatMenuModule,
     MatStepperModule,
     MatCheckboxModule,

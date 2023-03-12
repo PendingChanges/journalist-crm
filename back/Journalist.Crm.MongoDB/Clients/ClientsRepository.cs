@@ -1,9 +1,13 @@
-﻿using Journalist.Crm.Domain.Clients;
+﻿using Amazon.Runtime.Internal;
+using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Pitches.DataModels;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +29,7 @@ namespace Journalist.Crm.MongoDB.Clients
 
         public async Task<string> AddClientAsync(ClientInput input, string userId, CancellationToken cancellationToken = default)
         {
-            var clientCollection = _database.GetCollection<Client>(ClientCollectionName);
+            IMongoCollection<Client> clientCollection = GetClientCollection();
             var id = Guid.NewGuid().ToString();
 
             await clientCollection.InsertOneAsync(new Client(id, input.Name, userId), new InsertOneOptions { }, cancellationToken);
@@ -35,7 +39,7 @@ namespace Journalist.Crm.MongoDB.Clients
 
         public async Task<ClientResultSet> GetClientsAsync(GetClientsRequest request, CancellationToken cancellationToken = default)
         {
-            var clientCollection = _database.GetCollection<Client>(ClientCollectionName);
+            var clientCollection = GetClientCollection();
             var filterBuilder = Builders<Client>.Filter;
             var userFiler = filterBuilder.Eq((c) => c.UserId, request.UserId);
             var filter = userFiler;
@@ -62,10 +66,22 @@ namespace Journalist.Crm.MongoDB.Clients
         }
 
         public Task RemoveClientAsync(string id, string userId, CancellationToken cancellationToken = 
-default) => _database.GetCollection<Client>(ClientCollectionName).DeleteOneAsync(BuildOneClientFilter(id, userId), cancellationToken);
+default) => GetClientCollection().DeleteOneAsync(BuildOneClientFilter(id, userId), cancellationToken);
 
         public Task<Client?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken) 
-            => _database.GetCollection<Client>(ClientCollectionName).Find(BuildOneClientFilter(clientId, userId)).FirstOrDefaultAsync<Client?>(cancellationToken);
+            => GetClientCollection().Find(BuildOneClientFilter(clientId, userId)).FirstOrDefaultAsync<Client?>(cancellationToken);
+
+        public async Task<IEnumerable<Client>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken)
+        {
+            var clientCollection = GetClientCollection();
+            var filterBuilder = Builders<Client>.Filter;
+            var userFiler = filterBuilder.Eq((c) => c.UserId, userId);
+            var queryExpr = new BsonRegularExpression(new Regex(text, RegexOptions.IgnoreCase));
+            var clientNameFilter = filterBuilder.Regex(c => c.Name, queryExpr);
+            var filter = filterBuilder.And(userFiler, clientNameFilter);
+
+            return await clientCollection.Find(filter).ToListAsync(cancellationToken);
+        }
 
         private FilterDefinition<Client> BuildOneClientFilter(string clientId, string userId)
         {
@@ -74,5 +90,7 @@ default) => _database.GetCollection<Client>(ClientCollectionName).DeleteOneAsync
             var clientFilter = filterBuilder.Eq(c => c.Id, clientId);
             return filterBuilder.And(userFiler, clientFilter);
         }
+
+        private IMongoCollection<Client> GetClientCollection() => _database.GetCollection<Client>(ClientCollectionName);
     }
 }
