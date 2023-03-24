@@ -18,8 +18,7 @@
         "Keycloak_SslRequired": "None",
         "Keycloak__Resource": "account",
         "Keycloak__VerifyTokenAudience": "false",
-        "MongoDB__ConnectionString": "mongodb://uxhreiw5eilxmctslfkv:NEPaTOaODkpJ3cHA0Xlw@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017,n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017/bm0amalwbke8u9k?replicaSet=rs0",
-        "MongoDB__DatabaseName": "bm0amalwbke8u9k"
+        "ConnectionStrings__Marten": "Host=bmq6fxxx9dmhmuisneqk-postgresql.services.clever-cloud.com;Username=ucqx3qhe3qzijjs7vqwz;Password=LA5IwMN3UB9YG6CpvZXjsrstGlHoKm;Database=bmq6fxxx9dmhmuisneqk"
       }
     }
   }

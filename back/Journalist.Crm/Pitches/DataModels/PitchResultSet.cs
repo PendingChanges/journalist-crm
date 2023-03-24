@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Journalist.Crm.Domain.Pitches.DataModels
 {
-    public class PitchResultSet : ResultSetBase<Pitch>
+    public class PitchResultSet : ResultSetBase<PitchDocument>
     {
-        public PitchResultSet(IReadOnlyCollection<Pitch> data, long totalItemCount, bool hasNextPage, bool hasPreviousPage) : base(data, totalItemCount, hasNextPage, hasPreviousPage)
+        public PitchResultSet(IReadOnlyList<PitchDocument> data, long totalItemCount, bool hasNextPage, bool hasPreviousPage) : base(data, totalItemCount, hasNextPage, hasPreviousPage)
         {
         }
     }

@@ -1,15 +1,9 @@
-﻿using HotChocolate;
-using HotChocolate.Authorization;
+﻿using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Pitches;
-using Journalist.Crm.GraphQL.Ideas;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
+using Journalist.Crm.Domain.Pitches.Commands;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,30 +13,49 @@ namespace Journalist.Crm.GraphQL.Pitches
     public class PitchesMutations
     {
         private readonly IContext _context;
+        private readonly IMediator _mediator;
 
-        public PitchesMutations(IContext context)
+        public PitchesMutations(IContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
-       
+
         [Authorize(Roles = new[] { "user" })]
         public async Task<PitchAddedPayload> AddPitchAsync(
-    [Service] IWritePitches _pitchWriter,
     PitchInput pitchInput,
     CancellationToken cancellationToken = default)
         {
-            var id = await _pitchWriter.AddPitchAsync(pitchInput, _context.UserId, cancellationToken);
+            var command = new CreatePitch(pitchInput.Title, pitchInput.Content, pitchInput.DeadLineDate, pitchInput.IssueDate, pitchInput.ClientId, pitchInput.IdeaId, _context.UserId);
 
-            return new PitchAddedPayload { PitchId = id };
+            var result = await _mediator.Send(command, cancellationToken);
+
+            if (result.IsSuccess)
+            {
+                return new PitchAddedPayload { PitchId = result.Data?.Id };
+            }
+
+            //TODO gerer le retour des erreurs
+
+            return new PitchAddedPayload();
         }
 
         [Authorize(Roles = new[] { "user" })]
-        public async Task<string> RemoveIdeaAsync(
-            [Service] IWriteIdeas _ideasWriter,
+        public async Task<string> RemovePitchAsync(
             string id,
             CancellationToken cancellationToken = default)
         {
-            await _ideasWriter.RemoveIdeaAsync(id, _context.UserId, cancellationToken);
+            var command = new DeletePitch(id, _context.UserId);
+
+            var result = await _mediator.Send(command, cancellationToken);
+
+            if (result.IsSuccess)
+            {
+                return id;
+            }
+
+            //TODO gerer le retour des erreurs
+
             return id;
         }
 

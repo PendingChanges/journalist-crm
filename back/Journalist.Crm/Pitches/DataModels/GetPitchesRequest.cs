@@ -4,8 +4,8 @@ namespace Journalist.Crm.Domain.Pitches.DataModels
 {
     public class GetPitchesRequest : PaginatedRequestBase
     {
-        private const int DEFAULT_PITCH_SKIP = 0;
-        private const int DEFAULT_PITCH_TAKE = 10;
+        private const int DEFAULT_PITCH_PAGENUMBER = 1;
+        private const int DEFAULT_PITCH_PAGESIZE = 10;
         private const string DEFAULT_PITCH_SORTBY = "Title";
 
         public GetPitchesRequest(
@@ -15,8 +15,8 @@ namespace Journalist.Crm.Domain.Pitches.DataModels
             int? take,
             string? sortBy,
             string userId) : base(
-                skip ?? DEFAULT_PITCH_SKIP,
-                take ?? DEFAULT_PITCH_TAKE,
+                skip ?? DEFAULT_PITCH_PAGENUMBER,
+                take ?? DEFAULT_PITCH_PAGESIZE,
                 sortBy ?? DEFAULT_PITCH_SORTBY,
                 userId)
         {

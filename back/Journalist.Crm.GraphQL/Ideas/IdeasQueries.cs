@@ -37,7 +37,7 @@ public class IdeasQueries
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
 
         var collectionSegment = new CollectionSegment<Idea>(
-            pitchesResultSet.Data,
+            pitchesResultSet.Data.ToIdeas(),
             pageInfo,
             ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
 
@@ -47,6 +47,6 @@ public class IdeasQueries
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("idea")]
-    public Task<Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, string id, CancellationToken cancellationToken = default)
-        => ideasReader.GetIdeaAsync(id, _context.UserId, cancellationToken);
+    public async Task<Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, string id, CancellationToken cancellationToken = default)
+        => (await ideasReader.GetIdeaAsync(id, _context.UserId, cancellationToken)).ToIdeaOrNull();
 }

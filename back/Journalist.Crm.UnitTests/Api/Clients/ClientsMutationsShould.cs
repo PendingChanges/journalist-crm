@@ -2,6 +2,7 @@
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.GraphQL.Clients;
+using MediatR;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,12 +20,11 @@ public class ClientsMutationsShould
         var input = fixture.Create<ClientInput>();
         var id = fixture.Create<string>();
         var contextMock = new Mock<IContext>();
-        var clientsMutations = new ClientsMutations(contextMock.Object);
-        var clientsWritterMock = new Mock<IWriteClients>();
-        clientsWritterMock.Setup(_ => _.AddClientAsync(input, It.IsAny<string>(), CancellationToken.None)).ReturnsAsync(id);
+        var mediatorMock = new Mock<IMediator>();
+        var clientsMutations = new ClientsMutations(contextMock.Object, mediatorMock.Object);
 
         //Act
-        var response = await clientsMutations.AddClientAsync(clientsWritterMock.Object, input);
+        var response = await clientsMutations.AddClientAsync(input);
 
         //Assert
         Assert.NotNull(response);

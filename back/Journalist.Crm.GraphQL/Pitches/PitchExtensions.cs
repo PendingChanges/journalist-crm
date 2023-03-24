@@ -8,6 +8,8 @@ using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
 using Journalist.Crm.Domain.Pitches.DataModels;
+using Journalist.Crm.GraphQL.Clients;
+using Journalist.Crm.GraphQL.Ideas;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,16 +28,16 @@ public class PitchExtensions
     }
 
     [Authorize(Roles = new[] { "user" })]
-    public Task<Idea?> GetIdeaAsync(
+    public async Task<Idea?> GetIdeaAsync(
 [Parent] Pitch pitch,
 [Service] IReadIdeas ideasReader,
 CancellationToken cancellationToken = default)
-    => ideasReader.GetIdeaAsync(pitch.IdeaId, _context.UserId, cancellationToken);
+    => (await ideasReader.GetIdeaAsync(pitch.IdeaId, _context.UserId, cancellationToken)).ToIdeaOrNull();
 
     [Authorize(Roles = new[] { "user" })]
-    public Task<Client?> GetClientAsync(
+    public async Task<Client?> GetClientAsync(
 [Parent] Pitch pitch,
 [Service] IReadClients clientsReader,
 CancellationToken cancellationToken = default)
-    => clientsReader.GetClientAsync(pitch.ClientId, _context.UserId, cancellationToken);
+    => (await clientsReader.GetClientAsync(pitch.ClientId, _context.UserId, cancellationToken)).ToClientOrNull();
 }

@@ -8,6 +8,7 @@ using Journalist.Crm.Domain.Pitches.DataModels;
 using Journalist.Crm.Domain;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Authorization;
+using Journalist.Crm.GraphQL.Pitchs;
 
 namespace Journalist.Crm.GraphQL.Pitches;
 
@@ -39,7 +40,7 @@ public class PitchesQueries
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
 
         var collectionSegment = new CollectionSegment<Pitch>(
-            pitchesResultSet.Data,
+            pitchesResultSet.Data.ToPitches(),
             pageInfo,
             ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
 
@@ -49,6 +50,6 @@ public class PitchesQueries
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("pitch")]
-    public Task<Pitch> GetPitchAsync([Service] IReadPitches pitchesReader, string id, CancellationToken cancellationToken = default)
-        => pitchesReader.GetPitchAsync(id, _context.UserId, cancellationToken);
+    public async Task<Pitch?> GetPitchAsync([Service] IReadPitches pitchesReader, string id, CancellationToken cancellationToken = default)
+        => (await pitchesReader.GetPitchAsync(id, _context.UserId, cancellationToken)).ToPitchOrNull();
 }

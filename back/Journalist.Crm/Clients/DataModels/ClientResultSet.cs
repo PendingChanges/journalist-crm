@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Journalist.Crm.Domain.Clients.DataModels;
 
-public class ClientResultSet : ResultSetBase<Client>
+public class ClientResultSet : ResultSetBase<ClientDocument>
 {
     public ClientResultSet(
-        IReadOnlyCollection<Client> data,
+        IReadOnlyList<ClientDocument> data,
         long totalItemCount,
         bool hasNextPage,
         bool hasPreviousPage)
