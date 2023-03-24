@@ -27,7 +27,6 @@ export class AllPitchesQuery extends Query<
           content
           deadLineDate
           issueDate
-          statusCode
           idea {
             id
             name

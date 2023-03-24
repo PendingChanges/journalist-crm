@@ -18,7 +18,6 @@ export class PitchQuery extends Query<Pitch, PitchInput> {
         content
         deadLineDate
         issueDate
-        statusCode
         idea {
           id
           name
