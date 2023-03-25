@@ -30,9 +30,9 @@ namespace Journalist.Crm.Marten
                 options.Events.StreamIdentity = StreamIdentity.AsString;
 
                 // Projections
-                options.Projections.Add(new ClientProjection(), ProjectionLifecycle.Async);
-                options.Projections.Add(new IdeaProjection(), ProjectionLifecycle.Async);
-                options.Projections.Add(new PitchProjection(), ProjectionLifecycle.Async);
+                options.Projections.Add(new ClientProjection(), ProjectionLifecycle.Inline);
+                options.Projections.Add(new IdeaProjection(), ProjectionLifecycle.Inline);
+                options.Projections.Add(new PitchProjection(), ProjectionLifecycle.Inline);
 
                 // Indexes
                 options.Schema.For<ClientDocument>().UniqueIndex(c => c.Id);

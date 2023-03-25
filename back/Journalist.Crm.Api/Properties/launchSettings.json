@@ -18,7 +18,7 @@
         "Keycloak_SslRequired": "None",
         "Keycloak__Resource": "account",
         "Keycloak__VerifyTokenAudience": "false",
-        "ConnectionStrings__Marten": "Host=bmq6fxxx9dmhmuisneqk-postgresql.services.clever-cloud.com;Username=ucqx3qhe3qzijjs7vqwz;Password=LA5IwMN3UB9YG6CpvZXjsrstGlHoKm;Database=bmq6fxxx9dmhmuisneqk"
+        "ConnectionStrings__Marten": "Host=bagfydabbsmxmrqknzsc-postgresql.services.clever-cloud.com;Username=ucqx3qhe3qzijjs7vqwz;Port=6698;Password=LA5IwMN3UB9YG6CpvZXjsrstGlHoKm;Database=bagfydabbsmxmrqknzsc"
       }
     }
   }
