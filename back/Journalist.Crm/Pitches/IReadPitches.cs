@@ -8,6 +8,4 @@ public interface IReadPitches
 {
     Task<PitchDocument?> GetPitchAsync(string id, string userId, CancellationToken cancellationToken = default);
     Task<PitchResultSet> GetPitchesAsync(GetPitchesRequest request, CancellationToken cancellationToken = default);
-    Task<int> GetPitchesNbByClientIdAsync(string clientId, string userId, CancellationToken cancellationToken = default);
-    Task<int> GetPitchesNbByIdeaIdAsync(string id, string userId, CancellationToken cancellationToken);
 }

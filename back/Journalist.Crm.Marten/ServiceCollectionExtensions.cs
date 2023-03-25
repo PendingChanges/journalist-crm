@@ -13,6 +13,8 @@ using Marten.Events.Daemon.Resiliency;
 using Marten.Events.Projections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Linq;
 
 namespace Journalist.Crm.Marten
 {
@@ -47,6 +49,22 @@ namespace Journalist.Crm.Marten
                 options.Schema.For<IdeaDocument>().FullTextIndex(c => c.Name);
             })
             .AddAsyncDaemon(DaemonMode.Solo);
+
+            var querySessionDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IQuerySession));
+
+            if (querySessionDescriptor != null)
+            {
+                services.Remove(querySessionDescriptor);
+            }
+            services.AddTransient(s => s.GetRequiredService<ISessionFactory>().QuerySession());
+
+            var documentSessionDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IDocumentSession));
+
+            if (documentSessionDescriptor != null)
+            {
+                services.Remove(documentSessionDescriptor);
+            }
+            services.AddTransient(s => s.GetRequiredService<ISessionFactory>().OpenSession());
 
             services.AddTransient<IStoreAggregates, AggregateRepository>();
             services.AddTransient<IReadClients, ClientRepository>();

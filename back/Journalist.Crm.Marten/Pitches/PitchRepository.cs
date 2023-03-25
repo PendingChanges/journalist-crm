@@ -1,5 +1,4 @@
-﻿using Journalist.Crm.Domain.Clients.DataModels;
-using Journalist.Crm.Domain.Pitches;
+﻿using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.DataModels;
 using Marten;
 using Marten.Pagination;
@@ -40,11 +39,5 @@ namespace Journalist.Crm.Marten.Pitches
 
             return new PitchResultSet(pagedResult.ToList(), pagedResult.TotalItemCount, pagedResult.HasNextPage, pagedResult.HasPreviousPage);
         }
-
-        public Task<int> GetPitchesNbByClientIdAsync(string clientId, string userId, CancellationToken cancellationToken = default) 
-            => _session.Query<PitchDocument>().Where(p => p.ClientId == clientId && p.UserId == userId).CountAsync(cancellationToken);
-
-        public Task<int> GetPitchesNbByIdeaIdAsync(string ideaId, string userId, CancellationToken cancellationToken)
-            => _session.Query<PitchDocument>().Where(p => p.IdeaId == ideaId && p.UserId == userId).CountAsync(cancellationToken);
     }
 }
