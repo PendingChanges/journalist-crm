@@ -21,10 +21,10 @@ public class ClientsMutationsShould
         var id = fixture.Create<string>();
         var contextMock = new Mock<IContext>();
         var mediatorMock = new Mock<IMediator>();
-        var clientsMutations = new ClientsMutations(contextMock.Object, mediatorMock.Object);
+        var clientsMutations = new ClientsMutations();
 
         //Act
-        var response = await clientsMutations.AddClientAsync(input);
+        var response = await clientsMutations.AddClientAsync(mediatorMock.Object, contextMock.Object, input);
 
         //Assert
         Assert.NotNull(response);

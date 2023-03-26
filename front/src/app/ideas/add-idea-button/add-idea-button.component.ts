@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddIdeaComponent } from '../add-idea/add-idea.component';
 
 @Component({
@@ -8,11 +8,9 @@ import { AddIdeaComponent } from '../add-idea/add-idea.component';
   styleUrls: ['./add-idea-button.component.scss'],
 })
 export class AddIdeaButtonComponent {
-  constructor(public dialog: MatDialog) {}
+  constructor(private modalService: NgbModal) {}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddIdeaComponent, {
-      width: '600px',
-    });
+    const dialogRef = this.modalService.open(AddIdeaComponent);
   }
 }

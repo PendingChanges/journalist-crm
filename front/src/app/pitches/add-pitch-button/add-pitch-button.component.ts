@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from 'src/models/Client';
 import { Idea } from 'src/models/Idea';
 import {
@@ -16,12 +16,15 @@ export class AddPitchButtonComponent {
   @Input() public client: Client | null = null;
   @Input() public idea: Idea | null = null;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(private modalService: NgbModal) {}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddPitchComponent, {
-      width: '1000px',
-      data: new AddPitchDialogModel(this.client, this.idea),
+    const dialogRef = this.modalService.open(AddPitchComponent, <NgbModalOptions>{
+      size: 'lg'
     });
+    dialogRef.componentInstance.data = new AddPitchDialogModel(
+      this.client,
+      this.idea
+    );
   }
 }

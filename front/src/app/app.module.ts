@@ -8,32 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EditorModule } from '@tinymce/tinymce-angular';
 
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
-import { MatTableModule } from '@angular/material/table';
-import {
-  MatPaginatorIntl,
-  MatPaginatorModule,
-} from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { ClientsComponent } from './clients/clients-page/clients-page.component';
 import { IdeasComponent } from './ideas/ideas-page/ideas-page.component';
 import { AddIdeaComponent } from './ideas/add-idea/add-idea.component';
 import { IdeaListComponent } from './ideas/idea-list/idea-list.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientListComponent } from './clients/client-list/client-list.component';
 import { AddClientComponent } from './clients/add-client/add-client.component';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
@@ -49,7 +29,6 @@ import { TranslocoRootModule } from './transloco-root.module';
 import { LanguagePickerComponent } from './layout/language-picker/language-picker.component';
 import { PitchesPageComponent } from './pitches/pitches-page/pitches-page.component';
 import { PitchPageComponent } from './pitches/pitch-page/pitch-page.component';
-import { MyCustomPaginatorIntl } from 'src/services/MyCustomPaginatorIntl';
 import { IdeaPageComponent } from './ideas/idea-page/idea-page.component';
 import { ClientsActionMenuComponent } from './clients/clients-action-menu/clients-action-menu.component';
 import { AddClientButtonComponent } from './clients/add-client-button/add-client-button.component';
@@ -64,6 +43,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthGuard } from './auth.guard';
 import { environment } from 'src/environments/environment';
 import { ClientSelectorComponent } from './clients/client-selector/client-selector.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -100,27 +80,13 @@ import { ClientSelectorComponent } from './clients/client-selector/client-select
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     EditorModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatListModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatMenuModule,
-    MatStepperModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     ApolloModule,
     TranslocoRootModule,
     KeycloakAngularModule,
+    NgbModule,
   ],
   providers: [
     {
@@ -135,7 +101,6 @@ import { ClientSelectorComponent } from './clients/client-selector/client-select
       },
       deps: [HttpLink],
     },
-    { provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

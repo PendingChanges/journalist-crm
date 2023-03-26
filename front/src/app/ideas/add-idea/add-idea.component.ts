@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IdeaInput } from 'src/mutations/AddIdeaMutation';
 import { IdeasService } from 'src/services/IdeasService';
 
@@ -24,18 +24,18 @@ export class AddIdeaComponent {
   });
 
   constructor(
-    public _dialogRef: MatDialogRef<AddIdeaComponent>,
+    public _activeModal: NgbActiveModal,
     private _ideasService: IdeasService
   ) {}
 
   public onCancelClick(): void {
-    this._dialogRef.close();
+    this._activeModal.close();
   }
 
   public onSubmit(): void {
     if (this.ideaFormGroup.valid) {
       this._ideasService.addIdea(<IdeaInput>this.ideaFormGroup.value);
-      this._dialogRef.close();
+      this._activeModal.close();
     }
   }
 }

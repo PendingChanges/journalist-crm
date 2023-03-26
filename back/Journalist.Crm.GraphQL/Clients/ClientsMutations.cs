@@ -14,23 +14,16 @@ namespace Journalist.Crm.GraphQL.Clients;
 [ExtendObjectType("Mutation")]
 public class ClientsMutations
 {
-    private readonly IContext _context;
-    private readonly IMediator _mediator;
-
-    public ClientsMutations(IContext context, IMediator mediator)
-    {
-        _context = context;
-        _mediator = mediator;
-    }
-
     [Authorize(Roles = new[] { "user" })]
     public async Task<ClientAddedPayload> AddClientAsync(
+        [Service] IMediator mediator,
+        [Service] IContext context,
         ClientInput clientInput,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreateClient(clientInput.Name, _context.UserId);
+        var command = new CreateClient(clientInput.Name, context.UserId);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(command, cancellationToken);
 
         if (result.IsSuccess)
         {
@@ -44,12 +37,14 @@ public class ClientsMutations
 
     [Authorize(Roles = new[] { "user" })]
     public async Task<string> RemoveClientAsync(
+        [Service] IMediator mediator,
+        [Service] IContext context,
         string id,
         CancellationToken cancellationToken = default)
     {
-        var command = new DeleteClient(id, _context.UserId);
+        var command = new DeleteClient(id, context.UserId);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(command, cancellationToken);
 
         if (result.IsSuccess)
         {

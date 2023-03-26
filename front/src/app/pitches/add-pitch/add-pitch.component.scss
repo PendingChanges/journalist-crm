@@ -1,11 +1,14 @@
-.action-list {
-  display: flex;
-  margin-top: 20px;
-  justify-content: end;
-}
+#form-area {
+  margin: 20px;
 
-#pitch-form {
-  .field {
-    width: 100%;
+  #client-form {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  #button-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
   }
 }

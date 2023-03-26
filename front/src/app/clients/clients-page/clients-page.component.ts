@@ -9,11 +9,9 @@ import { ClientsService } from 'src/services/ClientsService';
   styleUrls: ['./clients-page.component.scss'],
 })
 export class ClientsComponent {
-  constructor(private _clientsService: ClientsService) {}
-
-  public clients$?: Observable<Client[]>;
-
-  ngOnInit(): void {
-    this.clients$ = this._clientsService.clients$;
+  constructor(clientsService: ClientsService) {
+    this.clients$ = clientsService.clients$;
   }
+
+  public clients$: Observable<Client[]>;
 }

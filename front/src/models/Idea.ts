@@ -4,5 +4,5 @@ export interface Idea {
   id: string;
   name: string;
   description: string | null;
-  pitches: Pitch[];
+  nbOfPitches: number;
 }

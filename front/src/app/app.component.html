@@ -1,36 +1,38 @@
 <ng-container *transloco="let t">
   <app-navbar></app-navbar>
-
-  <mat-drawer-container class="example-container">
-    <mat-drawer class="menu" mode="side" opened>
-      <mat-nav-list role="navigation">
-        <a
-          mat-list-item
-          routerLink="/clients"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-          >{{ t("clients.title") }}</a
-        >
-        <a
-          mat-list-item
-          routerLink="/ideas"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-          >{{ t("ideas.title") }}</a
-        >
-        <a
-          mat-list-item
-          routerLink="/pitches"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-          >{{ t("pitches.title") }}</a
-        >
-      </mat-nav-list>
-    </mat-drawer>
-    <mat-drawer-content>
-      <div class="app-viewer">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
+  <div class="container-xxl bd-gutter mt-3 my-md-4 jc-layout">
+    <aside class="jc-sidebar">
+      <nav class="w-100">
+        <ul class="list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
+          <li class="py-2">
+            <a
+              class="jc-links-link d-inline-block rounded"
+              routerLink="/clients"
+              [routerLinkActive]="['active']"
+              >{{ t("clients.title") }}</a
+            >
+          </li>
+          <li class="py-2">
+            <a
+              class="jc-links-link d-inline-block rounded"
+              routerLink="/ideas"
+              [routerLinkActive]="['active']"
+              >{{ t("ideas.title") }}</a
+            >
+          </li>
+          <li class="py-2">
+            <a
+              class="jc-links-link d-inline-block rounded"
+              routerLink="/pitches"
+              [routerLinkActive]="['active']"
+              >{{ t("pitches.title") }}</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="jc-main order-1">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </ng-container>

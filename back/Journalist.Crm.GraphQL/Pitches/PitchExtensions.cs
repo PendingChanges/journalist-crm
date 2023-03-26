@@ -20,24 +20,19 @@ namespace Journalist.Crm.GraphQL.Pitches;
 [ExtendObjectType(typeof(Pitch))]
 public class PitchExtensions
 {
-    private readonly IContext _context;
-
-    public PitchExtensions(IContext context)
-    {
-        _context = context;
-    }
-
     [Authorize(Roles = new[] { "user" })]
     public async Task<Idea?> GetIdeaAsync(
 [Parent] Pitch pitch,
 [Service] IReadIdeas ideasReader,
+[Service] IContext context,
 CancellationToken cancellationToken = default)
-    => (await ideasReader.GetIdeaAsync(pitch.IdeaId, _context.UserId, cancellationToken)).ToIdeaOrNull();
+    => (await ideasReader.GetIdeaAsync(pitch.IdeaId, context.UserId, cancellationToken)).ToIdeaOrNull();
 
     [Authorize(Roles = new[] { "user" })]
     public async Task<Client?> GetClientAsync(
 [Parent] Pitch pitch,
 [Service] IReadClients clientsReader,
+[Service] IContext context,
 CancellationToken cancellationToken = default)
-    => (await clientsReader.GetClientAsync(pitch.ClientId, _context.UserId, cancellationToken)).ToClientOrNull();
+    => (await clientsReader.GetClientAsync(pitch.ClientId, context.UserId, cancellationToken)).ToClientOrNull();
 }

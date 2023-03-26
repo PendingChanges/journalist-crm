@@ -1,16 +1,9 @@
 <input
-  #input
+  id="typeahead-basic"
   type="text"
-  placeholder="Pick one"
-  aria-label="Number"
-  matInput
-  [matAutocomplete]="auto"
+  class="form-control"
+  [(ngModel)]="clientSelected"
+  [ngbTypeahead]="search"
+  [resultFormatter]="formatter"
+  [inputFormatter]="formatter"
 />
-<mat-autocomplete #auto="matAutocomplete">
-  <mat-option
-    *ngFor="let client of filteredClients$ | async"
-    [value]="client.id"
-  >
-    {{ client.name }}
-  </mat-option>
-</mat-autocomplete>

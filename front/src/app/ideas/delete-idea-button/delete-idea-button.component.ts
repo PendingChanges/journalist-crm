@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
@@ -17,21 +17,19 @@ export class DeleteIdeaButtonComponent {
   @Input() public idea: Idea | null = null;
 
   constructor(
-    private _dialog: MatDialog,
+    private _modalService: NgbModal,
     private _ideasService: IdeasService,
     private _router: Router
   ) {}
 
   openConfirmDialog(): void {
-    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-      width: '600px',
-      data: new ConfirmDialogModel(
-        `Confirm ${this.idea?.name} deletion`,
-        `Are you sure you want to delete idea ${this.idea?.name} ?`
-      ),
-    });
+    const dialogRef = this._modalService.open(ConfirmDialogComponent);
+    dialogRef.componentInstance.data = new ConfirmDialogModel(
+      `Confirm ${this.idea?.name} deletion`,
+      `Are you sure you want to delete idea ${this.idea?.name} ?`
+    );
 
-    dialogRef.afterClosed().subscribe((dialogResult) => {
+    dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.idea) {
         this._ideasService.deleteIdea(this.idea.id);
         this._router.navigate(['/ideas']);
