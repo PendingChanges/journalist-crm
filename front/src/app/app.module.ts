@@ -23,7 +23,7 @@ import { ClientPageComponent } from './clients/client-page/client-page.component
 import { ClientActionMenuComponent } from './clients/client-action-menu/client-action-menu.component';
 import { ClientDeleteButtonComponent } from './clients/client-delete-button/client-delete-button.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-import { AddPitchButtonComponent } from './pitches/add-pitch-button/add-pitch-button.component';
+import { AddPitchButtonComponent } from './pitches/add-pitch/add-pitch-button/add-pitch-button.component';
 import { PitchListComponent } from './pitches/pitch-list/pitch-list.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { LanguagePickerComponent } from './layout/language-picker/language-picker.component';
@@ -43,7 +43,12 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthGuard } from './auth.guard';
 import { environment } from 'src/environments/environment';
 import { ClientSelectorComponent } from './clients/client-selector/client-selector.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDateAdapter,
+  NgbDateNativeAdapter,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +79,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AddPitchComponent,
     DeleteIdeaButtonComponent,
     ClientSelectorComponent,
+    IdeaSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,6 +114,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       deps: [KeycloakService],
     },
     AuthGuard,
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
   ],
   bootstrap: [AppComponent],
 })

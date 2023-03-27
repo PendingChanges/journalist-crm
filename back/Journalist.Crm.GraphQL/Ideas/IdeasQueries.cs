@@ -7,6 +7,9 @@ using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
 using Journalist.Crm.Domain;
 using HotChocolate.Authorization;
+using Journalist.Crm.Domain.Clients.DataModels;
+using Journalist.Crm.Domain.Clients;
+using System.Collections.Generic;
 
 namespace Journalist.Crm.GraphQL.Ideas;
 
@@ -42,4 +45,13 @@ public class IdeasQueries
     [GraphQLName("idea")]
     public async Task<Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, [Service] IContext context, string id, CancellationToken cancellationToken = default)
         => (await ideasReader.GetIdeaAsync(id, context.UserId, cancellationToken)).ToIdeaOrNull();
+
+    [Authorize(Roles = new[] { "user" })]
+    [GraphQLName("autoCompleteIdea")]
+    public async Task<IReadOnlyList<Idea>> AutoCompleteIdeaAsync(
+    [Service] IReadIdeas ideaReader,
+    [Service] IContext context,
+    string text,
+    CancellationToken cancellationToken = default)
+    => (await ideaReader.AutoCompleteIdeaAsync(text, context.UserId, cancellationToken)).ToIdeas();
 }

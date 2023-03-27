@@ -57,8 +57,6 @@ export class AddPitchComponent implements OnInit {
 
   constructor(
     public _activeModal: NgbActiveModal,
-    private _clientsService: ClientsService,
-    private _ideasService: IdeasService,
     private _pitchesService: PitchesService
   ) {}
   ngOnInit(): void {
@@ -66,6 +64,14 @@ export class AddPitchComponent implements OnInit {
       client: this.data?.client,
       idea: this.data?.idea,
     });
+
+    if (this.data?.disableClient) {
+      this.pitchFormGroup.controls.client.disable();
+    }
+
+    if (this.data?.disableIdea) {
+      this.pitchFormGroup.controls.idea.disable();
+    }
   }
 
   public onCancelClick(): void {
@@ -88,5 +94,10 @@ export class AddPitchComponent implements OnInit {
 }
 
 export class AddPitchDialogModel {
-  constructor(public client: Client | null, public idea: Idea | null) {}
+  constructor(
+    public client: Client | null,
+    public idea: Idea | null,
+    public disableClient: boolean,
+    public disableIdea: boolean
+  ) {}
 }
