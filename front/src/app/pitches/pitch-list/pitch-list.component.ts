@@ -17,6 +17,6 @@ export class PitchListComponent implements OnInit {
   ngOnInit(): void {}
 
   public onRowClick(pitch: Pitch) {
-    this.router.navigate(['/pitch', pitch.id]);
+    this.router.navigate(['/pitches', pitch.id]);
   }
 }

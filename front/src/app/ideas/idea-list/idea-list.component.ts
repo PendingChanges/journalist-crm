@@ -16,6 +16,6 @@ export class IdeaListComponent {
   constructor(private router: Router) {}
 
   public onRowClick(idea: Idea) {
-    this.router.navigate(['/idea', idea.id]);
+    this.router.navigate(['/ideas', idea.id]);
   }
 }

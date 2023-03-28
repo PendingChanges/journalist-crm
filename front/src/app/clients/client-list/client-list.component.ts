@@ -11,6 +11,6 @@ export class ClientListComponent {
   @Input() public clients: Client[] | null = [];
   constructor(private _router: Router) {}
   public onRowClick(client: Client) {
-    this._router.navigate(['/client', client.id]);
+    this._router.navigate(['/clients', client.id]);
   }
 }

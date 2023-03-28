@@ -1,5 +1,39 @@
 <ng-container *ngIf="pitch | async; let pitch">
-  <ng-container *transloco="let t">
-    <h1>{{ pitch.title }}</h1>
-  </ng-container>
+  <div class="container" *transloco="let t">
+    <div class="row">
+      <div class="col">
+        <h1>{{ pitch.title }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 fw-bold">{{ t("pitches.table.client") }}:</div>
+      <div class="col">
+        <a [routerLink]="['/client', pitch.client.id]"
+          >{{ pitch.client.name }}
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 fw-bold">{{ t("pitches.table.idea") }}:</div>
+      <div class="col">
+        <a [routerLink]="['/idea', pitch.idea.id]">{{ pitch.idea.name }} </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 fw-bold">{{ t("pitches.table.content") }}:</div>
+      <div class="col" [innerHTML]="pitch.content"></div>
+    </div>
+    <div class="row">
+      <div class="col-2 fw-bold">{{ t("pitches.form.deadLineDate") }}:</div>
+      <div class="col">
+        {{ pitch.deadLineDate | date }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 fw-bold">{{ t("pitches.form.issueDate") }}:</div>
+      <div class="col">
+        {{ pitch.issueDate | date }}
+      </div>
+    </div>
+  </div>
 </ng-container>
