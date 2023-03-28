@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { Idea } from 'src/models/Idea';
 import { AddIdeaMutation, IdeaInput } from 'src/mutations/AddIdeaMutation';
 import { DeleteIdeaMutation } from 'src/mutations/DeleteIdeaMutation';
 import { AllIdeasQuery } from 'src/queries/AllIdeasQuery';
+import { AutoCompleteIdeaQuery } from 'src/queries/AutoCompleteIdeaQuery';
 import { IdeaQuery } from 'src/queries/IdeaQuery';
 
 @Injectable({
@@ -14,6 +16,7 @@ export class IdeasService {
     private _allIdeasQuery: AllIdeasQuery,
     private _addIdeaMutation: AddIdeaMutation,
     private _deleteIdeaMutation: DeleteIdeaMutation,
+    private _autoCompleteIdeaQuery: AutoCompleteIdeaQuery,
     private _ideaQuery: IdeaQuery
   ) {}
 
@@ -55,5 +58,11 @@ export class IdeasService {
       .subscribe(() => {
         this.refreshIdeas();
       });
+  }
+
+  public autoComplete(text: string): Observable<Idea[]> {
+    return this._autoCompleteIdeaQuery
+      .fetch({ text: text })
+      .pipe(map((result) => result.data.autoCompleteIdea));
   }
 }

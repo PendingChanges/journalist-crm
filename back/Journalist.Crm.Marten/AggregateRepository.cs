@@ -18,7 +18,7 @@ namespace Journalist.Crm.Marten
 
         public async Task StoreAsync(AggregateBase aggregate, CancellationToken ct = default)
         {
-            await using var session = store.LightweightSession();
+            await using var session = store.OpenSession();
             // Take non-persisted events, push them to the event stream, indexed by the aggregate ID
             var events = aggregate.GetUncommitedEvents().ToArray();
             session.Events.Append(aggregate.Id, aggregate.Version, events);
@@ -33,7 +33,7 @@ namespace Journalist.Crm.Marten
             CancellationToken ct = default
         ) where T : AggregateBase
         {
-            await using var session = store.LightweightSession();
+            await using var session = store.OpenSession();
             var aggregate = await session.Events.AggregateStreamAsync<T>(id, version ?? 0, token: ct);
             return aggregate ?? throw new InvalidOperationException($"No aggregate by id {id}.");
         }

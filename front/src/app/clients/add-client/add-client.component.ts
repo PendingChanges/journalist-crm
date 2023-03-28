@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  AddClientMutation,
   ClientInput,
 } from 'src/mutations/AddClientMutation';
 import { ClientsService } from 'src/services/ClientsService';
@@ -25,18 +24,18 @@ export class AddClientComponent {
   });
 
   constructor(
-    private _dialogRef: MatDialogRef<AddClientComponent>,
+    public _activeModal: NgbActiveModal,
     private _clientsService: ClientsService
   ) {}
 
   public onCancelClick(): void {
-    this._dialogRef.close();
+    this._activeModal.close();
   }
 
   public onSubmit(): void {
     if (this.clientFormGroup.valid) {
       this._clientsService.addClient(<ClientInput>this.clientFormGroup.value);
-      this._dialogRef.close();
+      this._activeModal.close();
     }
   }
 }

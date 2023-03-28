@@ -1,7 +1,5 @@
-﻿using Journalist.Crm.Domain.Clients.DataModels;
-using Journalist.Crm.Domain.Ideas;
+﻿using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
-using Journalist.Crm.Domain.Pitches.DataModels;
 using Marten;
 using Marten.Pagination;
 using System;
@@ -21,7 +19,7 @@ namespace Journalist.Crm.Marten.Ideas
             _session = session;
         }
 
-        public Task<IReadOnlyList<IdeaDocument>> AutoCompleteIdeaasync(string text, string userId, CancellationToken cancellationToken) 
+        public Task<IReadOnlyList<IdeaDocument>> AutoCompleteIdeaAsync(string text, string userId, CancellationToken cancellationToken) 
             => _session.Query<IdeaDocument>().Where(c => c.UserId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
 
         public Task<IdeaDocument?> GetIdeaAsync(string ideaId, string userId, CancellationToken cancellationToken) 

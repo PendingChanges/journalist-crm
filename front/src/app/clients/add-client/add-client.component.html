@@ -1,21 +1,23 @@
 <div id="form-area" *transloco="let t">
   <h1>{{ t("clients.add_client") }}</h1>
-  <form id="idea-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <mat-label>{{ t("clients.table.name") }}</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
+  <form id="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="client-name" class="form-label">{{
+        t("clients.table.name")
+      }}</label>
+      <input id="client-name" class="form-control" formControlName="name" />
+    </div>
   </form>
   <div id="button-area">
     <button
-      mat-raised-button
-      color="primary"
+      type="button"
+      class="btn btn-primary"
       [disabled]="!clientFormGroup.valid"
       (click)="onSubmit()"
     >
       {{ t("common.save") }}
     </button>
-    <button mat-raised-button color="accent" (click)="onCancelClick()">
+    <button type="button" class="btn btn-secondary" (click)="onCancelClick()">
       {{ t("common.cancel") }}
     </button>
   </div>

@@ -1,7 +1,8 @@
 <button
   *transloco="let t"
-  mat-raised-button
-  color="warn"
+  type="button"
+  class="btn btn-danger"
+  [disabled]="disabled"
   (click)="openConfirmDialog()"
 >
   {{ t("common.delete") + " " + client?.name }}

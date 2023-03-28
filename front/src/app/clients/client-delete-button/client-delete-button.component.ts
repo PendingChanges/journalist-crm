@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
@@ -15,23 +15,21 @@ import { ClientsService } from 'src/services/ClientsService';
 })
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;
-
+  @Input() public disabled = false;
   constructor(
-    private _dialog: MatDialog,
+    private _modalService: NgbModal,
     private _clientsService: ClientsService,
     private _router: Router
   ) {}
 
   openConfirmDialog(): void {
-    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-      width: '600px',
-      data: new ConfirmDialogModel(
-        `Confirm ${this.client?.name} deletion`,
-        `Are you sure you want to delete client ${this.client?.name} ?`
-      ),
-    });
+    const dialogRef = this._modalService.open(ConfirmDialogComponent);
+    dialogRef.componentInstance.data = new ConfirmDialogModel(
+      `Confirm ${this.client?.name} deletion`,
+      `Are you sure you want to delete client ${this.client?.name} ?`
+    );
 
-    dialogRef.afterClosed().subscribe((dialogResult) => {
+    dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.client) {
         this._clientsService.deleteClient(this.client.id);
         this._router.navigate(['/clients']);

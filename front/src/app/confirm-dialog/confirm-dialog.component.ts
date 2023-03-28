@@ -1,29 +1,27 @@
-import { Component, Inject, Input } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
 })
-export class ConfirmDialogComponent {
+export class ConfirmDialogComponent implements OnInit {
   public message: string = '';
   public title: string = '';
-
-  constructor(
-    private _dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogModel
-  ) {
-    this.message = data.message;
-    this.title = data.title;
+  public data?: ConfirmDialogModel;
+  constructor(private _activeModal: NgbActiveModal) {}
+  ngOnInit(): void {
+    this.message = this.data?.message || '';
+    this.title = this.data?.title || '';
   }
 
   public onConfirmClick(): void {
-    this._dialogRef.close(true);
+    this._activeModal.close(true);
   }
 
   public onCancelClick(): void {
-    this._dialogRef.close(false);
+    this._activeModal.close(false);
   }
 }
 

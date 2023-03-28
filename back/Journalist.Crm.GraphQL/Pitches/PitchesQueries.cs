@@ -15,18 +15,12 @@ namespace Journalist.Crm.GraphQL.Pitches;
 [ExtendObjectType("Query")]
 public class PitchesQueries
 {
-    private readonly IContext _context;
-
-    public PitchesQueries(IContext context)
-    {
-        _context = context;
-    }
-
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allPitches")]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Pitch>> GetPitches(
          [Service] IReadPitches pitchesReader,
+         [Service] IContext context,
             string? clientId,
             string? ideaId,
             int? skip,
@@ -34,7 +28,7 @@ public class PitchesQueries
     string? sortBy,
             CancellationToken cancellationToken = default)
     {
-        var request = new GetPitchesRequest(clientId, ideaId, skip, take, sortBy, _context.UserId);
+        var request = new GetPitchesRequest(clientId, ideaId, skip, take, sortBy, context.UserId);
         var pitchesResultSet = await pitchesReader.GetPitchesAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
@@ -50,6 +44,6 @@ public class PitchesQueries
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("pitch")]
-    public async Task<Pitch?> GetPitchAsync([Service] IReadPitches pitchesReader, string id, CancellationToken cancellationToken = default)
-        => (await pitchesReader.GetPitchAsync(id, _context.UserId, cancellationToken)).ToPitchOrNull();
+    public async Task<Pitch?> GetPitchAsync([Service] IReadPitches pitchesReader, [Service] IContext context, string id, CancellationToken cancellationToken = default)
+        => (await pitchesReader.GetPitchAsync(id, context.UserId, cancellationToken)).ToPitchOrNull();
 }

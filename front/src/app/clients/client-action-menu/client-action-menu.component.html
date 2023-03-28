@@ -1,4 +1,10 @@
 <div id="actions">
-  <app-add-pitch-button [client]="client"></app-add-pitch-button>
-  <app-client-delete-button [client]="client"></app-client-delete-button>
+  <app-add-pitch-button
+    [client]="client"
+    [disableClient]="true"
+  ></app-add-pitch-button>
+  <app-client-delete-button
+    [disabled]="disableDeleteButton"
+    [client]="client"
+  ></app-client-delete-button>
 </div>

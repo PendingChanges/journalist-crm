@@ -1,47 +1,91 @@
 <div id="form-area" *transloco="let t">
   <h1>{{ t("pitches.add_pitch") }}</h1>
   <form id="pitch-form" [formGroup]="pitchFormGroup">
-    <mat-form-field class="field">
-      <mat-label>{{ t("pitches.form.client") }}</mat-label>
+    <div class="mb-3">
+      <label for="pitch-client" class="form-label">{{
+        t("pitches.form.client")
+      }}</label>
       <app-client-selector
-        matInput
+        id="pitch-client"
         formControlName="client"
       ></app-client-selector>
-    </mat-form-field>
-    <mat-form-field class="field">
-      <mat-label>{{ t("pitches.form.title") }}</mat-label>
-      <input matInput formControlName="title" />
-    </mat-form-field>
-    <editor
-      formControlName="content"
-      apiKey="fwchc6cj4rtoiczv5xliaf7hvcuakqift147gd9hwtk1b9xz"
-      [init]="{ plugins: 'link' }"
-    ></editor>
-    <mat-form-field appearance="fill" class="field">
-      <mat-label>{{ t("pitches.form.deadLineDate") }}</mat-label>
-      <input
-        matInput
-        [matDatepicker]="deadLineDatepicker"
-        formControlName="deadLineDate"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="deadLineDatepicker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #deadLineDatepicker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="field">
-      <mat-label>{{ t("pitches.form.issueDate") }}</mat-label>
-      <input
-        matInput
-        [matDatepicker]="issueDatePicker"
-        formControlName="issueDate"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="issueDatePicker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #issueDatePicker></mat-datepicker>
-    </mat-form-field>
+    </div>
+    <div class="mb-3">
+      <label for="pitch-idea" class="form-label">{{
+        t("pitches.form.idea")
+      }}</label>
+      <app-idea-selector
+        id="pitch-idea"
+        formControlName="idea"
+      ></app-idea-selector>
+    </div>
+    <div class="mb-3">
+      <label for="pitch-title" class="form-label">{{
+        t("pitches.form.title")
+      }}</label>
+      <input id="pitch-title" class="form-control" formControlName="title" />
+    </div>
+    <div class="mb-3">
+      <editor
+        formControlName="content"
+        apiKey="fwchc6cj4rtoiczv5xliaf7hvcuakqift147gd9hwtk1b9xz"
+        [init]="{ plugins: 'link' }"
+      ></editor>
+    </div>
+    <div class="mb-3">
+      <label for="idea-deadline-date" class="form-label">{{
+        t("pitches.form.deadLineDate")
+      }}</label>
+      <div class="input-group">
+        <input
+          id="idea-deadline-date"
+          formControlName="deadLineDate"
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          ngbDatepicker
+          #d1="ngbDatepicker"
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-calendar3"
+          (click)="d1.toggle()"
+          type="button"
+        ></button>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="idea-issue-date" class="form-label">{{
+        t("pitches.form.issueDate")
+      }}</label>
+      <div class="input-group">
+        <input
+          id="idea-issue-date"
+          formControlName="issueDate"
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          ngbDatepicker
+          #d2="ngbDatepicker"
+        />
+        <button
+          class="btn btn-outline-secondary bi bi-calendar3"
+          (click)="d2.toggle()"
+          type="button"
+        ></button>
+      </div>
+    </div>
   </form>
+  <div id="button-area">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!pitchFormGroup.valid"
+      (click)="onSubmit()"
+    >
+      {{ t("common.save") }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelClick()">
+      {{ t("common.cancel") }}
+    </button>
+  </div>
 </div>

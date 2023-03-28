@@ -8,4 +8,5 @@ import { Idea } from 'src/models/Idea';
 })
 export class IdeaActionMenuComponent {
   @Input() public idea: Idea | null = null;
+  @Input() public disableDeleteButton: boolean = true;
 }

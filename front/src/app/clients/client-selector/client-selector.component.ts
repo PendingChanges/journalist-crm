@@ -1,15 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   debounceTime,
   distinctUntilChanged,
   EMPTY,
-  fromEvent,
   map,
   Observable,
-  startWith,
+  OperatorFunction,
   switchMap,
-  tap,
 } from 'rxjs';
 import { Client } from 'src/models/Client';
 import { ClientsService } from 'src/services/ClientsService';
@@ -18,34 +16,48 @@ import { ClientsService } from 'src/services/ClientsService';
   selector: 'app-client-selector',
   templateUrl: './client-selector.component.html',
   styleUrls: ['./client-selector.component.scss'],
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: ClientSelectorComponent, multi: true },
+  ],
 })
-export class ClientSelectorComponent implements ControlValueAccessor, OnInit {
-  public filteredClients$: Observable<Client[]> = EMPTY;
-  @ViewChild('input', { static: true }) input!: ElementRef;
-
+export class ClientSelectorComponent implements ControlValueAccessor {
   constructor(private _clientsService: ClientsService) {}
+  private _value: Client | null = null;
+  public set value(val: Client | null) {
+    this._value = val;
+    this.onChange(val);
+    this.onTouch(val);
+  }
+  public get value(): Client | null {
+    return this._value;
+  }
+  public disabled: boolean = false;
+  onChange: any = () => {};
+  onTouch: any = () => {};
 
-  ngOnInit(): void {
-    this.filteredClients$ = fromEvent(this.input?.nativeElement, 'keyup').pipe(
-      map((e) => this.input.nativeElement.value as string),
-      debounceTime(400),
+  writeValue(val: Client | null): void {
+    this.value = val;
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  search: OperatorFunction<string, readonly Client[]> = (
+    text$: Observable<string>
+  ) =>
+    text$.pipe(
+      debounceTime(200),
       distinctUntilChanged(),
       switchMap((val) => {
         return this._clientsService.autoComplete(val);
       })
     );
-  }
 
-  writeValue(obj: any): void {
-    throw new Error('Method not implemented.');
-  }
-  registerOnChange(fn: any): void {
-    throw new Error('Method not implemented.');
-  }
-  registerOnTouched(fn: any): void {
-    throw new Error('Method not implemented.');
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
-  }
+  formatter = (result: Client) => result.name;
 }

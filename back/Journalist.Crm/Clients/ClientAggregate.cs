@@ -19,6 +19,8 @@ namespace Journalist.Crm.Domain.Clients
             AddUncommitedEvent(@event);
         }
 
+        private ClientAggregate() { }
+
         public void Delete(string clientId, string ownerId)
         {
             if(string.CompareOrdinal(Id, clientId) != 0)
@@ -54,6 +56,7 @@ namespace Journalist.Crm.Domain.Clients
         private void Apply(ClientDeleted @event)
         {
             Deleted = true;
+            Version++;
         }
     }
 }

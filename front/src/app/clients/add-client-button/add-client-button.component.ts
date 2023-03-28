@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddClientComponent } from '../add-client/add-client.component';
 
 @Component({
@@ -8,10 +8,8 @@ import { AddClientComponent } from '../add-client/add-client.component';
   styleUrls: ['./add-client-button.component.scss'],
 })
 export class AddClientButtonComponent {
-  constructor(public dialog: MatDialog) {}
+  constructor(private _modalService: NgbModal) {}
   openDialog(): void {
-    this.dialog.open(AddClientComponent, {
-      width: '600px',
-    });
+    this._modalService.open(AddClientComponent);
   }
 }

@@ -1,26 +1,28 @@
 <div id="form-area">
   <h1>Add Idea</h1>
   <form id="idea-form" [formGroup]="ideaFormGroup" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
+    <div class="mb-3">
+      <label for="idea-name" class="form-label">Name</label>
+      <input class="form-control" id="idea-name" formControlName="name" />
+    </div>
+    <div class="mb-3">
+      <label for="idea-description" class="form-label">Description</label>
+      <input
+        class="form-control"
+        id="idea-description"
+        formControlName="description"
+      />
+    </div>
   </form>
   <div id="button-area">
     <button
-      mat-raised-button
-      color="primary"
+      type="button"
+      class="btn btn-primary"
       [disabled]="!ideaFormGroup.valid"
       (click)="onSubmit()"
     >
       Save
     </button>
-    <button mat-raised-button color="accent" (click)="onCancelClick()">
-      Cancel
-    </button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelClick()">Cancel</button>
   </div>
 </div>

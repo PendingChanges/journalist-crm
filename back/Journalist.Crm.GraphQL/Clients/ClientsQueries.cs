@@ -14,25 +14,19 @@ namespace Journalist.Crm.GraphQL.Clients;
 [ExtendObjectType("Query")]
 public class ClientsQueries
 {
-    private readonly IContext _context;
-
-    public ClientsQueries(IContext context)
-    {
-        _context = context;
-    }
-
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allClients")]
     [UseOffsetPaging(IncludeTotalCount = true)]
     public async Task<CollectionSegment<Client>> GetClientsAcync(
         [Service] IReadClients clientReader,
+           [Service] IContext context,
             int? skip,
             int? take,
             string? sortBy,
             CancellationToken cancellationToken = default
         )
     {
-        var request = new GetClientsRequest(null, skip, take, sortBy, _context.UserId);
+        var request = new GetClientsRequest(null, skip, take, sortBy, context.UserId);
         var clientResultSet = await clientReader.GetClientsAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(clientResultSet.HasNextPage, clientResultSet.HasPreviousPage);
@@ -47,11 +41,19 @@ public class ClientsQueries
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("client")]
-    public async Task<Client?> GetClientAsync([Service] IReadClients clientReader, string id, CancellationToken cancellationToken = default)
-        => (await clientReader.GetClientAsync(id, _context.UserId, cancellationToken)).ToClientOrNull();
+    public async Task<Client?> GetClientAsync(
+        [Service] IReadClients clientReader,
+        [Service] IContext context,
+        string id,
+        CancellationToken cancellationToken = default)
+        => (await clientReader.GetClientAsync(id, context.UserId, cancellationToken)).ToClientOrNull();
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("autoCompleteClient")]
-    public async Task<IReadOnlyList<Client>> AutoCompleteClientAsync([Service] IReadClients clientReader, string text, CancellationToken cancellationToken = default)
-        => (await clientReader.AutoCompleteClientasync(text, _context.UserId, cancellationToken)).ToClients();
+    public async Task<IReadOnlyList<Client>> AutoCompleteClientAsync(
+        [Service] IReadClients clientReader,
+        [Service] IContext context,
+        string text,
+        CancellationToken cancellationToken = default)
+        => (await clientReader.AutoCompleteClientasync(text, context.UserId, cancellationToken)).ToClients();
 }

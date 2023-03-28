@@ -8,4 +8,5 @@ import { Client } from 'src/models/Client';
 })
 export class ClientActionMenuComponent {
   @Input() public client: Client | null = null;
+  @Input() public disableDeleteButton: boolean = true;
 }

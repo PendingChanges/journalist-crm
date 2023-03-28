@@ -1,6 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Client } from 'src/models/Client';
 import { Idea } from 'src/models/Idea';
@@ -18,7 +18,8 @@ interface IdeaForm {
 }
 
 interface PitchForm {
-  client: FormControl<string>;
+  client: FormControl<Client | null>;
+  idea: FormControl<Idea | null>;
   title: FormControl<string>;
   content: FormControl<string>;
   deadLineDate: FormControl<Date | null>;
@@ -31,25 +32,14 @@ interface PitchForm {
   styleUrls: ['./add-pitch.component.scss'],
 })
 export class AddPitchComponent implements OnInit {
-  public clients$?: Observable<any>;
-  public ideas$?: Observable<any>;
-
-  public clientFormGroup = new FormGroup<ClientForm>({
-    clientId: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-  });
-
-  public ideaFormGroup = new FormGroup<IdeaForm>({
-    ideaId: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-  });
+  public data?: AddPitchDialogModel;
 
   public pitchFormGroup = new FormGroup<PitchForm>({
-    client: new FormControl('', {
+    client: new FormControl(null, {
+      nonNullable: true,
+      validators: Validators.required,
+    }),
+    idea: new FormControl(null, {
       nonNullable: true,
       validators: Validators.required,
     }),
@@ -66,57 +56,48 @@ export class AddPitchComponent implements OnInit {
   });
 
   constructor(
-    private _dialogRef: MatDialogRef<AddPitchComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AddPitchDialogModel,
-    private _clientsService: ClientsService,
-    private _ideasService: IdeasService,
+    public _activeModal: NgbActiveModal,
     private _pitchesService: PitchesService
-  ) {
-    this.clientFormGroup.patchValue({ clientId: data.client?.id });
-    this.ideaFormGroup.patchValue({ ideaId: data.idea?.id });
-  }
+  ) {}
   ngOnInit(): void {
-    this.clients$ = this._clientsService.clients$;
-    this.ideas$ = this._ideasService.ideas$;
-  }
+    this.pitchFormGroup.patchValue({
+      client: this.data?.client,
+      idea: this.data?.idea,
+    });
 
-  public onClientsSelected(clients: Client[]): void {
-    if (clients.length == 0) {
-      this.clientFormGroup.patchValue({ clientId: null });
-      return;
+    if (this.data?.disableClient) {
+      this.pitchFormGroup.controls.client.disable();
     }
 
-    this.clientFormGroup.patchValue({ clientId: clients[0].id });
-  }
-
-  public onIdeasSelected(ideas: Idea[]) {
-    if (ideas.length == 0) {
-      this.ideaFormGroup.patchValue({ ideaId: null });
-      return;
+    if (this.data?.disableIdea) {
+      this.pitchFormGroup.controls.idea.disable();
     }
-
-    this.ideaFormGroup.patchValue({ ideaId: ideas[0].id });
   }
 
-  public onSaveClick() {
-    if (
-      this.ideaFormGroup.valid &&
-      this.clientFormGroup.valid &&
-      this.pitchFormGroup.valid
-    ) {
+  public onCancelClick(): void {
+    this._activeModal.close();
+  }
+
+  public onSubmit(): void {
+    if (this.pitchFormGroup.valid) {
       this._pitchesService.addPitch(<PitchInput>{
-        clientId: this.clientFormGroup.value.clientId,
-        ideaId: this.ideaFormGroup.value.ideaId,
+        clientId: this.pitchFormGroup.value.client?.id,
+        ideaId: this.pitchFormGroup.value.idea?.id,
         content: this.pitchFormGroup.value.content,
         deadLineDate: this.pitchFormGroup.value.deadLineDate,
         issueDate: this.pitchFormGroup.value.issueDate,
         title: this.pitchFormGroup.value.title,
       });
-      this._dialogRef.close();
+      this._activeModal.close();
     }
   }
 }
 
 export class AddPitchDialogModel {
-  constructor(public client: Client | null, public idea: Idea | null) {}
+  constructor(
+    public client: Client | null,
+    public idea: Idea | null,
+    public disableClient: boolean,
+    public disableIdea: boolean
+  ) {}
 }
