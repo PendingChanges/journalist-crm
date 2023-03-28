@@ -1,6 +1,13 @@
 <ng-container *ngIf="client | async; let client">
-  <ng-container *transloco="let t">
-    <h1>{{ client.name }}</h1>
+  <div class="container" *transloco="let t">
+    <div class="row justify-content-between">
+      <div class="col">
+        <h1>{{ client.name }}</h1>
+      </div>
+      <div class="col-1">
+        <button class="btn"><i class="bi bi-pencil-square"></i></button>
+      </div>
+    </div>
     <ng-container *ngIf="pitches$ | async; let pitches">
       <app-client-action-menu
         [client]="client"
@@ -9,5 +16,5 @@
       <h2>{{ t("pitches.title") }}</h2>
       <app-pitch-list [pitches]="pitches" [showIdea]="true"></app-pitch-list>
     </ng-container>
-  </ng-container>
+  </div>
 </ng-container>

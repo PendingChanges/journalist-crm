@@ -7,4 +7,6 @@ export interface Pitch {
   content: string;
   idea: Idea;
   client: Client;
+  deadLineDate: Date;
+  issueDate: Date;
 }

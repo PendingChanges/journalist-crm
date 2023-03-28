@@ -15,7 +15,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'client/:id',
+    path: 'clients/:id',
     component: ClientPageComponent,
     canActivate: [AuthGuard]
   },
@@ -25,7 +25,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'idea/:id',
+    path: 'ideas/:id',
     component: IdeaPageComponent,
     canActivate: [AuthGuard]
   },
@@ -35,7 +35,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'pitch/:id',
+    path: 'pitches/:id',
     component: PitchPageComponent,
     canActivate: [AuthGuard]
   },
