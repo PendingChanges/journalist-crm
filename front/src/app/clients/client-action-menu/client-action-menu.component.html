@@ -3,5 +3,8 @@
     [client]="client"
     [disableClient]="true"
   ></app-add-pitch-button>
-  <app-client-delete-button [client]="client"></app-client-delete-button>
+  <app-client-delete-button
+    [disabled]="disableDeleteButton"
+    [client]="client"
+  ></app-client-delete-button>
 </div>

@@ -15,7 +15,7 @@ import { ClientsService } from 'src/services/ClientsService';
 })
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;
-
+  @Input() public disabled = false;
   constructor(
     private _modalService: NgbModal,
     private _clientsService: ClientsService,

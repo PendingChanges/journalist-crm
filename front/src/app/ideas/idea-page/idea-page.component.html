@@ -1,11 +1,13 @@
 <ng-container *ngIf="idea | async; let idea">
   <ng-container *transloco="let t">
     <h1>{{ idea.name }}</h1>
-    <app-idea-action-menu [idea]="idea"></app-idea-action-menu>
-    <h2>{{ t("pitches.title") }}</h2>
-    <app-pitch-list
-      [pitches]="pitches$ | async"
-      [showClient]="true"
-    ></app-pitch-list>
+    <ng-container *ngIf="pitches$ | async; let pitches">
+      <app-idea-action-menu
+        [idea]="idea"
+        [disableDeleteButton]="pitches.length > 0"
+      ></app-idea-action-menu>
+      <h2>{{ t("pitches.title") }}</h2>
+      <app-pitch-list [pitches]="pitches" [showClient]="true"></app-pitch-list>
+    </ng-container>
   </ng-container>
 </ng-container>

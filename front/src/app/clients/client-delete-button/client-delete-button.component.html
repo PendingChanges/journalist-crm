@@ -2,6 +2,7 @@
   *transloco="let t"
   type="button"
   class="btn btn-danger"
+  [disabled]="disabled"
   (click)="openConfirmDialog()"
 >
   {{ t("common.delete") + " " + client?.name }}

@@ -9,7 +9,8 @@
               class="jc-links-link d-inline-block rounded"
               routerLink="/clients"
               [routerLinkActive]="['active']"
-              >{{ t("clients.title") }}</a
+            >
+              <i class="bi bi-building"></i>{{ t("clients.title") }}</a
             >
           </li>
           <li class="py-2">
@@ -17,7 +18,8 @@
               class="jc-links-link d-inline-block rounded"
               routerLink="/ideas"
               [routerLinkActive]="['active']"
-              >{{ t("ideas.title") }}</a
+              ><i class="bi bi-question-circle-fill"></i>
+              {{ t("ideas.title") }}</a
             >
           </li>
           <li class="py-2">
@@ -25,7 +27,7 @@
               class="jc-links-link d-inline-block rounded"
               routerLink="/pitches"
               [routerLinkActive]="['active']"
-              >{{ t("pitches.title") }}</a
+              ><i class="bi bi-paperclip"></i> {{ t("pitches.title") }}</a
             >
           </li>
         </ul>

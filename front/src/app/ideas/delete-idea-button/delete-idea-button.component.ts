@@ -15,7 +15,7 @@ import { IdeasService } from 'src/services/IdeasService';
 })
 export class DeleteIdeaButtonComponent {
   @Input() public idea: Idea | null = null;
-
+  @Input() public disabled = false;
   constructor(
     private _modalService: NgbModal,
     private _ideasService: IdeasService,
