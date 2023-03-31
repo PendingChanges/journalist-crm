@@ -1,40 +1,11 @@
 <ng-container *transloco="let t">
-  <app-navbar></app-navbar>
-  <div class="container-xxl bd-gutter mt-3 my-md-4 jc-layout">
-    <aside class="jc-sidebar">
-      <nav class="w-100">
-        <ul class="list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
-          <li class="py-2">
-            <a
-              class="jc-links-link d-inline-block rounded"
-              routerLink="/clients"
-              [routerLinkActive]="['active']"
-            >
-              <i class="bi bi-building"></i>{{ t("clients.title") }}</a
-            >
-          </li>
-          <li class="py-2">
-            <a
-              class="jc-links-link d-inline-block rounded"
-              routerLink="/ideas"
-              [routerLinkActive]="['active']"
-              ><i class="bi bi-question-circle-fill"></i>
-              {{ t("ideas.title") }}</a
-            >
-          </li>
-          <li class="py-2">
-            <a
-              class="jc-links-link d-inline-block rounded"
-              routerLink="/pitches"
-              [routerLinkActive]="['active']"
-              ><i class="bi bi-paperclip"></i> {{ t("pitches.title") }}</a
-            >
-          </li>
-        </ul>
-      </nav>
-    </aside>
-    <main class="jc-main order-1">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+  <div class="header"></div>
+  <main role="main">
+    <app-sidebar></app-sidebar>
+    <div class="page">
+      <div class="container-md">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
 </ng-container>

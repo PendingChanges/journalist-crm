@@ -49,6 +49,7 @@ import {
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.compo
     DeleteIdeaButtonComponent,
     ClientSelectorComponent,
     IdeaSelectorComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,

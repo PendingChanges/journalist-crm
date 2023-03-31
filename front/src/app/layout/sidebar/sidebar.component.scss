@@ -1,0 +1,14 @@
+.sidebar {
+  position: fixed !important;
+  top: 0;
+  bottom: 0;
+  z-index: 1032;
+  width: 240px;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-left: none;
+  background-color: #1985A1;
+}
