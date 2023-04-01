@@ -21,7 +21,9 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
         public async Task<AggregateResult<IdeaAggregate>> Handle(CreateIdea request, CancellationToken cancellationToken)
         {
-            var ideaAggregate = new IdeaAggregate(request.Name, request.Description, request.OwnerId);
+            var ideaAggregate = new IdeaAggregate();
+
+            ideaAggregate.Create(request.Name, request.Description, request.OwnerId);
 
             //Store Aggregate
             var errors = ideaAggregate.GetUncommitedErrors();

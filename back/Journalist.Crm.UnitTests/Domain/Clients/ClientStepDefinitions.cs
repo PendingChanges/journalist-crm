@@ -1,8 +1,7 @@
 using Journalist.Crm.Domain.Clients;
-using Journalist.Crm.Domain.Clients.Events;
-using System;
-using System.Linq;
 using TechTalk.SpecFlow;
+using Journalist.Crm.Domain.Clients.Events;
+using System.Linq;
 using Xunit;
 
 namespace Journalist.Crm.UnitTests.Domain.Clients
@@ -26,7 +25,9 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [When(@"A user with id ""([^""]*)"" create a client with name ""([^""]*)""")]
         public void WhenAUserWithIdCreateAClientWithName(string ownerId, string name)
         {
-            _aggregateContext.Aggregate = new ClientAggregate(name, ownerId);
+            var aggregate = new ClientAggregate();
+            aggregate.Create(name, ownerId);
+            _aggregateContext.Aggregate = aggregate;
         }
 
         [Then(@"A client ""([^""]*)"" owned by ""([^""]*)"" is created")]
@@ -37,7 +38,9 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
             Assert.Equal(name, clientAggregate.Name);
             Assert.Equal(ownerId, clientAggregate.OwnerId);
 
-            var @event = clientAggregate.GetUncommitedEvents().LastOrDefault() as ClientCreated;
+            var events = clientAggregate.GetUncommitedEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as ClientCreated;
 
             Assert.NotNull(@event);
             Assert.Equal(name, @event.Name);
@@ -48,7 +51,10 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [Given(@"An existing client with name ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingClientWithNameAndAnOwner(string name, string ownerId)
         {
-            _aggregateContext.Aggregate = new ClientAggregate(name, ownerId);
+            var aggregate = new ClientAggregate();
+            aggregate.Create(name, ownerId);
+            aggregate.ClearUncommitedEvents();
+            _aggregateContext.Aggregate = aggregate;
         }
 
         [When(@"A user with id ""([^""]*)"" delete the client")]
@@ -58,7 +64,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
 
             Assert.NotNull(clientAggregate);
 
-            clientAggregate.Delete(clientAggregate.Id, ownerId);
+            clientAggregate.Delete(ownerId);
         }
 
         [Then(@"The client is deleted")]
@@ -69,7 +75,9 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
             Assert.NotNull(clientAggregate);
             Assert.True(clientAggregate.Deleted);
 
-            var @event = clientAggregate.GetUncommitedEvents().LastOrDefault() as ClientDeleted;
+            var events = clientAggregate.GetUncommitedEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as ClientDeleted;
 
             Assert.NotNull(@event);
             Assert.Equal(clientAggregate.Id, @event.Id);
@@ -87,6 +95,36 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
             Assert.False(clientAggregate.Deleted);
 
             Assert.DoesNotContain(clientAggregate.GetUncommitedEvents(), e => e is ClientDeleted);
+        }
+
+        [When(@"A user with id ""([^""]*)""rename the client to ""([^""]*)""")]
+        public void WhenAUserWithIdRenameTheClientTo(string ownerId, string newName)
+        {
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+
+            if(clientAggregate == null)
+            {
+                return;
+            }
+
+            clientAggregate.Rename(newName, ownerId);
+        }
+
+        [Then(@"The client is renamed to ""([^""]*)""")]
+        public void ThenTheClientIsRenamedTo(string newName)
+        {
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+
+            Assert.NotNull(clientAggregate);
+            Assert.Equal(newName, clientAggregate.Name);
+
+            var events = clientAggregate.GetUncommitedEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as ClientRenamed;
+
+            Assert.NotNull(@event);
+            Assert.Equal(clientAggregate.Id, @event.Id);
+            Assert.Equal(newName, @event.NewName);
         }
     }
 }

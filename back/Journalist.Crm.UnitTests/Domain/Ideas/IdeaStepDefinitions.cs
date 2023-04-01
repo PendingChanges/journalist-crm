@@ -28,7 +28,9 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [When(@"A user with id ""([^""]*)"" create an idea with name ""([^""]*)"" and descrition ""([^""]*)""")]
         public void WhenAUserWithIdCreateAnIdeaWithNameAndDescrition(string ownerId, string name, string description)
         {
-            _aggregateContext.Aggregate = new IdeaAggregate(name, description, ownerId);
+            var aggregate = new IdeaAggregate();
+            aggregate.Create(name, description, ownerId);
+            _aggregateContext.Aggregate = aggregate;
         }
 
         [Then(@"An idea ""([^""]*)"" with description ""([^""]*)"" owned by ""([^""]*)"" is created")]
@@ -52,7 +54,9 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [Given(@"An existing idea with name ""([^""]*)"", description ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingIdeaWithNameDescriptionAndAnOwner(string name, string description, string ownerId)
         {
-            _aggregateContext.Aggregate = new IdeaAggregate(name, description, ownerId);
+            var aggregate = new IdeaAggregate();
+            aggregate.Create(name, description, ownerId);
+            _aggregateContext.Aggregate = aggregate;
         }
 
         [When(@"A user with id ""([^""]*)"" delete the idea")]

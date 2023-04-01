@@ -21,8 +21,9 @@ namespace Journalist.Crm.CommandHandlers.Pitches
         public async Task<AggregateResult<PitchAggregate>> Handle(CreatePitch request, CancellationToken cancellationToken)
         {
             //TODO: Check existence of clientId and ideaId
+            var pitchAggregate = new PitchAggregate();
 
-            var pitchAggregate = new PitchAggregate(request.Title, request.Content, request.DeadLineDate, request.IssueDate, request.ClientId, request.IdeaId, request.OwnerId);
+            pitchAggregate.Create(request.Title, request.Content, request.DeadLineDate, request.IssueDate, request.ClientId, request.IdeaId, request.OwnerId);
 
             //Store Aggregate
             var errors = pitchAggregate.GetUncommitedErrors();

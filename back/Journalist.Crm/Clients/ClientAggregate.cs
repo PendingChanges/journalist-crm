@@ -9,8 +9,25 @@ namespace Journalist.Crm.Domain.Clients
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
-        public ClientAggregate(string name, string ownerId)
+        public ClientAggregate()
         {
+            Name = string.Empty;
+            OwnerId = string.Empty;
+            Deleted = false;
+        }
+
+        public void Create(string name, string ownerId)
+        {
+            if (State == AggregateState.Set)
+            {
+                AddUncommitedError(new Error("AGGREGATE_ALREADY_SET", "The aggregate is already set"));
+            }
+
+            if (HasErrors)
+            {
+                return;
+            }
+
             var id = Guid.NewGuid().ToString();
 
             var @event = new ClientCreated(id, name, ownerId);
@@ -19,16 +36,9 @@ namespace Journalist.Crm.Domain.Clients
             AddUncommitedEvent(@event);
         }
 
-        private ClientAggregate() { }
-
-        public void Delete(string clientId, string ownerId)
+        public void Delete(string ownerId)
         {
-            if(string.CompareOrdinal(Id, clientId) != 0)
-            {
-                AddUncommitedError(new Error("INVALID_CLIENT_ID", "The client id is invalid"));
-            }
-
-            if(string.CompareOrdinal(OwnerId, ownerId) != 0)
+            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
                 AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
             }
@@ -43,20 +53,49 @@ namespace Journalist.Crm.Domain.Clients
             AddUncommitedEvent(@event);
         }
 
+        public void Rename(string newName, string ownerId)
+        {
+            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
+            {
+                AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
+            }
+
+            if (HasErrors)
+            {
+                return;
+            }
+
+            if (string.CompareOrdinal(Name, newName) == 0)
+            {
+                return;
+            }
+
+            var @event = new ClientRenamed(Id, newName);
+            Apply(@event);
+            AddUncommitedEvent(@event);
+        }
+
+        private void Apply(ClientRenamed @event)
+        {
+            Name = @event.NewName;
+            IncrementVersion();
+        }
+
         private void Apply(ClientCreated @event)
         {
-            Id = @event.Id;
+            SetId(@event.Id);
+            Activate();
             Name = @event.Name;
             OwnerId = @event.OwnerId;
             Deleted = false;
 
-            Version++;
+            IncrementVersion();
         }
 
-        private void Apply(ClientDeleted @event)
+        private void Apply(ClientDeleted _)
         {
             Deleted = true;
-            Version++;
+            IncrementVersion();
         }
     }
 }

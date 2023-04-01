@@ -20,7 +20,9 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
         public async Task<AggregateResult<ClientAggregate>> Handle(CreateClient request, CancellationToken cancellationToken)
         {
-            var clientAggregate = new ClientAggregate(request.Name, request.OwnerId);
+            var clientAggregate = new ClientAggregate();
+
+            clientAggregate.Create(request.Name, request.OwnerId);
 
             //Store Aggregate
             var errors = clientAggregate.GetUncommitedErrors();

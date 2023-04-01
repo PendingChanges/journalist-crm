@@ -32,7 +32,7 @@ namespace Journalist.Crm.CommandHandlers.Clients
                 return result;
             }
 
-            clientAggregate.Delete(request.Id, request.OwnerId);
+            clientAggregate.Delete(request.OwnerId);
             var errors = clientAggregate.GetUncommitedErrors();
             if (!errors.Any())
             {

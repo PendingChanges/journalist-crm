@@ -10,12 +10,29 @@ namespace Journalist.Crm.Domain.Ideas
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
-        public IdeaAggregate(string name, string? description, string ownerId)
+        public IdeaAggregate()
         {
+            Name = string.Empty;
+            Description = string.Empty;
+            OwnerId = string.Empty;
+            Deleted = false;
+        }
+
+        public void Create(string name, string? description, string ownerId)
+        {
+            if(State == AggregateState.Set)
+            {
+                AddUncommitedError(new Error("AGGREGATE_ALREADY_SET", "The aggregate is already set"));
+            }
+
+            if (HasErrors)
+            {
+                return;
+            }
+
             var id = Guid.NewGuid().ToString();
 
             var @event = new IdeaCreated(id, name, description, ownerId);
-
             Apply(@event);
             AddUncommitedEvent(@event);
         }
@@ -44,13 +61,14 @@ namespace Journalist.Crm.Domain.Ideas
 
         private void Apply(IdeaCreated @event)
         {
-            Id = @event.Id;
+            SetId(@event.Id);
+            Activate();
             Name = @event.Name;
             Description = @event.Description;
             OwnerId = @event.OwnerId;
             Deleted = false;
 
-            Version++;
+            IncrementVersion();
         }
 
         private void Apply(IdeaDeleted @event)

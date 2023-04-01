@@ -3,13 +3,6 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Api\Ideas\**" />
-	  <EmbeddedResource Remove="Api\Ideas\**" />
-	  <None Remove="Api\Ideas\**" />
-	  <SpecFlowFeatureFiles Remove="Api\Ideas\**" />
-	  <SpecFlowObsoleteCodeBehindFiles Remove="Api\Ideas\**" />
-	</ItemGroup>
-	<ItemGroup>
 	  <SpecFlowObsoleteCodeBehindFiles Remove="Domain\Ideas\Client.feature.cs" />
 	</ItemGroup>
 

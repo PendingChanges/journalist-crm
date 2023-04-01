@@ -14,8 +14,17 @@ namespace Journalist.Crm.Domain.Pitches
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
+        public PitchAggregate()
+        {
+            Title = string.Empty;
+            Content = string.Empty;
+            ClientId = string.Empty;
+            IdeaId = string.Empty;
+            OwnerId = string.Empty;
+            Deleted = false;
+        }
 
-        public PitchAggregate(string title, string? content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
+        public void Create(string title, string? content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
         {
             var id = Guid.NewGuid().ToString();
 
@@ -49,7 +58,8 @@ namespace Journalist.Crm.Domain.Pitches
 
         private void Apply(PitchCreated @event)
         {
-            Id = @event.Id;
+            SetId(@event.Id);
+            Activate();
             Title = @event.Title;
             Content = @event.Content;
             DeadLineDate = @event.DeadLineDate;
@@ -59,12 +69,13 @@ namespace Journalist.Crm.Domain.Pitches
             OwnerId = @event.OwnerId;
             Deleted = false;
 
-            Version++;
+            IncrementVersion();
         }
 
         private void Apply(PitchDeleted @event)
         {
             Deleted = true;
+            IncrementVersion();
         }
     }
 }
