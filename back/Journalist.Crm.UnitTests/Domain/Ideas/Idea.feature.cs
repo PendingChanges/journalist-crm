@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Journalist.Crm.UnitTests.Domain.Clients
+namespace Journalist.Crm.UnitTests.Domain.Ideas
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ClientFeature : object, Xunit.IClassFixture<ClientFeature.FixtureData>, System.IDisposable
+    public partial class IdeaFeature : object, Xunit.IClassFixture<IdeaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Client.feature"
+#line 1 "Idea.feature"
 #line hidden
         
-        public ClientFeature(ClientFeature.FixtureData fixtureData, Journalist_Crm_UnitTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IdeaFeature(IdeaFeature.FixtureData fixtureData, Journalist_Crm_UnitTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Domain/Clients", "Client", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Domain/Ideas", "Idea", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,16 +80,16 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The user create a client")]
-        [Xunit.TraitAttribute("FeatureTitle", "Client")]
-        [Xunit.TraitAttribute("Description", "The user create a client")]
+        [Xunit.SkippableFactAttribute(DisplayName="The user create an idea")]
+        [Xunit.TraitAttribute("FeatureTitle", "Idea")]
+        [Xunit.TraitAttribute("Description", "The user create an idea")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void TheUserCreateAClient()
+        public void TheUserCreateAnIdea()
         {
             string[] tagsOfScenario = new string[] {
                     "client"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The user create a client", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The user create an idea", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -101,28 +101,30 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("No existing client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("No existing idea", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.When("A user with id \"testuser\" create a client with name \"Client Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("A user with id \"testuser\" create an idea with name \"Idea Test\" and descrition \"De" +
+                        "scription test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.Then("A client \"Client Test\" owned by \"testuser\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("An idea \"Idea Test\" with description \"Description test\" owned by \"testuser\" is cr" +
+                        "eated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="A user delete its own client")]
-        [Xunit.TraitAttribute("FeatureTitle", "Client")]
-        [Xunit.TraitAttribute("Description", "A user delete its own client")]
+        [Xunit.SkippableFactAttribute(DisplayName="A user delete its own idea")]
+        [Xunit.TraitAttribute("FeatureTitle", "Idea")]
+        [Xunit.TraitAttribute("Description", "A user delete its own idea")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void AUserDeleteItsOwnClient()
+        public void AUserDeleteItsOwnIdea()
         {
             string[] tagsOfScenario = new string[] {
                     "client"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user delete its own client", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user delete its own idea", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -134,13 +136,14 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 13
- testRunner.Given("An existing client with name \"Client Test\" and an owner \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("An existing idea with name \"Idea Test\", description \"Description Test\" and an own" +
+                        "er \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
- testRunner.When("A user with id \"testuser\" delete the client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("A user with id \"testuser\" delete the idea", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
- testRunner.Then("The client is deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("The idea is deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 16
  testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -149,16 +152,16 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="A user tries to delete a client he doesn\'t own")]
-        [Xunit.TraitAttribute("FeatureTitle", "Client")]
-        [Xunit.TraitAttribute("Description", "A user tries to delete a client he doesn\'t own")]
+        [Xunit.SkippableFactAttribute(DisplayName="A user tries to delete an idea he doesn\'t own")]
+        [Xunit.TraitAttribute("FeatureTitle", "Idea")]
+        [Xunit.TraitAttribute("Description", "A user tries to delete an idea he doesn\'t own")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void AUserTriesToDeleteAClientHeDoesntOwn()
+        public void AUserTriesToDeleteAnIdeaHeDoesntOwn()
         {
             string[] tagsOfScenario = new string[] {
                     "client"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user tries to delete a client he doesn\'t own", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user tries to delete an idea he doesn\'t own", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -170,16 +173,17 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 20
- testRunner.Given("An existing client with name \"Client Test\" and an owner \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("An existing idea with name \"Idea Test\", description \"Description Test\" and an own" +
+                        "er \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 21
- testRunner.When("A user with id \"testuser2\" delete the client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("A user with id \"testuser2\" delete the idea", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 22
- testRunner.Then("An error with code \"NOT_CLIENT_OWNER\" is raised", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("An error with code \"NOT_IDEA_OWNER\" is raised", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 23
- testRunner.And("The client is not deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The idea is not deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -192,12 +196,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ClientFeature.FeatureSetup();
+                IdeaFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ClientFeature.FeatureTearDown();
+                IdeaFeature.FeatureTearDown();
             }
         }
     }

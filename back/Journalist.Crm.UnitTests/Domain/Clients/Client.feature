@@ -13,6 +13,7 @@ Scenario: A user delete its own client
 	Given An existing client with name "Client Test" and an owner "testuser"
 	When A user with id "testuser" delete the client
 	Then The client is deleted
+	And No errors
 
 @client
 Scenario: A user tries to delete a client he doesn't own

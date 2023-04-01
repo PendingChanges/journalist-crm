@@ -10,7 +10,12 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
     [Binding]
     public class ClientStepDefinitions
     {
-        private ClientAggregate? _clientAgggregate = null;
+
+        private readonly AggregateContext _aggregateContext;
+        public ClientStepDefinitions(AggregateContext aggregateContext)
+        {
+            _aggregateContext = aggregateContext;
+        }
 
         [Given(@"No existing client")]
         public void GivenNoExistingClient()
@@ -21,67 +26,67 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [When(@"A user with id ""([^""]*)"" create a client with name ""([^""]*)""")]
         public void WhenAUserWithIdCreateAClientWithName(string ownerId, string name)
         {
-            _clientAgggregate = new ClientAggregate(name, ownerId);
+            _aggregateContext.Aggregate = new ClientAggregate(name, ownerId);
         }
 
         [Then(@"A client ""([^""]*)"" owned by ""([^""]*)"" is created")]
         public void ThenAClientOwnedByIsCreated(string name, string ownerId)
         {
-            Assert.NotNull(_clientAgggregate);
-            Assert.Equal(name, _clientAgggregate.Name);
-            Assert.Equal(ownerId, _clientAgggregate.OwnerId);
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            Assert.NotNull(clientAggregate);
+            Assert.Equal(name, clientAggregate.Name);
+            Assert.Equal(ownerId, clientAggregate.OwnerId);
 
-            var @event = _clientAgggregate.GetUncommitedEvents().LastOrDefault() as ClientCreated;
+            var @event = clientAggregate.GetUncommitedEvents().LastOrDefault() as ClientCreated;
 
             Assert.NotNull(@event);
             Assert.Equal(name, @event.Name);
             Assert.Equal(ownerId, @event.OwnerId);
-            Assert.Equal(_clientAgggregate.Id, @event.Id);
+            Assert.Equal(clientAggregate.Id, @event.Id);
         }
 
         [Given(@"An existing client with name ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingClientWithNameAndAnOwner(string name, string ownerId)
         {
-            _clientAgggregate = new ClientAggregate(name, ownerId);
+            _aggregateContext.Aggregate = new ClientAggregate(name, ownerId);
         }
 
         [When(@"A user with id ""([^""]*)"" delete the client")]
         public void WhenAUserWithIdDeleteTheClient(string ownerId)
         {
-            Assert.NotNull(_clientAgggregate);
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
 
-            _clientAgggregate.Delete(_clientAgggregate.Id, ownerId);
+            Assert.NotNull(clientAggregate);
+
+            clientAggregate.Delete(clientAggregate.Id, ownerId);
         }
 
         [Then(@"The client is deleted")]
         public void ThenTheClientIsDeleted()
         {
-            Assert.NotNull(_clientAgggregate);
-            Assert.True(_clientAgggregate.Deleted);
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
 
-            var @event = _clientAgggregate.GetUncommitedEvents().LastOrDefault() as ClientDeleted;
+            Assert.NotNull(clientAggregate);
+            Assert.True(clientAggregate.Deleted);
+
+            var @event = clientAggregate.GetUncommitedEvents().LastOrDefault() as ClientDeleted;
 
             Assert.NotNull(@event);
-            Assert.Equal(_clientAgggregate.Id, @event.Id);
+            Assert.Equal(clientAggregate.Id, @event.Id);
         }
 
 
-        [Then(@"An error with code ""([^""]*)"" is raised")]
-        public void ThenAnErrorWithCodeIsRaised(string errorCode)
-        {
-            Assert.NotNull(_clientAgggregate);
-            var error = _clientAgggregate.GetUncommitedErrors().FirstOrDefault(e => e.Code == errorCode); 
 
-            Assert.NotNull(error);
-        }
 
         [Then(@"The client is not deleted")]
         public void ThenTheClientIsNotDeleted()
         {
-            Assert.NotNull(_clientAgggregate);
-            Assert.False(_clientAgggregate.Deleted);
+            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
 
-            Assert.DoesNotContain(_clientAgggregate.GetUncommitedEvents(), e => e is ClientDeleted);
+            Assert.NotNull(clientAggregate);
+            Assert.False(clientAggregate.Deleted);
+
+            Assert.DoesNotContain(clientAggregate.GetUncommitedEvents(), e => e is ClientDeleted);
         }
     }
 }
