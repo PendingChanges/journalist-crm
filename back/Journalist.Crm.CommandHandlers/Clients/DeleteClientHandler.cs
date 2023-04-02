@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class DeleteClientHandler : IRequestHandler<DeleteClient, AggregateResult<ClientAggregate>>
+    internal class DeleteClientHandler : IRequestHandler<DeleteClient, ClientAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -19,27 +19,25 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<AggregateResult<ClientAggregate>> Handle(DeleteClient request, CancellationToken cancellationToken)
+        public async Task<ClientAggregate> Handle(DeleteClient request, CancellationToken cancellationToken)
         {
             var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(request.Id, ct: cancellationToken);
 
-            var result = new AggregateResult<ClientAggregate>(clientAggregate);
-
             if (clientAggregate == null)
             {
-                result.AddErrors(new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists"));
-
-                return result;
+                throw new DomainException(new[] { new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists") });
             }
 
             clientAggregate.Delete(request.OwnerId);
             var errors = clientAggregate.GetUncommitedErrors();
-            if (!errors.Any())
+
+            if (errors.Any())
             {
-                await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
+                throw new DomainException(errors);
             }
 
-            return result;
+            await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
+            return clientAggregate;
         }
     }
 }

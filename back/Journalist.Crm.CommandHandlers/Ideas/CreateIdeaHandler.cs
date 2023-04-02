@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateIdeaHandler : IRequestHandler<CreateIdea, AggregateResult<IdeaAggregate>>
+    internal class CreateIdeaHandler : IRequestHandler<CreateIdea, IdeaAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -19,7 +19,7 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<AggregateResult<IdeaAggregate>> Handle(CreateIdea request, CancellationToken cancellationToken)
+        public async Task<IdeaAggregate> Handle(CreateIdea request, CancellationToken cancellationToken)
         {
             var ideaAggregate = new IdeaAggregate();
 
@@ -27,14 +27,14 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
             //Store Aggregate
             var errors = ideaAggregate.GetUncommitedErrors();
-            if (!errors.Any())
+            if (errors.Any())
             {
-                await _aggregateStore.StoreAsync(ideaAggregate, cancellationToken);
+                throw new DomainException(errors);
             }
 
-            var result = new AggregateResult<IdeaAggregate>(ideaAggregate, errors);
+            await _aggregateStore.StoreAsync(ideaAggregate, cancellationToken);
 
-            return result;
+            return ideaAggregate;
         }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace Journalist.Crm.Domain.Pitches.Commands
 {
-    public record DeletePitch(string Id, string OwnerId) : IRequest<AggregateResult<PitchAggregate>>;
+    public record DeletePitch(string Id, string OwnerId) : IRequest<PitchAggregate>;
 }

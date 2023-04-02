@@ -15,7 +15,7 @@ import { AddIdeaComponent } from './ideas/add-idea/add-idea.component';
 import { IdeaListComponent } from './ideas/idea-list/idea-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientListComponent } from './clients/client-list/client-list.component';
-import { AddClientComponent } from './clients/add-client/add-client.component';
+import { SaveClientComponent } from './clients/save-client/save-client.component';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
@@ -49,6 +49,7 @@ import {
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.component';
+import { ClientModifyButtonComponent } from './clients/client-modify-button/client-modify-button.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.compo
     AddIdeaComponent,
     IdeaListComponent,
     ClientListComponent,
-    AddClientComponent,
+    SaveClientComponent,
     ClientPageComponent,
     ClientActionMenuComponent,
     ClientDeleteButtonComponent,
@@ -80,6 +81,7 @@ import { IdeaSelectorComponent } from './ideas/idea-selector/idea-selector.compo
     DeleteIdeaButtonComponent,
     ClientSelectorComponent,
     IdeaSelectorComponent,
+    ClientModifyButtonComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,9 +4,6 @@
       <div class="col">
         <h1>{{ client.name }}</h1>
       </div>
-      <div class="col-1">
-        <button class="btn"><i class="bi bi-pencil-square"></i></button>
-      </div>
     </div>
     <ng-container *ngIf="pitches$ | async; let pitches">
       <app-client-action-menu

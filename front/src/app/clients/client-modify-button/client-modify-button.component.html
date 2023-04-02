@@ -1,0 +1,8 @@
+<button
+  *transloco="let t"
+  type="button"
+  class="btn btn-primary"
+  (click)="openDialog()"
+>
+  {{ t("clients.modify_client", { clientName: client?.name }) }}
+</button>

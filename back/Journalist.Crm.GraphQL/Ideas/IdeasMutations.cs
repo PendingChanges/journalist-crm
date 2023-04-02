@@ -4,7 +4,6 @@ using HotChocolate.Types;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients.Commands;
 using Journalist.Crm.Domain.Clients;
-using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.GraphQL.Clients;
 using System.Data;
 using System.Threading;
@@ -18,6 +17,7 @@ namespace Journalist.Crm.GraphQL.Ideas;
 public class IdeasMutations
 {
     [Authorize(Roles = new[] { "user" })]
+    [Error(typeof(DomainException))]
     public async Task<IdeaAddedPayload> AddIdeaAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
@@ -28,17 +28,11 @@ public class IdeasMutations
 
         var result = await mediator.Send(command, cancellationToken);
 
-        if (result.IsSuccess)
-        {
-            return new IdeaAddedPayload { IdeaId = result.Data?.Id };
-        }
-
-        //TODO gerer le retour des erreurs
-
-        return new IdeaAddedPayload();
+        return new IdeaAddedPayload { IdeaId = result.Id };
     }
 
     [Authorize(Roles = new[] { "user" })]
+    [Error(typeof(DomainException))]
     public async Task<string> RemoveIdeaAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
@@ -49,13 +43,6 @@ public class IdeasMutations
 
         var result = await mediator.Send(command, cancellationToken);
 
-        if (result.IsSuccess)
-        {
-            return id;
-        }
-
-        //TODO gerer le retour des erreurs
-
-        return id;
+        return result.Id;
     }
 }

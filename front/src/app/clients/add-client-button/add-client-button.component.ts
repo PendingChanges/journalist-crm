@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddClientComponent } from '../add-client/add-client.component';
+import {
+  SaveClientComponent,
+  SaveClientModel,
+} from '../save-client/save-client.component';
 
 @Component({
   selector: 'app-add-client-button',
@@ -10,6 +13,7 @@ import { AddClientComponent } from '../add-client/add-client.component';
 export class AddClientButtonComponent {
   constructor(private _modalService: NgbModal) {}
   openDialog(): void {
-    this._modalService.open(AddClientComponent);
+    const dialogRef = this._modalService.open(SaveClientComponent);
+    dialogRef.componentInstance.data = new SaveClientModel('add', null);
   }
 }

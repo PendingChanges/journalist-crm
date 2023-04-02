@@ -7,6 +7,10 @@ import {
   ClientInput,
 } from 'src/mutations/AddClientMutation';
 import { DeleteClientMutation } from 'src/mutations/DeleteClientMutation';
+import {
+  RenameClientInput,
+  RenameClientMutation,
+} from 'src/mutations/RenameClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
 import { AutoCompleteClientQuery } from 'src/queries/AutoCompleteClientQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
@@ -20,7 +24,8 @@ export class ClientsService {
     private _clientQuery: ClientQuery,
     private _addClientMutation: AddClientMutation,
     private _deleteClientMutation: DeleteClientMutation,
-    private _autoCompleteClientQuery: AutoCompleteClientQuery
+    private _autoCompleteClientQuery: AutoCompleteClientQuery,
+    private _renameClientMutation: RenameClientMutation
   ) {}
 
   private _allClientsQueryRef: QueryRef<any> | null = null;
@@ -49,6 +54,12 @@ export class ClientsService {
 
   public addClient(value: ClientInput) {
     this._addClientMutation.mutate(value).subscribe(() => {
+      this.refreshClients();
+    });
+  }
+
+  modifyClient(value: RenameClientInput) {
+    this._renameClientMutation.mutate(value).subscribe(() => {
       this.refreshClients();
     });
   }

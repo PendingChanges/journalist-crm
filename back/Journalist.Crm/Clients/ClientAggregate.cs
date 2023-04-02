@@ -9,25 +9,9 @@ namespace Journalist.Crm.Domain.Clients
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
-        public ClientAggregate()
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public ClientAggregate(string name, string ownerId)
         {
-            Name = string.Empty;
-            OwnerId = string.Empty;
-            Deleted = false;
-        }
-
-        public void Create(string name, string ownerId)
-        {
-            if (State == AggregateState.Set)
-            {
-                AddUncommitedError(new Error("AGGREGATE_ALREADY_SET", "The aggregate is already set"));
-            }
-
-            if (HasErrors)
-            {
-                return;
-            }
-
             var id = Guid.NewGuid().ToString();
 
             var @event = new ClientCreated(id, name, ownerId);
@@ -35,6 +19,9 @@ namespace Journalist.Crm.Domain.Clients
             Apply(@event);
             AddUncommitedEvent(@event);
         }
+
+        private ClientAggregate() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         public void Delete(string ownerId)
         {
@@ -92,7 +79,7 @@ namespace Journalist.Crm.Domain.Clients
             IncrementVersion();
         }
 
-        private void Apply(ClientDeleted _)
+        private void Apply(ClientDeleted @event)
         {
             Deleted = true;
             IncrementVersion();

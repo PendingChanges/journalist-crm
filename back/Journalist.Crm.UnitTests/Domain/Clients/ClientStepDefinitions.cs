@@ -25,8 +25,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [When(@"A user with id ""([^""]*)"" create a client with name ""([^""]*)""")]
         public void WhenAUserWithIdCreateAClientWithName(string ownerId, string name)
         {
-            var aggregate = new ClientAggregate();
-            aggregate.Create(name, ownerId);
+            var aggregate = new ClientAggregate(name, ownerId);
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -51,8 +50,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [Given(@"An existing client with name ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingClientWithNameAndAnOwner(string name, string ownerId)
         {
-            var aggregate = new ClientAggregate();
-            aggregate.Create(name, ownerId);
+            var aggregate = new ClientAggregate(name, ownerId);
             aggregate.ClearUncommitedEvents();
             _aggregateContext.Aggregate = aggregate;
         }

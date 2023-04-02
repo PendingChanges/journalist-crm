@@ -4,33 +4,38 @@ using Journalist.Crm.Domain.Clients.Commands;
 using Journalist.Crm.Marten;
 using MediatR;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateClientHandler : IRequestHandler<CreateClient, ClientAggregate>
+    internal class RenameClientHandler : IRequestHandler<RenameClient, ClientAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
-        public CreateClientHandler(IStoreAggregates aggregateStore)
+        public RenameClientHandler(IStoreAggregates aggregateStore)
         {
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<ClientAggregate> Handle(CreateClient request, CancellationToken cancellationToken)
+        public async Task<ClientAggregate> Handle(RenameClient request, CancellationToken cancellationToken)
         {
-            var clientAggregate = new ClientAggregate(request.Name, request.OwnerId);
+            var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(request.Id, ct: cancellationToken);
 
-            //Store Aggregate
+            if (clientAggregate == null)
+            {
+                throw new DomainException(new[] { new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists") });
+            }
+
+            clientAggregate.Rename(request.NewName, request.OwnerId);
             var errors = clientAggregate.GetUncommitedErrors();
+
             if (errors.Any())
             {
                 throw new DomainException(errors);
             }
 
             await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
-
             return clientAggregate;
         }
     }
