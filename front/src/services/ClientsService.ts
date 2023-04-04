@@ -79,8 +79,4 @@ export class ClientsService {
       .fetch({ text: text })
       .pipe(map((result) => result.data.autoCompleteClient));
   }
-
-  public assertTruc(obj: any): obj is String {
-    return obj instanceof String;
-  }
 }
