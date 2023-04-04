@@ -17,13 +17,13 @@ namespace Journalist.Crm.Marten.Clients
 
         public async Task Project(ClientRenamed @event, IDocumentOperations ops)
         {
-            var client = await ops.LoadAsync<ClientDocument>(@event.Id);
+            var client = await ops.Query<ClientDocument>().SingleAsync(c => c.Id == @event.Id);
 
             if (client != null)
             {
                 var clientUpdated = client with { Name = @event.NewName };
 
-                ops.Update(clientUpdated);
+                ops.Store(clientUpdated);
             }
         }
     }

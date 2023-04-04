@@ -8,16 +8,19 @@ namespace Journalist.Crm.Domain
         [JsonIgnore] private readonly List<object> _uncommitedEvents = new List<object>();
         [JsonIgnore] private readonly List<Error> _uncommitedErrors = new List<Error>();
 
-        public AggregateBase()
-        {
-            Id = string.Empty;
-            Version = 0;
-            State = AggregateState.NotSet;
-        }
+        /// <summary>
+        /// Gets or sets the id
+        /// warning: do not put the setter to private (used by Marten)
+        /// </summary>
+        public string Id { get; protected set; } = string.Empty;
 
-        public string Id { get; private set; }
+        /// <summary>
+        /// Gets or sets the version
+        /// warning: do not put the setter to private (used by Marten)
+        /// </summary>
+        public long Version { get; set; }
         public AggregateState State { get; private set; }
-        public long Version { get; private set; }
+   
         public bool HasErrors => _uncommitedErrors.Count > 0;
 
         public IEnumerable<object> GetUncommitedEvents() => _uncommitedEvents;
