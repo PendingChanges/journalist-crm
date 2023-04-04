@@ -1,5 +1,5 @@
 <div id="form-area" *transloco="let t">
-  <h1>{{ t("clients.add_client") }}</h1>
+  <h1>{{ getTitle() }}</h1>
   <form id="client-form" [formGroup]="clientFormGroup" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="client-name" class="form-label">{{

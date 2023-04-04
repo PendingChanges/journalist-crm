@@ -9,6 +9,7 @@ namespace Journalist.Crm.Domain.Clients
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public ClientAggregate(string name, string ownerId)
         {
             var id = Guid.NewGuid().ToString();
@@ -20,15 +21,11 @@ namespace Journalist.Crm.Domain.Clients
         }
 
         private ClientAggregate() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        public void Delete(string clientId, string ownerId)
+        public void Delete(string ownerId)
         {
-            if(string.CompareOrdinal(Id, clientId) != 0)
-            {
-                AddUncommitedError(new Error("INVALID_CLIENT_ID", "The client id is invalid"));
-            }
-
-            if(string.CompareOrdinal(OwnerId, ownerId) != 0)
+            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
                 AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
             }
@@ -43,20 +40,49 @@ namespace Journalist.Crm.Domain.Clients
             AddUncommitedEvent(@event);
         }
 
+        public void Rename(string newName, string ownerId)
+        {
+            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
+            {
+                AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
+            }
+
+            if (HasErrors)
+            {
+                return;
+            }
+
+            if (string.CompareOrdinal(Name, newName) == 0)
+            {
+                return;
+            }
+
+            var @event = new ClientRenamed(Id, newName);
+            Apply(@event);
+            AddUncommitedEvent(@event);
+        }
+
+        private void Apply(ClientRenamed @event)
+        {
+            Name = @event.NewName;
+            IncrementVersion();
+        }
+
         private void Apply(ClientCreated @event)
         {
-            Id = @event.Id;
+            SetId(@event.Id);
+            Activate();
             Name = @event.Name;
             OwnerId = @event.OwnerId;
             Deleted = false;
 
-            Version++;
+            IncrementVersion();
         }
 
         private void Apply(ClientDeleted @event)
         {
             Deleted = true;
-            Version++;
+            IncrementVersion();
         }
     }
 }

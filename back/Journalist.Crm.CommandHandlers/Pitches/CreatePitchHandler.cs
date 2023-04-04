@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
-    internal class CreatePitchHandler : IRequestHandler<CreatePitch, AggregateResult<PitchAggregate>>
+    internal class CreatePitchHandler : IRequestHandler<CreatePitch, PitchAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -18,22 +18,22 @@ namespace Journalist.Crm.CommandHandlers.Pitches
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<AggregateResult<PitchAggregate>> Handle(CreatePitch request, CancellationToken cancellationToken)
+        public async Task<PitchAggregate> Handle(CreatePitch request, CancellationToken cancellationToken)
         {
             //TODO: Check existence of clientId and ideaId
+            var pitchAggregate = new PitchAggregate();
 
-            var pitchAggregate = new PitchAggregate(request.Title, request.Content, request.DeadLineDate, request.IssueDate, request.ClientId, request.IdeaId, request.OwnerId);
+            pitchAggregate.Create(request.Title, request.Content, request.DeadLineDate, request.IssueDate, request.ClientId, request.IdeaId, request.OwnerId);
 
             //Store Aggregate
             var errors = pitchAggregate.GetUncommitedErrors();
-            if (!errors.Any())
+            if (errors.Any())
             {
-                await _aggregateStore.StoreAsync(pitchAggregate, cancellationToken);
+                throw new DomainException(errors);
             }
 
-            var result = new AggregateResult<PitchAggregate>(pitchAggregate, errors);
-
-            return result;
+            await _aggregateStore.StoreAsync(pitchAggregate, cancellationToken);
+            return pitchAggregate;
         }
     }
 }

@@ -8,8 +8,8 @@ describe('LanguagePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LanguagePickerComponent ]
-    })
+    imports: [LanguagePickerComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(LanguagePickerComponent);

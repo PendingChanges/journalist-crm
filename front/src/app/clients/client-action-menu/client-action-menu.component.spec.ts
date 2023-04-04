@@ -8,8 +8,8 @@ describe('ClientActionMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClientActionMenuComponent ]
-    })
+    imports: [ClientActionMenuComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ClientActionMenuComponent);

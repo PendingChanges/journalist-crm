@@ -25,7 +25,7 @@ namespace Journalist.Crm.Marten
             services.AddMarten(options =>
             {
                 options.Connection(configuration.GetConnectionString("Marten"));
-                
+
                 // Events
                 options.Events.StreamIdentity = StreamIdentity.AsString;
 
@@ -47,8 +47,7 @@ namespace Journalist.Crm.Marten
                 options.Schema.For<IdeaDocument>().UniqueIndex(c => c.Id);
                 options.Schema.For<IdeaDocument>().Index(c => c.UserId);
                 options.Schema.For<IdeaDocument>().FullTextIndex(c => c.Name);
-            })
-            .AddAsyncDaemon(DaemonMode.Solo);
+            });
 
             var querySessionDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IQuerySession));
 

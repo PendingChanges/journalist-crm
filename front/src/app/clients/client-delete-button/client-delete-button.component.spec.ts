@@ -8,8 +8,8 @@ describe('ClientDeleteButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClientDeleteButtonComponent ]
-    })
+    imports: [ClientDeleteButtonComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ClientDeleteButtonComponent);

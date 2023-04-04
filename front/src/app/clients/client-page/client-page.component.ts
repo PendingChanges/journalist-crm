@@ -5,11 +5,17 @@ import { Client } from 'src/models/Client';
 import { Pitch } from 'src/models/Pitch';
 import { ClientsService } from 'src/services/ClientsService';
 import { PitchesService } from 'src/services/PitchesService';
+import { PitchListComponent } from '../../pitches/pitch-list/pitch-list.component';
+import { ClientActionMenuComponent } from '../client-action-menu/client-action-menu.component';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-client-page',
-  templateUrl: './client-page.component.html',
-  styleUrls: ['./client-page.component.scss'],
+    selector: 'app-client-page',
+    templateUrl: './client-page.component.html',
+    styleUrls: ['./client-page.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule, ClientActionMenuComponent, PitchListComponent, AsyncPipe]
 })
 export class ClientPageComponent implements OnInit {
   constructor(

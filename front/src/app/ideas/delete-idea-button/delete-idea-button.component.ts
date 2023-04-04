@@ -7,11 +7,14 @@ import {
 } from 'src/app/confirm-dialog/confirm-dialog.component';
 import { Idea } from 'src/models/Idea';
 import { IdeasService } from 'src/services/IdeasService';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-delete-idea-button',
-  templateUrl: './delete-idea-button.component.html',
-  styleUrls: ['./delete-idea-button.component.scss'],
+    selector: 'app-delete-idea-button',
+    templateUrl: './delete-idea-button.component.html',
+    styleUrls: ['./delete-idea-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class DeleteIdeaButtonComponent {
   @Input() public idea: Idea | null = null;

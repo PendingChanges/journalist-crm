@@ -6,7 +6,8 @@
       "nbOfPitches": "Nb de pitches",
       "select": "Sélectionner"
     },
-    "add_client": "Ajouter un client"
+    "add_client": "Ajouter un client",
+    "modify_client": "Modifier {{clientName}}"
   },
   "ideas": {
     "title": "Idées",

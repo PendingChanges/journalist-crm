@@ -2,7 +2,6 @@
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
 using MediatR;
 using System.Threading;
@@ -15,6 +14,7 @@ namespace Journalist.Crm.GraphQL.Pitches
     {
 
         [Authorize(Roles = new[] { "user" })]
+        [Error(typeof(DomainException))]
         public async Task<PitchAddedPayload> AddPitchAsync(
                     [Service] IMediator mediator,
         [Service] IContext context,
@@ -25,17 +25,11 @@ namespace Journalist.Crm.GraphQL.Pitches
 
             var result = await mediator.Send(command, cancellationToken);
 
-            if (result.IsSuccess)
-            {
-                return new PitchAddedPayload { PitchId = result.Data?.Id };
-            }
-
-            //TODO gerer le retour des erreurs
-
-            return new PitchAddedPayload();
+            return new PitchAddedPayload { PitchId = result.Id };
         }
 
         [Authorize(Roles = new[] { "user" })]
+        [Error(typeof(DomainException))]
         public async Task<string> RemovePitchAsync(
                     [Service] IMediator mediator,
         [Service] IContext context,
@@ -46,15 +40,7 @@ namespace Journalist.Crm.GraphQL.Pitches
 
             var result = await mediator.Send(command, cancellationToken);
 
-            if (result.IsSuccess)
-            {
-                return id;
-            }
-
-            //TODO gerer le retour des erreurs
-
-            return id;
+            return result.Id;
         }
-
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateClientHandler : IRequestHandler<CreateClient, AggregateResult<ClientAggregate>>
+    internal class CreateClientHandler : IRequestHandler<CreateClient, ClientAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -18,20 +18,20 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<AggregateResult<ClientAggregate>> Handle(CreateClient request, CancellationToken cancellationToken)
+        public async Task<ClientAggregate> Handle(CreateClient request, CancellationToken cancellationToken)
         {
             var clientAggregate = new ClientAggregate(request.Name, request.OwnerId);
 
             //Store Aggregate
             var errors = clientAggregate.GetUncommitedErrors();
-            if (!errors.Any())
+            if (errors.Any())
             {
-                await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
+                throw new DomainException(errors);
             }
 
-            var result = new AggregateResult<ClientAggregate>(clientAggregate, errors);
+            await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
 
-            return result;
+            return clientAggregate;
         }
     }
 }

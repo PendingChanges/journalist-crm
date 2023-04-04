@@ -12,9 +12,9 @@ namespace Journalist.Crm.Marten.Ideas
 {
     public class IdeaRepository : IReadIdeas
     {
-        private readonly IDocumentSession _session;
+        private readonly IQuerySession _session;
 
-        public IdeaRepository(IDocumentSession session)
+        public IdeaRepository(IQuerySession session)
         {
             _session = session;
         }

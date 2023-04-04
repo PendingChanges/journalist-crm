@@ -13,9 +13,9 @@ namespace Journalist.Crm.Marten.Clients
 {
     public class ClientRepository : IReadClients
     {
-        private readonly IDocumentSession _session;
+        private readonly IQuerySession _session;
 
-        public ClientRepository(IDocumentSession session)
+        public ClientRepository(IQuerySession session)
         {
             _session = session;
         }

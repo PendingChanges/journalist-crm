@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { AddClientButtonComponent } from '../add-client-button/add-client-button.component';
 
 @Component({
-  selector: 'app-clients-action-menu',
-  templateUrl: './clients-action-menu.component.html',
-  styleUrls: ['./clients-action-menu.component.scss'],
+    selector: 'app-clients-action-menu',
+    templateUrl: './clients-action-menu.component.html',
+    styleUrls: ['./clients-action-menu.component.scss'],
+    standalone: true,
+    imports: [AddClientButtonComponent]
 })
 export class ClientsActionMenuComponent {}

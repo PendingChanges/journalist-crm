@@ -10,9 +10,9 @@ namespace Journalist.Crm.Marten.Pitches
 {
     public class PitchRepository : IReadPitches
     {
-        private readonly IDocumentSession _session;
+        private readonly IQuerySession _session;
 
-        public PitchRepository(IDocumentSession session)
+        public PitchRepository(IQuerySession session)
         {
             _session = session;
         }

@@ -8,8 +8,8 @@ describe('IdeaSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IdeaSelectorComponent ]
-    })
+    imports: [IdeaSelectorComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(IdeaSelectorComponent);

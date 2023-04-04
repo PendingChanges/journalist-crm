@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddClientComponent } from '../add-client/add-client.component';
+import {
+  SaveClientComponent,
+  SaveClientModel,
+} from '../save-client/save-client.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-add-client-button',
-  templateUrl: './add-client-button.component.html',
-  styleUrls: ['./add-client-button.component.scss'],
+    selector: 'app-add-client-button',
+    templateUrl: './add-client-button.component.html',
+    styleUrls: ['./add-client-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class AddClientButtonComponent {
   constructor(private _modalService: NgbModal) {}
   openDialog(): void {
-    this._modalService.open(AddClientComponent);
+    const dialogRef = this._modalService.open(SaveClientComponent);
+    dialogRef.componentInstance.data = new SaveClientModel('add', null);
   }
 }

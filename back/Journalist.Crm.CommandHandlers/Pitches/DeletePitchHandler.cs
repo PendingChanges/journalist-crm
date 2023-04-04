@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Pitchs
 {
-    internal class DeletePitchHandler : IRequestHandler<DeletePitch, AggregateResult<PitchAggregate>>
+    internal class DeletePitchHandler : IRequestHandler<DeletePitch, PitchAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -18,27 +18,24 @@ namespace Journalist.Crm.CommandHandlers.Pitchs
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<AggregateResult<PitchAggregate>> Handle(DeletePitch request, CancellationToken cancellationToken)
+        public async Task<PitchAggregate> Handle(DeletePitch request, CancellationToken cancellationToken)
         {
             var pitchAggregate = await _aggregateStore.LoadAsync<PitchAggregate>(request.Id, ct: cancellationToken);
 
-            var result = new AggregateResult<PitchAggregate>(pitchAggregate);
-
             if (pitchAggregate == null)
             {
-                result.AddErrors(new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists"));
-
-                return result;
+                throw new DomainException(new[] { new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists") });
             }
 
             pitchAggregate.Delete(request.Id, request.OwnerId);
             var errors = pitchAggregate.GetUncommitedErrors();
-            if (!errors.Any())
+            if (errors.Any())
             {
-                await _aggregateStore.StoreAsync(pitchAggregate, cancellationToken);
+                throw new DomainException(errors);
             }
 
-            return result;
+            await _aggregateStore.StoreAsync(pitchAggregate, cancellationToken);
+            return pitchAggregate;
         }
     }
 }

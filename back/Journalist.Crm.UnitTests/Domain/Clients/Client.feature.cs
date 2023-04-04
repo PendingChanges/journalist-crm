@@ -80,15 +80,23 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The user create a client")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="The user create a client")]
         [Xunit.TraitAttribute("FeatureTitle", "Client")]
         [Xunit.TraitAttribute("Description", "The user create a client")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void TheUserCreateAClient()
+        [Xunit.InlineDataAttribute("testuser", "Client Test", new string[0])]
+        public void TheUserCreateAClient(string userid, string clientName, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "client"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("clientName", clientName);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The user create a client", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
@@ -104,26 +112,34 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("No existing client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.When("A user with id \"testuser\" create a client with name \"Client Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("A user with id \"{0}\" create a client with name \"{1}\"", userid, clientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.Then("A client \"Client Test\" owned by \"testuser\" is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("A client \"{0}\" owned by \"{1}\" is created", clientName, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="A user delete its own client")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user delete its own client")]
         [Xunit.TraitAttribute("FeatureTitle", "Client")]
         [Xunit.TraitAttribute("Description", "A user delete its own client")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void AUserDeleteItsOwnClient()
+        [Xunit.InlineDataAttribute("testuser", "Client Test", new string[0])]
+        public void AUserDeleteItsOwnClient(string userid, string clientName, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "client"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("clientName", clientName);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user delete its own client", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 12
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -133,30 +149,43 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
- testRunner.Given("An existing client with name \"Client Test\" and an owner \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+ testRunner.Given(string.Format("An existing client with name \"{0}\" and an owner \"{1}\"", clientName, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 14
- testRunner.When("A user with id \"testuser\" delete the client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
+ testRunner.When(string.Format("A user with id \"{0}\" delete the client", userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 15
+#line 19
  testRunner.Then("The client is deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 20
+ testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="A user tries to delete a client he doesn\'t own")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user tries to delete a client he doesn\'t own")]
         [Xunit.TraitAttribute("FeatureTitle", "Client")]
         [Xunit.TraitAttribute("Description", "A user tries to delete a client he doesn\'t own")]
         [Xunit.TraitAttribute("Category", "client")]
-        public void AUserTriesToDeleteAClientHeDoesntOwn()
+        [Xunit.InlineDataAttribute("testuser", "Client Test", "testuser2", "NOT_CLIENT_OWNER", new string[0])]
+        public void AUserTriesToDeleteAClientHeDoesntOwn(string userid, string clientName, string otherUserid, string errorCode, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "client"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("clientName", clientName);
+            argumentsOfScenario.Add("otherUserid", otherUserid);
+            argumentsOfScenario.Add("errorCode", errorCode);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user tries to delete a client he doesn\'t own", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 18
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -166,17 +195,62 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 19
- testRunner.Given("An existing client with name \"Client Test\" and an owner \"testuser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 28
+ testRunner.Given(string.Format("An existing client with name \"{0}\" and an owner \"<testuser>\"", clientName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 20
- testRunner.When("A user with id \"testuser2\" delete the client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.When(string.Format("A user with id \"{0}\" delete the client", otherUserid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
- testRunner.Then("An error with code \"NOT_CLIENT_OWNER\" is raised", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+ testRunner.Then(string.Format("An error with code \"{0}\" is raised", errorCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
+#line 31
  testRunner.And("The client is not deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user rename the client")]
+        [Xunit.TraitAttribute("FeatureTitle", "Client")]
+        [Xunit.TraitAttribute("Description", "A user rename the client")]
+        [Xunit.TraitAttribute("Category", "client")]
+        [Xunit.InlineDataAttribute("testuser", "Client Test", "Client Test modified", new string[0])]
+        public void AUserRenameTheClient(string userid, string clientName, string clientNameModified, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "client"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("clientName", clientName);
+            argumentsOfScenario.Add("clientNameModified", clientNameModified);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user rename the client", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 38
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 39
+ testRunner.Given(string.Format("An existing client with name \"{0}\" and an owner \"{1}\"", clientName, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 40
+ testRunner.When(string.Format("A user with id \"{0}\"rename the client to \"{1}\"", userid, clientNameModified), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 41
+ testRunner.Then(string.Format("The client is renamed to \"{0}\"", clientNameModified), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 42
+ testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

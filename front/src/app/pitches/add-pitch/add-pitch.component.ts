@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Client } from 'src/models/Client';
 import { Idea } from 'src/models/Idea';
@@ -8,6 +8,10 @@ import { PitchInput } from 'src/mutations/AddPitchMutation';
 import { ClientsService } from 'src/services/ClientsService';
 import { IdeasService } from 'src/services/IdeasService';
 import { PitchesService } from 'src/services/PitchesService';
+import { EditorComponent } from '@tinymce/tinymce-angular';
+import { IdeaSelectorComponent } from '../../ideas/idea-selector/idea-selector.component';
+import { ClientSelectorComponent } from '../../clients/client-selector/client-selector.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 interface ClientForm {
   clientId: FormControl<string | null>;
@@ -27,9 +31,11 @@ interface PitchForm {
 }
 
 @Component({
-  selector: 'app-add-pitch',
-  templateUrl: './add-pitch.component.html',
-  styleUrls: ['./add-pitch.component.scss'],
+    selector: 'app-add-pitch',
+    templateUrl: './add-pitch.component.html',
+    styleUrls: ['./add-pitch.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule, ReactiveFormsModule, ClientSelectorComponent, IdeaSelectorComponent, EditorComponent, NgbInputDatepicker]
 })
 export class AddPitchComponent implements OnInit {
   public data?: AddPitchDialogModel;

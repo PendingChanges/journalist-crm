@@ -1,3 +1,3 @@
-﻿namespace Journalist.Crm.Domain.Ideas;
+﻿namespace Journalist.Crm.GraphQL.Ideas;
 
 public record IdeaInput(string Name, string? Description);
