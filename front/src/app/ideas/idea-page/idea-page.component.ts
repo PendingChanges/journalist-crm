@@ -5,11 +5,17 @@ import { Idea } from 'src/models/Idea';
 import { Pitch } from 'src/models/Pitch';
 import { IdeasService } from 'src/services/IdeasService';
 import { PitchesService } from 'src/services/PitchesService';
+import { PitchListComponent } from '../../pitches/pitch-list/pitch-list.component';
+import { IdeaActionMenuComponent } from '../idea-action-menu/idea-action-menu.component';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-idea-page',
-  templateUrl: './idea-page.component.html',
-  styleUrls: ['./idea-page.component.scss'],
+    selector: 'app-idea-page',
+    templateUrl: './idea-page.component.html',
+    styleUrls: ['./idea-page.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule, IdeaActionMenuComponent, PitchListComponent, AsyncPipe]
 })
 export class IdeaPageComponent {
   constructor(

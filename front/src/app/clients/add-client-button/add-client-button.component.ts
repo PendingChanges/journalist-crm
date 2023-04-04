@@ -4,11 +4,14 @@ import {
   SaveClientComponent,
   SaveClientModel,
 } from '../save-client/save-client.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-add-client-button',
-  templateUrl: './add-client-button.component.html',
-  styleUrls: ['./add-client-button.component.scss'],
+    selector: 'app-add-client-button',
+    templateUrl: './add-client-button.component.html',
+    styleUrls: ['./add-client-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class AddClientButtonComponent {
   constructor(private _modalService: NgbModal) {}

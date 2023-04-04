@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Pitch } from 'src/models/Pitch';
 import { PitchesService } from 'src/services/PitchesService';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-pitch-page',
-  templateUrl: './pitch-page.component.html',
-  styleUrls: ['./pitch-page.component.scss'],
+    selector: 'app-pitch-page',
+    templateUrl: './pitch-page.component.html',
+    styleUrls: ['./pitch-page.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule, RouterLink, AsyncPipe, DatePipe]
 })
 export class PitchPageComponent implements OnInit {
   constructor(

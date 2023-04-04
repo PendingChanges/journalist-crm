@@ -5,11 +5,14 @@ import {
   SaveClientComponent,
   SaveClientModel,
 } from '../save-client/save-client.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-client-modify-button',
-  templateUrl: './client-modify-button.component.html',
-  styleUrls: ['./client-modify-button.component.scss'],
+    selector: 'app-client-modify-button',
+    templateUrl: './client-modify-button.component.html',
+    styleUrls: ['./client-modify-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class ClientModifyButtonComponent {
   @Input() public client: Client | null = null;

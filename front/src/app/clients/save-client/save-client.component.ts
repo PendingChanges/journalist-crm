@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
 import { Client } from 'src/models/Client';
 import { ClientInput } from 'src/mutations/AddClientMutation';
 import { RenameClientInput } from 'src/mutations/RenameClientMutation';
@@ -12,9 +12,11 @@ interface ClientForm {
 }
 
 @Component({
-  selector: 'app-save-client',
-  templateUrl: './save-client.component.html',
-  styleUrls: ['./save-client.component.scss'],
+    selector: 'app-save-client',
+    templateUrl: './save-client.component.html',
+    styleUrls: ['./save-client.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule, ReactiveFormsModule]
 })
 export class SaveClientComponent implements OnInit {
   public data?: SaveClientModel;

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -11,14 +11,17 @@ import {
 } from 'rxjs';
 import { Client } from 'src/models/Client';
 import { ClientsService } from 'src/services/ClientsService';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-client-selector',
-  templateUrl: './client-selector.component.html',
-  styleUrls: ['./client-selector.component.scss'],
-  providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: ClientSelectorComponent, multi: true },
-  ],
+    selector: 'app-client-selector',
+    templateUrl: './client-selector.component.html',
+    styleUrls: ['./client-selector.component.scss'],
+    providers: [
+        { provide: NG_VALUE_ACCESSOR, useExisting: ClientSelectorComponent, multi: true },
+    ],
+    standalone: true,
+    imports: [ReactiveFormsModule, NgbTypeahead, FormsModule]
 })
 export class ClientSelectorComponent implements ControlValueAccessor {
   constructor(private _clientsService: ClientsService) {}

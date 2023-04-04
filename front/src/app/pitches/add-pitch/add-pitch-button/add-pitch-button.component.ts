@@ -6,11 +6,14 @@ import {
   AddPitchComponent,
   AddPitchDialogModel,
 } from '../add-pitch.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-add-pitch-button',
-  templateUrl: './add-pitch-button.component.html',
-  styleUrls: ['./add-pitch-button.component.scss'],
+    selector: 'app-add-pitch-button',
+    templateUrl: './add-pitch-button.component.html',
+    styleUrls: ['./add-pitch-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class AddPitchButtonComponent {
   @Input() public client: Client | null = null;

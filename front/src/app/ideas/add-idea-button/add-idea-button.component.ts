@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddIdeaComponent } from '../add-idea/add-idea.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-add-idea-button',
-  templateUrl: './add-idea-button.component.html',
-  styleUrls: ['./add-idea-button.component.scss'],
+    selector: 'app-add-idea-button',
+    templateUrl: './add-idea-button.component.html',
+    styleUrls: ['./add-idea-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class AddIdeaButtonComponent {
   constructor(private modalService: NgbModal) {}

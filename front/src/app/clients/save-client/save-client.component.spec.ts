@@ -8,8 +8,8 @@ describe('AddClientComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaveClientComponent ]
-    })
+    imports: [SaveClientComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SaveClientComponent);

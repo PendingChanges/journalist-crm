@@ -7,11 +7,14 @@ import {
 } from 'src/app/confirm-dialog/confirm-dialog.component';
 import { Client } from 'src/models/Client';
 import { ClientsService } from 'src/services/ClientsService';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-client-delete-button',
-  templateUrl: './client-delete-button.component.html',
-  styleUrls: ['./client-delete-button.component.scss'],
+    selector: 'app-client-delete-button',
+    templateUrl: './client-delete-button.component.html',
+    styleUrls: ['./client-delete-button.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule]
 })
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;

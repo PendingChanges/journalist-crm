@@ -8,8 +8,8 @@ describe('IdeaActionMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IdeaActionMenuComponent ]
-    })
+    imports: [IdeaActionMenuComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(IdeaActionMenuComponent);
