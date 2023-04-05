@@ -3,7 +3,7 @@ import {
   Input,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Idea } from '../../../models/Idea';
+import { Idea } from 'src/generated/graphql';
 import { NgFor, DecimalPipe } from '@angular/common';
 import { TranslocoModule } from '@ngneat/transloco';
 

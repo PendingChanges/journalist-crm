@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Idea } from 'src/models/Idea';
+import { Idea } from 'src/generated/graphql';
 import { DeleteIdeaButtonComponent } from '../delete-idea-button/delete-idea-button.component';
 import { AddPitchButtonComponent } from '../../pitches/add-pitch/add-pitch-button/add-pitch-button.component';
 

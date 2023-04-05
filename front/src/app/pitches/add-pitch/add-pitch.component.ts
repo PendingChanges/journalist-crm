@@ -1,12 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
-import { Client } from 'src/models/Client';
-import { Idea } from 'src/models/Idea';
+import { Client, Idea } from 'src/generated/graphql';
 import { PitchInput } from 'src/mutations/AddPitchMutation';
-import { ClientsService } from 'src/services/ClientsService';
-import { IdeasService } from 'src/services/IdeasService';
 import { PitchesService } from 'src/services/PitchesService';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import { IdeaSelectorComponent } from '../../ideas/idea-selector/idea-selector.component';

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import { NgFor, DecimalPipe } from '@angular/common';
 import { TranslocoModule } from '@ngneat/transloco';
 

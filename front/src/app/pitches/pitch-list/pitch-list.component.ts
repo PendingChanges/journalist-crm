@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Pitch } from 'src/models/Pitch';
+import { Pitch } from 'src/generated/graphql';
 import { NgIf, NgFor } from '@angular/common';
 import { TranslocoModule } from '@ngneat/transloco';
 

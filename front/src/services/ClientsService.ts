@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import {
   AddClientMutation,
   ClientInput,

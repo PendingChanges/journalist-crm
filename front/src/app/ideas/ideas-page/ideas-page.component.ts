@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Idea } from 'src/models/Idea';
+import { Idea } from 'src/generated/graphql';
 import { Observable } from 'rxjs';
 import { IdeasService } from 'src/services/IdeasService';
 import { AsyncPipe } from '@angular/common';
@@ -8,11 +8,16 @@ import { IdeasActionMenuComponent } from '../ideas-action-menu/ideas-action-menu
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-ideas-page',
-    templateUrl: './ideas-page.component.html',
-    styleUrls: ['./ideas-page.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule, IdeasActionMenuComponent, IdeaListComponent, AsyncPipe]
+  selector: 'app-ideas-page',
+  templateUrl: './ideas-page.component.html',
+  styleUrls: ['./ideas-page.component.scss'],
+  standalone: true,
+  imports: [
+    TranslocoModule,
+    IdeasActionMenuComponent,
+    IdeaListComponent,
+    AsyncPipe,
+  ],
 })
 export class IdeasComponent implements OnInit {
   public ideas$?: Observable<Idea[]>;

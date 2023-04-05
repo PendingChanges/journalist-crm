@@ -8,15 +8,15 @@
     <div class="row">
       <div class="col-2 fw-bold">{{ t("pitches.table.client") }}:</div>
       <div class="col">
-        <a [routerLink]="['/client', pitch.client.id]"
-          >{{ pitch.client.name }}
+        <a [routerLink]="['/client', pitch.client?.id]"
+          >{{ pitch.client?.name }}
         </a>
       </div>
     </div>
     <div class="row">
       <div class="col-2 fw-bold">{{ t("pitches.table.idea") }}:</div>
       <div class="col">
-        <a [routerLink]="['/idea', pitch.idea.id]">{{ pitch.idea.name }} </a>
+        <a [routerLink]="['/idea', pitch.idea?.id]">{{ pitch.idea?.name }} </a>
       </div>
     </div>
     <div class="row">

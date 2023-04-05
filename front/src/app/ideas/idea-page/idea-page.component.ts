@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Idea } from 'src/models/Idea';
-import { Pitch } from 'src/models/Pitch';
+import { Pitch, Idea } from 'src/generated/graphql';
 import { IdeasService } from 'src/services/IdeasService';
 import { PitchesService } from 'src/services/PitchesService';
 import { PitchListComponent } from '../../pitches/pitch-list/pitch-list.component';

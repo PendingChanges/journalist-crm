@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pitch } from 'src/models/Pitch';
+import { Pitch } from 'src/generated/graphql';
 import { PitchesService } from 'src/services/PitchesService';
 import { AsyncPipe } from '@angular/common';
 import { PitchListComponent } from '../pitch-list/pitch-list.component';

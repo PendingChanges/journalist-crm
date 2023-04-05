@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import { ClientInput } from 'src/mutations/AddClientMutation';
 import { RenameClientInput } from 'src/mutations/RenameClientMutation';
 import { ClientsService } from 'src/services/ClientsService';

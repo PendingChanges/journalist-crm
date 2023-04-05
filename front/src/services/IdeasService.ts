@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { Idea } from 'src/models/Idea';
+import { Idea } from 'src/generated/graphql';
 import { AddIdeaMutation, IdeaInput } from 'src/mutations/AddIdeaMutation';
 import { DeleteIdeaMutation } from 'src/mutations/DeleteIdeaMutation';
 import { AllIdeasQuery } from 'src/queries/AllIdeasQuery';

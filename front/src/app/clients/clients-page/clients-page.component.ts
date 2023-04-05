@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { AsyncPipe } from '@angular/common';
 import { ClientListComponent } from '../client-list/client-list.component';

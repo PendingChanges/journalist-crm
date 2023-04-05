@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { Client } from 'src/models/Client';
-import { Idea } from 'src/models/Idea';
+import { Client, Idea } from 'src/generated/graphql';
 import {
   AddPitchComponent,
   AddPitchDialogModel,

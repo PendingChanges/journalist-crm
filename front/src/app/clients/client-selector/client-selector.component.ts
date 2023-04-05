@@ -9,7 +9,7 @@ import {
   OperatorFunction,
   switchMap,
 } from 'rxjs';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 

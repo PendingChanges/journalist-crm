@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
-import { Pitch } from 'src/models/Pitch';
+import { Pitch } from 'src/generated/graphql';
 
 export interface AllPitchedResponse {
   pitches: Pitch[];

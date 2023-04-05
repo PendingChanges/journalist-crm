@@ -5,7 +5,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from 'src/app/confirm-dialog/confirm-dialog.component';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { TranslocoModule } from '@ngneat/transloco';
 

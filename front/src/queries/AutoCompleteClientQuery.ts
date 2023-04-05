@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
-import { Client } from 'src/models/Client';
+import { Client } from 'src/generated/graphql';
 
 export interface Response {
   autoCompleteClient: Client[];

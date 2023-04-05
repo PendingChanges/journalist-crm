@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Pitch } from 'src/models/Pitch';
+import { Pitch } from 'src/generated/graphql';
 import { PitchesService } from 'src/services/PitchesService';
 import { TranslocoModule } from '@ngneat/transloco';
 import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
