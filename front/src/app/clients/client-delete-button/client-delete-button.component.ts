@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
-} from 'src/app/confirm-dialog/confirm-dialog.component';
+} from 'src/app/common/confirm-dialog/confirm-dialog.component';
 import { Client } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { TranslocoModule } from '@ngneat/transloco';
