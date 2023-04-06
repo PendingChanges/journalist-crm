@@ -11,7 +11,7 @@ export class AddIdeaMutation extends Mutation<
 > {
   override document = gql`
     mutation addIdea($name: String!, $description: String) {
-      addIdea(ideaInput: { name: $name, description: $description }) {
+      addIdea(createIdea: { name: $name, description: $description }) {
         ideaId
       }
     }

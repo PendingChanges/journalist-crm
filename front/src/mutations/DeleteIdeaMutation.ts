@@ -8,7 +8,7 @@ import { DeleteIdeaInput } from 'src/generated/graphql';
 export class DeleteIdeaMutation extends Mutation<string, DeleteIdeaInput> {
   override document = gql`
     mutation removeIdea($id: String!) {
-      removeIdea(id: $id)
+      removeIdea(deleteIdea: { id: $id })
     }
   `;
 }

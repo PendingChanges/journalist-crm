@@ -8,7 +8,7 @@ import { RenameClientInput } from 'src/generated/graphql';
 export class RenameClientMutation extends Mutation<RenameClientInput> {
   override document = gql`
     mutation renameClient($id: String!, $name: String!) {
-      renameClient(renameClientInput: { id: $id, name: $name })
+      renameClient(renameClient: { id: $id, name: $name })
     }
   `;
 }

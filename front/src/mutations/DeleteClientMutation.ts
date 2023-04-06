@@ -8,7 +8,7 @@ import { DeleteClientInput } from 'src/generated/graphql';
 export class DeleteClientMutation extends Mutation<string, DeleteClientInput> {
   override document = gql`
     mutation removeClient($id: String!) {
-      removeClient(id: $id)
+      removeClient(deleteClient: { id: $id })
     }
   `;
 }

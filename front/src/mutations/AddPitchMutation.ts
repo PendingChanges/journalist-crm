@@ -20,7 +20,7 @@ export class AddPitchMutation extends Mutation<PitchAddedPayload, CreatePitchInp
       $ideaId: String!
     ) {
       addPitch(
-        pitchInput: {
+        createPitch: {
           title: $title
           content: $content
           deadLineDate: $deadLineDate

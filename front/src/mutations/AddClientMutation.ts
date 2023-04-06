@@ -11,7 +11,7 @@ export class AddClientMutation extends Mutation<
 > {
   override document = gql`
     mutation addClient($name: String!) {
-      addClient(clientInput: { name: $name }) {
+      addClient(createClient: { name: $name }) {
         clientId
       }
     }
