@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { Client } from 'src/generated/graphql';
 import {
-  AddClientMutation,
-  ClientInput,
-} from 'src/mutations/AddClientMutation';
-import { DeleteClientMutation } from 'src/mutations/DeleteClientMutation';
-import {
+  Client,
+  MutationRenameClientArgs,
+  QueryAutoCompleteClientArgs,
   RenameClientInput,
-  RenameClientMutation,
-} from 'src/mutations/RenameClientMutation';
+} from 'src/generated/graphql';
+import { AddClientMutation } from 'src/mutations/AddClientMutation';
+import { CreateClientInput } from 'src/generated/graphql';
+import { DeleteClientMutation } from 'src/mutations/DeleteClientMutation';
+import { RenameClientMutation } from 'src/mutations/RenameClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
 import { AutoCompleteClientQuery } from 'src/queries/AutoCompleteClientQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
@@ -52,7 +52,7 @@ export class ClientsService {
       .valueChanges.pipe(map((result: any) => result.data.client));
   }
 
-  public addClient(value: ClientInput) {
+  public addClient(value: CreateClientInput) {
     this._addClientMutation.mutate(value).subscribe(() => {
       this.refreshClients();
     });
@@ -65,18 +65,14 @@ export class ClientsService {
   }
 
   public deleteClient(id: string) {
-    this._deleteClientMutation
-      .mutate({
-        id: id,
-      })
-      .subscribe(() => {
-        this.refreshClients();
-      });
+    this._deleteClientMutation.mutate(id).subscribe(() => {
+      this.refreshClients();
+    });
   }
 
   public autoComplete(text: string): Observable<Client[]> {
     return this._autoCompleteClientQuery
-      .fetch({ text: text })
+      .fetch(<QueryAutoCompleteClientArgs>{ text: text })
       .pipe(map((result) => result.data.autoCompleteClient));
   }
 }

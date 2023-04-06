@@ -1,22 +1,13 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
-import { Pitch } from 'src/generated/graphql';
-
-export interface AllPitchedResponse {
-  pitches: Pitch[];
-}
-
-export interface AllPitchesInput {
-  clientId: string | null;
-  ideaId: string | null;
-}
+import { AllPitchesCollectionSegment, QueryAllPitchesArgs } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AllPitchesQuery extends Query<
-  AllPitchedResponse,
-  AllPitchesInput
+  AllPitchesCollectionSegment,
+  QueryAllPitchesArgs
 > {
   override document = gql`
     query allPitches($clientId: String, $ideaId: String) {

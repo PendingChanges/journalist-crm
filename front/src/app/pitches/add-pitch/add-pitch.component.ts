@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { NgbActiveModal, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
-import { Client, Idea } from 'src/generated/graphql';
-import { PitchInput } from 'src/mutations/AddPitchMutation';
+import {
+  Client,
+  Idea,
+  MutationAddPitchArgs,
+  PitchInput,
+} from 'src/generated/graphql';
 import { PitchesService } from 'src/services/PitchesService';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import { IdeaSelectorComponent } from '../../ideas/idea-selector/idea-selector.component';
@@ -27,11 +36,18 @@ interface PitchForm {
 }
 
 @Component({
-    selector: 'app-add-pitch',
-    templateUrl: './add-pitch.component.html',
-    styleUrls: ['./add-pitch.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule, ReactiveFormsModule, ClientSelectorComponent, IdeaSelectorComponent, EditorComponent, NgbInputDatepicker]
+  selector: 'app-add-pitch',
+  templateUrl: './add-pitch.component.html',
+  styleUrls: ['./add-pitch.component.scss'],
+  standalone: true,
+  imports: [
+    TranslocoModule,
+    ReactiveFormsModule,
+    ClientSelectorComponent,
+    IdeaSelectorComponent,
+    EditorComponent,
+    NgbInputDatepicker,
+  ],
 })
 export class AddPitchComponent implements OnInit {
   public data?: AddPitchDialogModel;

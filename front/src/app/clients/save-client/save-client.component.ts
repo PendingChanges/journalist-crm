@@ -1,10 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
-import { Client } from 'src/generated/graphql';
-import { ClientInput } from 'src/mutations/AddClientMutation';
-import { RenameClientInput } from 'src/mutations/RenameClientMutation';
+import {
+  Client,
+  MutationRenameClientArgs,
+  RenameClientInput,
+} from 'src/generated/graphql';
+import { CreateClientInput } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 
 interface ClientForm {
@@ -12,11 +20,11 @@ interface ClientForm {
 }
 
 @Component({
-    selector: 'app-save-client',
-    templateUrl: './save-client.component.html',
-    styleUrls: ['./save-client.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule, ReactiveFormsModule]
+  selector: 'app-save-client',
+  templateUrl: './save-client.component.html',
+  styleUrls: ['./save-client.component.scss'],
+  standalone: true,
+  imports: [TranslocoModule, ReactiveFormsModule],
 })
 export class SaveClientComponent implements OnInit {
   public data?: SaveClientModel;
@@ -47,7 +55,9 @@ export class SaveClientComponent implements OnInit {
   public onSubmit(): void {
     if (this.clientFormGroup.valid) {
       if (this.data?.type === 'add') {
-        this._clientsService.addClient(<ClientInput>this.clientFormGroup.value);
+        this._clientsService.addClient(
+          <CreateClientInput>this.clientFormGroup.value
+        );
       }
 
       if (this.data?.type === 'modify') {

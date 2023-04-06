@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IdeaInput } from 'src/mutations/AddIdeaMutation';
+import { IdeaInput, MutationAddIdeaArgs } from 'src/generated/graphql';
 import { IdeasService } from 'src/services/IdeasService';
 
 interface IdeaForm {
@@ -10,11 +15,11 @@ interface IdeaForm {
 }
 
 @Component({
-    selector: 'app-add-idea',
-    templateUrl: './add-idea.component.html',
-    styleUrls: ['./add-idea.component.scss'],
-    standalone: true,
-    imports: [ReactiveFormsModule]
+  selector: 'app-add-idea',
+  templateUrl: './add-idea.component.html',
+  styleUrls: ['./add-idea.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule],
 })
 export class AddIdeaComponent {
   public ideaFormGroup = new FormGroup<IdeaForm>({

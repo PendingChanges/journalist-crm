@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
 import { Client } from 'src/generated/graphql';
 
-export interface Response {
-  clients: Client[];
-}
-
 @Injectable({
   providedIn: 'root',
 })

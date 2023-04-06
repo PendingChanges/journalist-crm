@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
-import { Client } from 'src/generated/graphql';
-
-export interface Response {
-  autoCompleteClient: Client[];
-}
-
-export interface AutoCompleteInput {
-  text: string;
-}
+import { Client, QueryAutoCompleteClientArgs } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AutoCompleteClientQuery extends Query<Response, AutoCompleteInput> {
+export class AutoCompleteClientQuery extends Query<
+  { autoCompleteClient: Array<Client> },
+  QueryAutoCompleteClientArgs
+> {
   override document = gql`
     query autoCompleteClient($text: String!) {
       autoCompleteClient(text: $text) {

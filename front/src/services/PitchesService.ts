@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
 import { map } from 'rxjs';
-import { AddPitchMutation, PitchInput } from 'src/mutations/AddPitchMutation';
 import {
-  AllPitchedResponse,
-  AllPitchesInput,
-  AllPitchesQuery,
-} from 'src/queries/AllPitchesQuery';
+  AllPitchesCollectionSegment,
+  MutationAddPitchArgs,
+  PitchInput,
+  QueryAllPitchesArgs,
+} from 'src/generated/graphql';
+import { AddPitchMutation } from 'src/mutations/AddPitchMutation';
+import { AllPitchesQuery } from 'src/queries/AllPitchesQuery';
 import { PitchQuery } from 'src/queries/PitchQuery';
 
 @Injectable({
@@ -20,16 +22,22 @@ export class PitchesService {
   ) {}
 
   private _allPitchesQueryRef: QueryRef<
-    AllPitchedResponse,
-    AllPitchesInput
+    AllPitchesCollectionSegment,
+    QueryAllPitchesArgs
   > | null = null;
 
   private _allPitchesByClientIdQueryRef: {
-    [id: string]: QueryRef<AllPitchedResponse, AllPitchesInput> | null;
+    [id: string]: QueryRef<
+      AllPitchesCollectionSegment,
+      QueryAllPitchesArgs
+    > | null;
   } = {};
 
   private _allPitchesByIDeaIdQueryRef: {
-    [id: string]: QueryRef<AllPitchedResponse, AllPitchesInput> | null;
+    [id: string]: QueryRef<
+      AllPitchesCollectionSegment,
+      QueryAllPitchesArgs
+    > | null;
   } = {};
 
   public get pitches$() {

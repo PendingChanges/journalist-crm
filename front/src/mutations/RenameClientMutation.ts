@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Mutation, gql } from 'apollo-angular';
-
-export interface RenameClientInput {
-  id: string;
-  name: string;
-}
+import { RenameClientInput } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',

@@ -19,7 +19,7 @@ namespace Journalist.Crm.Domain
         /// warning: do not put the setter to private (used by Marten)
         /// </summary>
         public long Version { get; set; }
-        public AggregateState State { get; private set; }
+        public AggregateState State { get; private set; } = AggregateState.NotSet;
    
         public bool HasErrors => _uncommitedErrors.Count > 0;
 

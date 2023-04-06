@@ -1,18 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Mutation, gql } from 'apollo-angular';
-
-export interface PitchInput {
-  title: string;
-  content: string | null;
-  deadLineDate: Date | null;
-  issueDate: Date | null;
-  clientId: string;
-  ideaId: string;
-}
-
-export interface PitchAddedPayload {
-  pitchId: string;
-}
+import {
+  MutationAddPitchArgs,
+  PitchAddedPayload,
+  PitchInput,
+} from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
