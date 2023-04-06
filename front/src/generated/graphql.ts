@@ -75,6 +75,32 @@ export type CreateClientInput = {
   name: Scalars['String'];
 };
 
+export type CreateIdeaInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type CreatePitchInput = {
+  clientId: Scalars['String'];
+  content?: InputMaybe<Scalars['String']>;
+  deadLineDate?: InputMaybe<Scalars['DateTime']>;
+  ideaId: Scalars['String'];
+  issueDate?: InputMaybe<Scalars['DateTime']>;
+  title: Scalars['String'];
+};
+
+export type DeleteClientInput = {
+  id: Scalars['String'];
+};
+
+export type DeleteIdeaInput = {
+  id: Scalars['String'];
+};
+
+export type DeletePitchInput = {
+  id: Scalars['String'];
+};
+
 export type DomainError = {
   __typename?: 'DomainError';
   domainErrors: Array<Error>;
@@ -101,11 +127,6 @@ export type IdeaAddedPayload = {
   ideaId?: Maybe<Scalars['String']>;
 };
 
-export type IdeaInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addClient: ClientAddedPayload;
@@ -119,37 +140,37 @@ export type Mutation = {
 
 
 export type MutationAddClientArgs = {
-  clientInput: CreateClientInput;
+  createClient: CreateClientInput;
 };
 
 
 export type MutationAddIdeaArgs = {
-  ideaInput: IdeaInput;
+  createIdea: CreateIdeaInput;
 };
 
 
 export type MutationAddPitchArgs = {
-  pitchInput: PitchInput;
+  createPitch: CreatePitchInput;
 };
 
 
 export type MutationRemoveClientArgs = {
-  id: Scalars['String'];
+  deleteClient: DeleteClientInput;
 };
 
 
 export type MutationRemoveIdeaArgs = {
-  id: Scalars['String'];
+  deleteIdea: DeleteIdeaInput;
 };
 
 
 export type MutationRemovePitchArgs = {
-  id: Scalars['String'];
+  deletePitch: DeletePitchInput;
 };
 
 
 export type MutationRenameClientArgs = {
-  renameClientInput: RenameClientInput;
+  renameClient: RenameClientInput;
 };
 
 export type Pitch = {
@@ -169,15 +190,6 @@ export type Pitch = {
 export type PitchAddedPayload = {
   __typename?: 'PitchAddedPayload';
   pitchId?: Maybe<Scalars['String']>;
-};
-
-export type PitchInput = {
-  clientId: Scalars['String'];
-  content?: InputMaybe<Scalars['String']>;
-  deadLineDate?: InputMaybe<Scalars['DateTime']>;
-  ideaId: Scalars['String'];
-  issueDate?: InputMaybe<Scalars['DateTime']>;
-  title: Scalars['String'];
 };
 
 export type Query = {
@@ -242,5 +254,5 @@ export type QueryPitchArgs = {
 
 export type RenameClientInput = {
   id: Scalars['String'];
-  name: Scalars['String'];
+  newName: Scalars['String'];
 };

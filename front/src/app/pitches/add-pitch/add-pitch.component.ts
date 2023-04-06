@@ -10,7 +10,7 @@ import {
   Client,
   Idea,
   MutationAddPitchArgs,
-  PitchInput,
+  CreatePitchInput,
 } from 'src/generated/graphql';
 import { PitchesService } from 'src/services/PitchesService';
 import { EditorComponent } from '@tinymce/tinymce-angular';
@@ -98,7 +98,7 @@ export class AddPitchComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.pitchFormGroup.valid) {
-      this._pitchesService.addPitch(<PitchInput>{
+      this._pitchesService.addPitch(<CreatePitchInput>{
         clientId: this.pitchFormGroup.value.client?.id,
         ideaId: this.pitchFormGroup.value.idea?.id,
         content: this.pitchFormGroup.value.content,

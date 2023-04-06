@@ -2,14 +2,13 @@
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients.Commands;
 using Journalist.Crm.Domain.Clients;
-using Journalist.Crm.GraphQL.Clients;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Journalist.Crm.Domain.Ideas.Commands;
 using MediatR;
+using Journalist.Crm.Domain.Ideas;
+using Journalist.Crm.CommandHandlers;
 
 namespace Journalist.Crm.GraphQL.Ideas;
 
@@ -21,10 +20,10 @@ public class IdeasMutations
     public async Task<IdeaAddedPayload> AddIdeaAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
-    IdeaInput ideaInput,
+    CreateIdea createIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreateIdea(ideaInput.Name, ideaInput.Description, context.UserId);
+        var command = new WrappedCommand<CreateIdea, ClientAggregate>(createIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -36,10 +35,10 @@ public class IdeasMutations
     public async Task<string> RemoveIdeaAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
-        string id,
+        DeleteIdea deleteIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new DeleteIdea(id, context.UserId);
+        var command = new WrappedCommand<DeleteIdea, IdeaAggregate>(deleteIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

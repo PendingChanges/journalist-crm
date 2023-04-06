@@ -4,7 +4,7 @@ import { map } from 'rxjs';
 import {
   AllPitchesCollectionSegment,
   MutationAddPitchArgs,
-  PitchInput,
+  CreatePitchInput,
   QueryAllPitchesArgs,
 } from 'src/generated/graphql';
 import { AddPitchMutation } from 'src/mutations/AddPitchMutation';
@@ -87,7 +87,7 @@ export class PitchesService {
       .valueChanges.pipe(map((result: any) => result.data.pitch));
   }
 
-  public addPitch(value: PitchInput) {
+  public addPitch(value: CreatePitchInput) {
     this._addPitchMutation.mutate(value).subscribe(() => {
       this.refreshPitches();
     });

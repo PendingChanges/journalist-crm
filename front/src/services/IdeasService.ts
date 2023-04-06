@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { Idea, IdeaInput } from 'src/generated/graphql';
+import { Idea, CreateIdeaInput, DeleteIdeaInput } from 'src/generated/graphql';
 import { AddIdeaMutation } from 'src/mutations/AddIdeaMutation';
 import { DeleteIdeaMutation } from 'src/mutations/DeleteIdeaMutation';
 import { AllIdeasQuery } from 'src/queries/AllIdeasQuery';
@@ -44,14 +44,14 @@ export class IdeasService {
       .valueChanges.pipe(map((result: any) => result.data.idea));
   }
 
-  public addIdea(value: IdeaInput) {
+  public addIdea(value: CreateIdeaInput) {
     this._addIdeaMutation.mutate(value).subscribe(() => {
       this.refreshIdeas();
     });
   }
 
-  public deleteIdea(id: string) {
-    this._deleteIdeaMutation.mutate(id).subscribe(() => {
+  public deleteIdea(deleteIdeaInput: DeleteIdeaInput) {
+    this._deleteIdeaMutation.mutate(deleteIdeaInput).subscribe(() => {
       this.refreshIdeas();
     });
   }

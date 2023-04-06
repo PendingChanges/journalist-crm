@@ -5,7 +5,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from 'src/app/common/confirm-dialog/confirm-dialog.component';
-import { Idea } from 'src/generated/graphql';
+import { DeleteIdeaInput, Idea } from 'src/generated/graphql';
 import { IdeasService } from 'src/services/IdeasService';
 import { TranslocoModule } from '@ngneat/transloco';
 
@@ -34,7 +34,7 @@ export class DeleteIdeaButtonComponent {
 
     dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.idea) {
-        this._ideasService.deleteIdea(this.idea.id);
+        this._ideasService.deleteIdea(<DeleteIdeaInput>{ id: this.idea.id });
         this._router.navigate(['/ideas']);
       }
     });

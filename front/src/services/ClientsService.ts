@@ -3,6 +3,7 @@ import { QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import {
   Client,
+  DeleteClientInput,
   MutationRenameClientArgs,
   QueryAutoCompleteClientArgs,
   RenameClientInput,
@@ -64,8 +65,8 @@ export class ClientsService {
     });
   }
 
-  public deleteClient(id: string) {
-    this._deleteClientMutation.mutate(id).subscribe(() => {
+  public deleteClient(deleteClientInput: DeleteClientInput) {
+    this._deleteClientMutation.mutate(deleteClientInput).subscribe(() => {
       this.refreshClients();
     });
   }

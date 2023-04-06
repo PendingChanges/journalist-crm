@@ -5,16 +5,16 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogModel,
 } from 'src/app/common/confirm-dialog/confirm-dialog.component';
-import { Client } from 'src/generated/graphql';
+import { Client, DeleteClientInput } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-client-delete-button',
-    templateUrl: './client-delete-button.component.html',
-    styleUrls: ['./client-delete-button.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule]
+  selector: 'app-client-delete-button',
+  templateUrl: './client-delete-button.component.html',
+  styleUrls: ['./client-delete-button.component.scss'],
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;
@@ -34,7 +34,9 @@ export class ClientDeleteButtonComponent {
 
     dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.client) {
-        this._clientsService.deleteClient(this.client.id);
+        this._clientsService.deleteClient(<DeleteClientInput>{
+          id: this.client.id,
+        });
         this._router.navigate(['/clients']);
       }
     });

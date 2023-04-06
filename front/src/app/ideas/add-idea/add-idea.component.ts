@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { IdeaInput, MutationAddIdeaArgs } from 'src/generated/graphql';
+import { CreateIdeaInput, MutationAddIdeaArgs } from 'src/generated/graphql';
 import { IdeasService } from 'src/services/IdeasService';
 
 interface IdeaForm {
@@ -41,7 +41,7 @@ export class AddIdeaComponent {
 
   public onSubmit(): void {
     if (this.ideaFormGroup.valid) {
-      this._ideasService.addIdea(<IdeaInput>this.ideaFormGroup.value);
+      this._ideasService.addIdea(<CreateIdeaInput>this.ideaFormGroup.value);
       this._activeModal.close();
     }
   }

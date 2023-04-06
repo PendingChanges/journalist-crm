@@ -2,5 +2,5 @@
 
 namespace Journalist.Crm.Domain.Ideas.Commands
 {
-    public record DeleteIdea(string Id, string OwnerId) : IRequest<IdeaAggregate>;
+    public record DeleteIdea(string Id): ICommand;
 }

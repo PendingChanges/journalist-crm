@@ -9,6 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Journalist.Crm.CommandHandlers\Journalist.Crm.CommandHandlers.csproj" />
 	  <ProjectReference Include="..\Journalist.Crm\Journalist.Crm.Domain.csproj" />
 	</ItemGroup>
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
-    internal class CreatePitchHandler : IRequestHandler<CreatePitch, PitchAggregate>
+    internal class CreatePitchHandler : IRequestHandler<WrappedCommand<CreatePitch, PitchAggregate>, PitchAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -18,12 +18,14 @@ namespace Journalist.Crm.CommandHandlers.Pitches
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<PitchAggregate> Handle(CreatePitch request, CancellationToken cancellationToken)
+        public async Task<PitchAggregate> Handle(WrappedCommand<CreatePitch, PitchAggregate> request, CancellationToken cancellationToken)
         {
+            var command = request.Command;
+
             //TODO: Check existence of clientId and ideaId
             var pitchAggregate = new PitchAggregate();
 
-            pitchAggregate.Create(request.Title, request.Content, request.DeadLineDate, request.IssueDate, request.ClientId, request.IdeaId, request.OwnerId);
+            pitchAggregate.Create(command.Title, command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, request.OwnerId);
 
             //Store Aggregate
             var errors = pitchAggregate.GetUncommitedErrors();

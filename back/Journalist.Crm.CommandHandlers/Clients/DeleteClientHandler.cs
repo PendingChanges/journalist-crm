@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class DeleteClientHandler : IRequestHandler<DeleteClient, ClientAggregate>
+    internal class DeleteClientHandler : IRequestHandler<WrappedCommand<DeleteClient, ClientAggregate>, ClientAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -19,9 +19,10 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<ClientAggregate> Handle(DeleteClient request, CancellationToken cancellationToken)
+        public async Task<ClientAggregate> Handle(WrappedCommand<DeleteClient, ClientAggregate> request, CancellationToken cancellationToken)
         {
-            var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(request.Id, ct: cancellationToken);
+            var command = request.Command;
+            var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(command.Id, ct: cancellationToken);
 
             if (clientAggregate == null)
             {
