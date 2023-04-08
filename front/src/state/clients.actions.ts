@@ -1,2 +1,47 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { Client } from 'src/generated/graphql';
+import {
+  Client,
+  ClientAddedPayload,
+  CreateClientInput,
+  DeleteClientInput,
+  QueryAllClientsArgs,
+  RenameClientInput,
+} from 'src/generated/graphql';
+import { ErrorProps } from './ErrorProps';
+
+export const ClientsActions = createActionGroup({
+  source: 'Clients',
+  events: {
+    'Add Client': props<CreateClientInput>(),
+    'Remove Client': props<DeleteClientInput>(),
+    'Rename Client': props<RenameClientInput>(),
+  },
+});
+
+export const CLientsPageActions = createActionGroup({
+  source: 'Client Page',
+  events: {
+    'Client Page Opened': props<{ clientId: string }>(),
+    'Clients Page Opened': props<{ args: QueryAllClientsArgs; date?: Date }>(),
+  },
+});
+
+export const ClientsApiActions = createActionGroup({
+  source: 'Clients Api',
+  events: {
+    'Client List Loaded Success': props<{ clients: ReadonlyArray<Client> }>(),
+    'Client List Loaded Failure': props<ErrorProps>(),
+    'Client Loaded Success': props<{ client: Client }>(),
+    'Client Loaded Failure': props<ErrorProps>(),
+    'Client Added Success': props<{
+      payload: ClientAddedPayload;
+      args: QueryAllClientsArgs;
+      date?: Date;
+    }>(),
+    'Client Added Failure': props<ErrorProps>(),
+    'Client Removed Success': props<{ payload: string }>(),
+    'Client Removed Failure': props<ErrorProps>(),
+    'Client Renamed Success': props<{ payload: string; newName: string }>(),
+    'Client Renamed Failure': props<ErrorProps>(),
+  },
+});

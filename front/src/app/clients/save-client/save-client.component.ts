@@ -7,13 +7,10 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslocoService, TranslocoModule } from '@ngneat/transloco';
-import {
-  Client,
-  MutationRenameClientArgs,
-  RenameClientInput,
-} from 'src/generated/graphql';
+import { Store } from '@ngrx/store';
+import { Client, RenameClientInput } from 'src/generated/graphql';
 import { CreateClientInput } from 'src/generated/graphql';
-import { ClientsService } from 'src/services/ClientsService';
+import { ClientsActions } from 'src/state/clients.actions';
 
 interface ClientForm {
   name: FormControl<string>;
@@ -37,8 +34,8 @@ export class SaveClientComponent implements OnInit {
 
   constructor(
     public _activeModal: NgbActiveModal,
-    private _clientsService: ClientsService,
-    private _translocoService: TranslocoService
+    private _translocoService: TranslocoService,
+    private _store: Store
   ) {}
   ngOnInit(): void {
     if (this.data?.type === 'modify' && this.data?.client != null) {
@@ -55,16 +52,20 @@ export class SaveClientComponent implements OnInit {
   public onSubmit(): void {
     if (this.clientFormGroup.valid) {
       if (this.data?.type === 'add') {
-        this._clientsService.addClient(
-          <CreateClientInput>this.clientFormGroup.value
+        this._store.dispatch(
+          ClientsActions.addClient(
+            <CreateClientInput>this.clientFormGroup.value
+          )
         );
       }
 
       if (this.data?.type === 'modify') {
-        this._clientsService.modifyClient(<RenameClientInput>{
-          id: this.data?.client?.id,
-          ...this.clientFormGroup.value,
-        });
+        this._store.dispatch(
+          ClientsActions.renameClient(<RenameClientInput>{
+            id: this.data?.client?.id,
+            newName: this.clientFormGroup.value.name,
+          })
+        );
       }
       this._activeModal.close();
     }

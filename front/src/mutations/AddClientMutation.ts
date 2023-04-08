@@ -6,7 +6,7 @@ import { ClientAddedPayload, CreateClientInput } from 'src/generated/graphql';
   providedIn: 'root',
 })
 export class AddClientMutation extends Mutation<
-  ClientAddedPayload,
+  { addClient: ClientAddedPayload },
   CreateClientInput
 > {
   override document = gql`

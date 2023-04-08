@@ -20,10 +20,10 @@ namespace Journalist.Crm.Marten.Clients
             _session = session;
         }
 
-        public Task<IReadOnlyList<ClientDocument>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken) 
+        public Task<IReadOnlyList<ClientDocument>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken)
             => _session.Query<ClientDocument>().Where(c => c.UserId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
 
-        public Task<ClientDocument?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken) 
+        public Task<ClientDocument?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken)
             => _session.Query<ClientDocument>().Where(c => c.Id == clientId && c.UserId == userId).FirstOrDefaultAsync(cancellationToken);
 
         public async Task<ClientResultSet> GetClientsAsync(GetClientsRequest request, CancellationToken cancellationToken = default)
@@ -34,10 +34,23 @@ namespace Journalist.Crm.Marten.Clients
             {
                 query = query.Where(c => c.PitchesIds.Any(p => p == request.PitchId));
             }
+            query = SortBy(request, query);
 
             var pagedResult = await query.ToPagedListAsync(request.Skip, request.Take, cancellationToken);
 
             return new ClientResultSet(pagedResult.ToList(), pagedResult.TotalItemCount, pagedResult.HasNextPage, pagedResult.HasPreviousPage);
         }
+
+        private static IQueryable<ClientDocument> SortBy(GetClientsRequest request, IQueryable<ClientDocument> query) => request.SortDirection switch
+        {
+            "desc" => request.SortBy switch
+            {
+                _ => query.OrderByDescending(c => c.Name)
+            },
+            _ => request.SortBy switch
+            {
+                _ => query.OrderBy(c => c.Name)
+            },
+        };
     }
 }

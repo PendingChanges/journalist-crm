@@ -5,7 +5,10 @@ import { DeleteClientInput } from 'src/generated/graphql';
 @Injectable({
   providedIn: 'root',
 })
-export class DeleteClientMutation extends Mutation<string, DeleteClientInput> {
+export class DeleteClientMutation extends Mutation<
+  { removeClient: string },
+  DeleteClientInput
+> {
   override document = gql`
     mutation removeClient($id: String!) {
       removeClient(deleteClient: { id: $id })

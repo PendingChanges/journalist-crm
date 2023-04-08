@@ -8,6 +8,8 @@ import {
 import { Client, DeleteClientInput } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
 import { TranslocoModule } from '@ngneat/transloco';
+import { Store } from '@ngrx/store';
+import { ClientsActions } from 'src/state/clients.actions';
 
 @Component({
   selector: 'app-client-delete-button',
@@ -21,7 +23,7 @@ export class ClientDeleteButtonComponent {
   @Input() public disabled = false;
   constructor(
     private _modalService: NgbModal,
-    private _clientsService: ClientsService,
+    private _store: Store,
     private _router: Router
   ) {}
 
@@ -34,10 +36,11 @@ export class ClientDeleteButtonComponent {
 
     dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.client) {
-        this._clientsService.deleteClient(<DeleteClientInput>{
-          id: this.client.id,
-        });
-        this._router.navigate(['/clients']);
+        this._store.dispatch(
+          ClientsActions.removeClient(<DeleteClientInput>{
+            id: this.client.id,
+          })
+        );
       }
     });
   }

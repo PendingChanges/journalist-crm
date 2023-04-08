@@ -1,4 +1,5 @@
-﻿using Journalist.Crm.Domain.Pitches;
+﻿using Journalist.Crm.Domain.Ideas.DataModels;
+using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.DataModels;
 using Marten;
 using Marten.Pagination;
@@ -35,9 +36,23 @@ namespace Journalist.Crm.Marten.Pitches
                 query = query.Where(p => p.IdeaId == request.IdeaId);
             }
 
+            query = SortBy(request, query);
+
             var pagedResult = await query.ToPagedListAsync(request.Skip, request.Take, cancellationToken);
 
             return new PitchResultSet(pagedResult.ToList(), pagedResult.TotalItemCount, pagedResult.HasNextPage, pagedResult.HasPreviousPage);
         }
+
+        private static IQueryable<PitchDocument> SortBy(GetPitchesRequest request, IQueryable<PitchDocument> query) => request.SortDirection switch
+        {
+            "desc" => request.SortBy switch
+            {
+                _ => query.OrderByDescending(c => c.Title)
+            },
+            _ => request.SortBy switch
+            {
+                _ => query.OrderBy(c => c.Title)
+            },
+        };
     }
 }

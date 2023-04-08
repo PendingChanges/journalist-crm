@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { QueryRef } from 'apollo-angular';
+import { Apollo, MutationResult, QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import {
+  AllClientsCollectionSegment,
   Client,
+  ClientAddedPayload,
   DeleteClientInput,
   MutationRenameClientArgs,
+  QueryAllClientsArgs,
   QueryAutoCompleteClientArgs,
   RenameClientInput,
 } from 'src/generated/graphql';
@@ -15,60 +18,60 @@ import { RenameClientMutation } from 'src/mutations/RenameClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
 import { AutoCompleteClientQuery } from 'src/queries/AutoCompleteClientQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
+import { Store } from '@ngrx/store';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientsService {
+  private _allClientsQueryRef: QueryRef<
+    { allClients: AllClientsCollectionSegment },
+    QueryAllClientsArgs
+  > | null = null;
+
   constructor(
-    private _allClientsQuery: AllClientsQuery,
+    allClientsQuery: AllClientsQuery,
     private _clientQuery: ClientQuery,
     private _addClientMutation: AddClientMutation,
     private _deleteClientMutation: DeleteClientMutation,
     private _autoCompleteClientQuery: AutoCompleteClientQuery,
     private _renameClientMutation: RenameClientMutation
-  ) {}
-
-  private _allClientsQueryRef: QueryRef<any> | null = null;
-
-  public get clients$() {
-    if (!this._allClientsQueryRef) {
-      this._allClientsQueryRef = this._allClientsQuery.watch();
-    }
-
-    return this._allClientsQueryRef.valueChanges.pipe(
-      map((result: any) => result.data.allClients.items)
-    );
+  ) {
+    this._allClientsQueryRef = allClientsQuery.watch();
+    this.clientListResult$ = this._allClientsQueryRef.valueChanges;
   }
 
-  public refreshClients(): void {
-    this._allClientsQueryRef?.refetch();
+  public clientListResult$: Observable<
+    ApolloQueryResult<{ allClients: AllClientsCollectionSegment }>
+  >;
+
+  public refreshClients(args: QueryAllClientsArgs): void {
+    this._allClientsQueryRef?.refetch(args);
   }
 
   public getClient(id: string) {
-    return this._clientQuery
-      .watch({
-        id: id,
-      })
-      .valueChanges.pipe(map((result: any) => result.data.client));
+    return this._clientQuery.watch({
+      id: id,
+    }).valueChanges;
   }
 
-  public addClient(value: CreateClientInput) {
-    this._addClientMutation.mutate(value).subscribe(() => {
-      this.refreshClients();
-    });
+  public addClient(
+    value: CreateClientInput
+  ): Observable<MutationResult<{ addClient: ClientAddedPayload }>> {
+    return this._addClientMutation.mutate(value);
   }
 
-  modifyClient(value: RenameClientInput) {
-    this._renameClientMutation.mutate(value).subscribe(() => {
-      this.refreshClients();
-    });
+  public renameClient(
+    value: RenameClientInput
+  ): Observable<MutationResult<string>> {
+    return this._renameClientMutation.mutate(value);
   }
 
-  public deleteClient(deleteClientInput: DeleteClientInput) {
-    this._deleteClientMutation.mutate(deleteClientInput).subscribe(() => {
-      this.refreshClients();
-    });
+  public removeClient(
+    deleteClientInput: DeleteClientInput
+  ): Observable<MutationResult<{ removeClient: string }>> {
+    return this._deleteClientMutation.mutate(deleteClientInput);
   }
 
   public autoComplete(text: string): Observable<Client[]> {

@@ -5,10 +5,10 @@ import { RenameClientInput } from 'src/generated/graphql';
 @Injectable({
   providedIn: 'root',
 })
-export class RenameClientMutation extends Mutation<RenameClientInput> {
+export class RenameClientMutation extends Mutation<string, RenameClientInput> {
   override document = gql`
-    mutation renameClient($id: String!, $name: String!) {
-      renameClient(renameClient: { id: $id, name: $name })
+    mutation renameClient($id: String!, $newName: String!) {
+      renameClient(renameClient: { id: $id, newName: $newName })
     }
   `;
 }
