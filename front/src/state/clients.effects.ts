@@ -10,28 +10,24 @@ import {
   QueryAllClientsArgs,
 } from 'src/generated/graphql';
 import { ClientsService } from 'src/services/ClientsService';
-import {
-  ClientsActions,
-  ClientsApiActions,
-  CLientsPageActions,
-} from './clients.actions';
+import { ClientsActions } from './clients.actions';
 import { Router } from '@angular/router';
 
 export const loadClients = createEffect(
   (actions$ = inject(Actions), clientsService = inject(ClientsService)) => {
     return actions$.pipe(
-      ofType(CLientsPageActions.clientsPageOpened),
+      ofType(ClientsActions.loadClientList),
       switchMap((a: { args: QueryAllClientsArgs; date?: Date }) => {
         clientsService.refreshClients(a.args);
         return clientsService.clientListResult$.pipe(
           map((clientListResult) =>
-            ClientsApiActions.clientListLoadedSuccess({
+            ClientsActions.clientListLoadedSuccess({
               clients: clientListResult.data.allClients.items || [],
             })
           ),
           catchError((result: ApolloQueryResult<AllClientsCollectionSegment>) =>
             of(
-              ClientsApiActions.clientListLoadedFailure({
+              ClientsActions.clientListLoadedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],
@@ -48,17 +44,17 @@ export const loadClients = createEffect(
 export const loadClient = createEffect(
   (actions$ = inject(Actions), clientsService = inject(ClientsService)) => {
     return actions$.pipe(
-      ofType(CLientsPageActions.clientPageOpened),
+      ofType(ClientsActions.loadClient),
       switchMap(({ clientId }) => {
         return clientsService.getClient(clientId).pipe(
           map((clientResult) =>
-            ClientsApiActions.clientLoadedSuccess({
+            ClientsActions.clientLoadedSuccess({
               client: clientResult.data.client,
             })
           ),
           catchError((result: ApolloQueryResult<{ client: Client }>) =>
             of(
-              ClientsApiActions.clientLoadedFailure({
+              ClientsActions.clientLoadedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],
@@ -79,7 +75,7 @@ export const addClient = createEffect(
       switchMap((addClient) => {
         return clientsService.addClient(addClient).pipe(
           map((addClientResult) =>
-            ClientsApiActions.clientAddedSuccess({
+            ClientsActions.clientAddedSuccess({
               payload: <ClientAddedPayload>addClientResult.data?.addClient,
               args: <QueryAllClientsArgs>{
                 skip: 0,
@@ -92,7 +88,7 @@ export const addClient = createEffect(
           catchError(
             (result: MutationResult<{ addClient: ClientAddedPayload }>) =>
               of(
-                ClientsApiActions.clientAddedFailure({
+                ClientsActions.clientAddedFailure({
                   errors: result.errors?.map((e) => e.message) || [
                     'Unknown error',
                   ],
@@ -113,14 +109,14 @@ export const renameClient = createEffect(
       switchMap((renameClient) => {
         return clientsService.renameClient(renameClient).pipe(
           map((renameClientResult) =>
-            ClientsApiActions.clientRenamedSuccess({
+            ClientsActions.clientRenamedSuccess({
               payload: <string>renameClientResult.data,
               newName: renameClient.newName,
             })
           ),
           catchError((result: MutationResult<string>) =>
             of(
-              ClientsApiActions.clientRenamedFailure({
+              ClientsActions.clientRenamedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],
@@ -141,13 +137,13 @@ export const removeClient = createEffect(
       switchMap((removeClient) => {
         return clientsService.removeClient(removeClient).pipe(
           map((removeClientResult) =>
-            ClientsApiActions.clientRemovedSuccess({
+            ClientsActions.clientRemovedSuccess({
               payload: <string>removeClientResult.data?.removeClient,
             })
           ),
           catchError((result: MutationResult<{ removeClient: string }>) =>
             of(
-              ClientsApiActions.clientRemovedFailure({
+              ClientsActions.clientRemovedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],
@@ -164,7 +160,7 @@ export const removeClient = createEffect(
 export const redirectToClient = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
-      ofType(ClientsApiActions.clientAddedSuccess),
+      ofType(ClientsActions.clientAddedSuccess),
       tap((result) => {
         router.navigate(['/clients', result.payload.clientId]);
       })
@@ -176,7 +172,7 @@ export const redirectToClient = createEffect(
 export const redirectToClients = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
-      ofType(ClientsApiActions.clientRemovedSuccess),
+      ofType(ClientsActions.clientRemovedSuccess),
       tap(() => {
         router.navigate(['/clients']);
       })

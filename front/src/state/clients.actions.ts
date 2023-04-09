@@ -15,20 +15,8 @@ export const ClientsActions = createActionGroup({
     'Add Client': props<CreateClientInput>(),
     'Remove Client': props<DeleteClientInput>(),
     'Rename Client': props<RenameClientInput>(),
-  },
-});
-
-export const CLientsPageActions = createActionGroup({
-  source: 'Client Page',
-  events: {
-    'Client Page Opened': props<{ clientId: string }>(),
-    'Clients Page Opened': props<{ args: QueryAllClientsArgs; date?: Date }>(),
-  },
-});
-
-export const ClientsApiActions = createActionGroup({
-  source: 'Clients Api',
-  events: {
+    'Load Client': props<{ clientId: string }>(),
+    'Load Client List': props<{ args: QueryAllClientsArgs; date?: Date }>(),
     'Client List Loaded Success': props<{ clients: ReadonlyArray<Client> }>(),
     'Client List Loaded Failure': props<ErrorProps>(),
     'Client Loaded Success': props<{ client: Client }>(),

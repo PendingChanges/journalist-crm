@@ -9,7 +9,7 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app/app-routing.module';
+import { ROUTES } from './app/routes';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import {
   NgbDateAdapter,
@@ -29,12 +29,14 @@ import { clientsReducer } from './state/clients.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import * as clientsEffects from './state/clients.effects';
+import * as ideasEffects from './state/ideas.effects';
+import { ideasReducer } from './state/ideas.reducer';
+import { provideRouter } from '@angular/router';
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
       BrowserModule,
-      AppRoutingModule,
       ReactiveFormsModule,
       FormsModule,
       EditorModule,
@@ -63,10 +65,11 @@ bootstrapApplication(AppComponent, {
     },
     AuthGuard,
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
+    provideRouter(ROUTES),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideStore({ clientState: clientsReducer }),
-    provideEffects(clientsEffects),
+    provideStore({ clientState: clientsReducer, ideaState: ideasReducer }),
+    provideEffects(clientsEffects, ideasEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

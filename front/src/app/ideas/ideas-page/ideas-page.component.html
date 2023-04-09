@@ -3,6 +3,12 @@
   <div class="action-list">
     <app-ideas-action-menu></app-ideas-action-menu>
   </div>
-  <app-idea-list [ideas]="ideas$ | async"></app-idea-list>
-  <ng-container> </ng-container
-></ng-container>
+  <ng-container *ngIf="loading$ | async; else idealist">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </ng-container>
+  <ng-template #idealist>
+    <app-idea-list [ideas]="ideas$ | async"></app-idea-list>
+  </ng-template>
+</ng-container>

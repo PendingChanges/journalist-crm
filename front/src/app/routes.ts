@@ -8,45 +8,40 @@ import { IdeasComponent } from './ideas/ideas-page/ideas-page.component';
 import { PitchPageComponent } from './pitches/pitch-page/pitch-page.component';
 import { PitchesPageComponent } from './pitches/pitches-page/pitches-page.component';
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: 'clients',
     component: ClientsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'clients/:id',
     component: ClientPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'ideas',
     component: IdeasComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'ideas/:id',
     component: IdeaPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'pitches',
     component: PitchesPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'pitches/:id',
     component: PitchPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'clients'
+    redirectTo: 'clients',
   },
 ];
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

@@ -6,8 +6,9 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { CreateIdeaInput, MutationAddIdeaArgs } from 'src/generated/graphql';
-import { IdeasService } from 'src/services/IdeasService';
+import { IdeasActions } from 'src/state/ideas.actions';
 
 interface IdeaForm {
   name: FormControl<string>;
@@ -32,7 +33,7 @@ export class AddIdeaComponent {
 
   constructor(
     public _activeModal: NgbActiveModal,
-    private _ideasService: IdeasService
+    private _store: Store
   ) {}
 
   public onCancelClick(): void {
@@ -41,7 +42,9 @@ export class AddIdeaComponent {
 
   public onSubmit(): void {
     if (this.ideaFormGroup.valid) {
-      this._ideasService.addIdea(<CreateIdeaInput>this.ideaFormGroup.value);
+      this._store.dispatch(
+        IdeasActions.addIdea(<CreateIdeaInput>this.ideaFormGroup.value)
+      );
       this._activeModal.close();
     }
   }

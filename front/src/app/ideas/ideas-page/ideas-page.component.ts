@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Idea } from 'src/generated/graphql';
+import { Idea, QueryAllIdeasArgs } from 'src/generated/graphql';
 import { Observable } from 'rxjs';
-import { IdeasService } from 'src/services/IdeasService';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { IdeaListComponent } from '../idea-list/idea-list.component';
 import { IdeasActionMenuComponent } from '../ideas-action-menu/ideas-action-menu.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { Store } from '@ngrx/store';
+import { IdeasActions } from 'src/state/ideas.actions';
+import { loading, selectIdeas } from 'src/state/ideas.selectors';
 
 @Component({
   selector: 'app-ideas-page',
@@ -13,6 +15,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   styleUrls: ['./ideas-page.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     TranslocoModule,
     IdeasActionMenuComponent,
     IdeaListComponent,
@@ -20,11 +23,20 @@ import { TranslocoModule } from '@ngneat/transloco';
   ],
 })
 export class IdeasComponent implements OnInit {
-  public ideas$?: Observable<Idea[]>;
+  public ideas$: Observable<readonly Idea[]> = this._store.select(selectIdeas);
 
-  constructor(private _ideasService: IdeasService) {}
+  public loading$: Observable<boolean> = this._store.select(loading);
+  constructor(private _store: Store) {}
 
   ngOnInit(): void {
-    this.ideas$ = this._ideasService.ideas$;
+    this._store.dispatch(
+      IdeasActions.loadIdeaList({
+        args: <QueryAllIdeasArgs>{
+          skip: 0,
+          take: 10,
+          sortBy: 'name',
+        },
+      })
+    );
   }
 }

@@ -23,7 +23,7 @@ public class IdeasMutations
     CreateIdea createIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<CreateIdea, ClientAggregate>(createIdea, context.UserId);
+        var command = new WrappedCommand<CreateIdea, IdeaAggregate>(createIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

@@ -1,9 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  ClientsActions,
-  ClientsApiActions,
-  CLientsPageActions,
-} from './clients.actions';
+import { ClientsActions } from './clients.actions';
 import { ClientState } from './ClientState';
 
 export const initialState: ClientState = {
@@ -15,7 +11,7 @@ export const initialState: ClientState = {
 
 export const clientsReducer = createReducer(
   initialState,
-  on(CLientsPageActions.clientsPageOpened, (state, _a) => {
+  on(ClientsActions.loadClientList, (state, _a) => {
     return {
       ...state,
       loading: true,
@@ -39,7 +35,7 @@ export const clientsReducer = createReducer(
       loading: true,
     };
   }),
-  on(ClientsApiActions.clientListLoadedSuccess, (state, result) => {
+  on(ClientsActions.clientListLoadedSuccess, (state, result) => {
     return <ClientState>{
       ...state,
       clients: result.clients,
@@ -47,7 +43,7 @@ export const clientsReducer = createReducer(
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientListLoadedFailure, (state, result) => {
+  on(ClientsActions.clientListLoadedFailure, (state, result) => {
     return <ClientState>{
       ...state,
       clients: [],
@@ -55,14 +51,14 @@ export const clientsReducer = createReducer(
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientLoadedSuccess, (state, result) => {
+  on(ClientsActions.clientLoadedSuccess, (state, result) => {
     return <ClientState>{
       ...state,
       currentClient: result.client,
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientLoadedFailure, (state, result) => {
+  on(ClientsActions.clientLoadedFailure, (state, result) => {
     return <ClientState>{
       ...state,
       currentClient: null,
@@ -70,7 +66,7 @@ export const clientsReducer = createReducer(
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientRenamedSuccess, (state, renameClient) => {
+  on(ClientsActions.clientRenamedSuccess, (state, renameClient) => {
     return <ClientState>{
       ...state,
       currentClient: {
@@ -80,21 +76,21 @@ export const clientsReducer = createReducer(
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientRenamedFailure, (state, result) => {
+  on(ClientsActions.clientRenamedFailure, (state, result) => {
     return <ClientState>{
       ...state,
       loading: false,
       errors: result.errors,
     };
   }),
-  on(ClientsApiActions.clientRemovedSuccess, (state, removeClient) => {
+  on(ClientsActions.clientRemovedSuccess, (state, removeClient) => {
     return <ClientState>{
       ...state,
       currentClient: null,
       loading: false,
     };
   }),
-  on(ClientsApiActions.clientRemovedFailure, (state, result) => {
+  on(ClientsActions.clientRemovedFailure, (state, result) => {
     return <ClientState>{
       ...state,
       loading: false,

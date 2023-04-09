@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Mutation, gql } from 'apollo-angular';
-import { IdeaAddedPayload, CreatePitchInput, CreateIdeaInput } from 'src/generated/graphql';
+import { IdeaAddedPayload, CreateIdeaInput } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddIdeaMutation extends Mutation<
-  IdeaAddedPayload,
+  { addIdea: IdeaAddedPayload },
   CreateIdeaInput
 > {
   override document = gql`

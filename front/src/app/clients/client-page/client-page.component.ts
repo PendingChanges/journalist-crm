@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Client, Pitch } from 'src/generated/graphql';
-import { ClientsService } from 'src/services/ClientsService';
 import { PitchesService } from 'src/services/PitchesService';
 import { PitchListComponent } from '../../pitches/pitch-list/pitch-list.component';
 import { ClientActionMenuComponent } from '../client-action-menu/client-action-menu.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { CLientsPageActions } from 'src/state/clients.actions';
+import { ClientsActions } from 'src/state/clients.actions';
 import { currentClient } from 'src/state/clients.selectors';
 
 @Component({
@@ -38,7 +37,7 @@ export class ClientPageComponent implements OnInit {
   ngOnInit(): void {
     const clientId = this._route.snapshot.params['id'];
     this._store.dispatch(
-      CLientsPageActions.clientPageOpened({ clientId: clientId })
+      ClientsActions.loadClient({ clientId: clientId })
     );
 
     this.pitches$ = this._pitchesService.pitchesByClientId$(clientId);

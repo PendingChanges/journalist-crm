@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Apollo, MutationResult, QueryRef } from 'apollo-angular';
+import { MutationResult, QueryRef } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import {
   AllClientsCollectionSegment,
   Client,
   ClientAddedPayload,
   DeleteClientInput,
-  MutationRenameClientArgs,
   QueryAllClientsArgs,
   QueryAutoCompleteClientArgs,
   RenameClientInput,
@@ -18,7 +17,6 @@ import { RenameClientMutation } from 'src/mutations/RenameClientMutation';
 import { AllClientsQuery } from 'src/queries/AllClientsQuery';
 import { AutoCompleteClientQuery } from 'src/queries/AutoCompleteClientQuery';
 import { ClientQuery } from 'src/queries/ClientQuery';
-import { Store } from '@ngrx/store';
 import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({

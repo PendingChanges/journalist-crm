@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { gql, Query } from 'apollo-angular';
-import { AllIdeasCollectionSegment, QueryAllIdeasArgs } from 'src/generated/graphql';
+import {
+  AllIdeasCollectionSegment,
+  QueryAllIdeasArgs,
+} from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AllIdeasQuery extends Query<AllIdeasCollectionSegment, QueryAllIdeasArgs> {
+export class AllIdeasQuery extends Query<
+  { allIdeas: AllIdeasCollectionSegment },
+  QueryAllIdeasArgs
+> {
   override document = gql`
     query {
       allIdeas {

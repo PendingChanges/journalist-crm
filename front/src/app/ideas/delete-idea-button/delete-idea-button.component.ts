@@ -8,6 +8,8 @@ import {
 import { DeleteIdeaInput, Idea } from 'src/generated/graphql';
 import { IdeasService } from 'src/services/IdeasService';
 import { TranslocoModule } from '@ngneat/transloco';
+import { Store } from '@ngrx/store';
+import { IdeasActions } from 'src/state/ideas.actions';
 
 @Component({
   selector: 'app-delete-idea-button',
@@ -19,11 +21,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 export class DeleteIdeaButtonComponent {
   @Input() public idea: Idea | null = null;
   @Input() public disabled = false;
-  constructor(
-    private _modalService: NgbModal,
-    private _ideasService: IdeasService,
-    private _router: Router
-  ) {}
+  constructor(private _modalService: NgbModal, private _store: Store) {}
 
   openConfirmDialog(): void {
     const dialogRef = this._modalService.open(ConfirmDialogComponent);
@@ -34,8 +32,11 @@ export class DeleteIdeaButtonComponent {
 
     dialogRef.closed.subscribe((dialogResult) => {
       if (dialogResult && this.idea) {
-        this._ideasService.deleteIdea(<DeleteIdeaInput>{ id: this.idea.id });
-        this._router.navigate(['/ideas']);
+        this._store.dispatch(
+          IdeasActions.removeIdea(<DeleteIdeaInput>{
+            id: this.idea.id,
+          })
+        );
       }
     });
   }

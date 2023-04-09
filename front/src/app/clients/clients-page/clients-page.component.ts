@@ -7,7 +7,7 @@ import { ClientsActionMenuComponent } from '../clients-action-menu/clients-actio
 import { TranslocoModule } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { loading, selectClients } from 'src/state/clients.selectors';
-import { CLientsPageActions } from 'src/state/clients.actions';
+import { ClientsActions } from 'src/state/clients.actions';
 
 @Component({
   selector: 'app-clients-page',
@@ -26,7 +26,7 @@ export class ClientsComponent implements OnInit {
   constructor(private _store: Store) {}
   ngOnInit(): void {
     this._store.dispatch(
-      CLientsPageActions.clientsPageOpened({
+      ClientsActions.loadClientList({
         args: <QueryAllClientsArgs>{
           skip: 0,
           take: 10,

@@ -21,11 +21,7 @@ import { ClientsActions } from 'src/state/clients.actions';
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;
   @Input() public disabled = false;
-  constructor(
-    private _modalService: NgbModal,
-    private _store: Store,
-    private _router: Router
-  ) {}
+  constructor(private _modalService: NgbModal, private _store: Store) {}
 
   openConfirmDialog(): void {
     const dialogRef = this._modalService.open(ConfirmDialogComponent);
