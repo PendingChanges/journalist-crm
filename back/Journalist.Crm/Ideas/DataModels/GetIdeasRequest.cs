@@ -12,7 +12,7 @@ namespace Journalist.Crm.Domain.Ideas.DataModels
             string? sortDirection,
             string userId) : base(
                 skip ?? Constants.DEFAULT_PAGENUMBER,
-                take ?? Constants.DEFAULT_PAGENUMBER,
+                take ?? Constants.DEFAULT_PAGESIZE,
                 sortBy ?? Constants.DEFAULT_IDEA_SORTBY,
                 sortDirection ?? Constants.DEFAULT_SORT_DIRECTION,
                 userId)

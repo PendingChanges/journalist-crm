@@ -1,7 +1,5 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppComponent } from './app/app.component';
-import { TranslocoRootModule } from './app/transloco-root.module';
+import { TranslocoRootModule } from './infrastructure/transloco-root.module';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import {
   withInterceptorsFromDi,
@@ -9,29 +7,30 @@ import {
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { ROUTES } from './app/routes';
+import { ROUTES } from './infrastructure/routes';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import {
   NgbDateAdapter,
   NgbDateNativeAdapter,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuard } from './app/auth.guard';
+import { AuthGuard } from './infrastructure/auth.guard';
 import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
-import { initializeKeycloak } from './app/initializeKeycloak';
+import { initializeKeycloak } from './infrastructure/initializeKeycloak';
 import { APP_INITIALIZER, importProvidersFrom, isDevMode } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/infrastructure/environments/environment';
 import { InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { provideStore } from '@ngrx/store';
-import { clientsReducer } from './state/clients.reducer';
+import { clientsReducer } from './clients/state/clients.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
-import * as clientsEffects from './state/clients.effects';
-import * as ideasEffects from './state/ideas.effects';
-import { ideasReducer } from './state/ideas.reducer';
+import * as clientsEffects from './clients/state/clients.effects';
+import * as ideasEffects from './ideas/state/ideas.effects';
+import { ideasReducer } from './ideas/state/ideas.reducer';
 import { provideRouter } from '@angular/router';
+import { AppComponent } from './layout/components/app.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
