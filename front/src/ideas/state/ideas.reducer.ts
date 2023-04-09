@@ -60,6 +60,27 @@ export const ideasReducer = createReducer(
       loading: false,
     };
   }),
+  on(IdeasActions.ideaPitchListLoadedSuccess, (state, result) => {
+    return <IdeaState>{
+      ...state,
+      currentIdea: {
+        ...state.currentIdea,
+        pitches: result.pitches,
+      },
+      loading: false,
+    };
+  }),
+  on(IdeasActions.ideaPitchListLoadedFailure, (state, result) => {
+    return <IdeaState>{
+      ...state,
+      currentIdea: {
+        ...state.currentIdea,
+        pitches: [],
+      },
+      errors: result.errors,
+      loading: false,
+    };
+  }),
   on(IdeasActions.ideaRemovedSuccess, (state, removeIdea) => {
     return <IdeaState>{
       ...state,

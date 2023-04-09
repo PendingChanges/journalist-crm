@@ -5,13 +5,16 @@ import { MutationResult } from 'apollo-angular';
 import { catchError, switchMap, map, of, tap } from 'rxjs';
 import {
   AllClientsCollectionSegment,
+  AllPitchesCollectionSegment,
   Client,
   ClientAddedPayload,
   QueryAllClientsArgs,
+  QueryAllPitchesArgs,
 } from 'src/models/generated/graphql';
 import { ClientsService } from 'src/clients/services/ClientsService';
 import { ClientsActions } from './clients.actions';
 import { Router } from '@angular/router';
+import { PitchesService } from 'src/pitches/services/PitchesService';
 
 export const loadClients = createEffect(
   (actions$ = inject(Actions), clientsService = inject(ClientsService)) => {
@@ -28,6 +31,34 @@ export const loadClients = createEffect(
           catchError((result: ApolloQueryResult<AllClientsCollectionSegment>) =>
             of(
               ClientsActions.clientListLoadedFailure({
+                errors: result.errors?.map((e) => e.message) || [
+                  'Unknown error',
+                ],
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  { functional: true, dispatch: true }
+);
+
+export const loadClientPitches = createEffect(
+  (actions$ = inject(Actions), pitchesService = inject(PitchesService)) => {
+    return actions$.pipe(
+      ofType(ClientsActions.loadClientPitchList),
+      switchMap((a) => {
+        pitchesService.refreshClientPitches(a.args);
+        return pitchesService.currentClientPitchListResult$.pipe(
+          map((pitchListResult) =>
+            ClientsActions.clientPitchListLoadedSuccess({
+              pitches: pitchListResult.data.allPitches.items || [],
+            })
+          ),
+          catchError((result: ApolloQueryResult<AllPitchesCollectionSegment>) =>
+            of(
+              ClientsActions.clientPitchListLoadedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],

@@ -66,6 +66,27 @@ export const clientsReducer = createReducer(
       loading: false,
     };
   }),
+  on(ClientsActions.clientPitchListLoadedSuccess, (state, result) => {
+    return <ClientState>{
+      ...state,
+      currentClient: {
+        ...state.currentClient,
+        pitches: result.pitches,
+      },
+      loading: false,
+    };
+  }),
+  on(ClientsActions.clientPitchListLoadedFailure, (state, result) => {
+    return <ClientState>{
+      ...state,
+      currentClient: {
+        ...state.currentClient,
+        pitches: [],
+      },
+      errors: result.errors,
+      loading: false,
+    };
+  }),
   on(ClientsActions.clientRenamedSuccess, (state, renameClient) => {
     return <ClientState>{
       ...state,

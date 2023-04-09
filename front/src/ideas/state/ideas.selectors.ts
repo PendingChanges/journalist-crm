@@ -1,8 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { IdeaState } from './IdeaState';
 
-export const selectIdeaState =
-  createFeatureSelector<IdeaState>('ideaState');
+export const selectIdeaState = createFeatureSelector<IdeaState>('ideaState');
 
 export const selectIdeas = createSelector(
   selectIdeaState,
@@ -17,6 +16,10 @@ export const currentIdea = createSelector(
     return ideaState.currentIdea;
   }
 );
+
+export const currentIdeaPitches = createSelector(currentIdea, (idea) => {
+  return idea?.pitches || [];
+});
 
 export const loading = createSelector(
   selectIdeaState,

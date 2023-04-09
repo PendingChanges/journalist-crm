@@ -4,6 +4,7 @@ import { MutationResult } from 'apollo-angular';
 import { catchError, switchMap, map, of, tap } from 'rxjs';
 import {
   AllIdeasCollectionSegment,
+  AllPitchesCollectionSegment,
   Idea,
   IdeaAddedPayload,
   QueryAllIdeasArgs,
@@ -12,6 +13,7 @@ import { IdeasService } from 'src/ideas/services/IdeasService';
 import { IdeasActions } from './ideas.actions';
 import { Router } from '@angular/router';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { PitchesService } from 'src/pitches/services/PitchesService';
 
 export const loadIdeas = createEffect(
   (actions$ = inject(Actions), ideasService = inject(IdeasService)) => {
@@ -28,6 +30,34 @@ export const loadIdeas = createEffect(
           catchError((result: ApolloQueryResult<AllIdeasCollectionSegment>) =>
             of(
               IdeasActions.ideaListLoadedFailure({
+                errors: result.errors?.map((e) => e.message) || [
+                  'Unknown error',
+                ],
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  { functional: true, dispatch: true }
+);
+
+export const loadIdeaPitches = createEffect(
+  (actions$ = inject(Actions), pitchesService = inject(PitchesService)) => {
+    return actions$.pipe(
+      ofType(IdeasActions.loadIdeaPitchList),
+      switchMap((a) => {
+        pitchesService.refreshIdeaPitches(a.args);
+        return pitchesService.currentIdeaPitchListResult$.pipe(
+          map((pitchListResult) =>
+            IdeasActions.ideaPitchListLoadedSuccess({
+              pitches: pitchListResult.data.allPitches.items || [],
+            })
+          ),
+          catchError((result: ApolloQueryResult<AllPitchesCollectionSegment>) =>
+            of(
+              IdeasActions.ideaPitchListLoadedFailure({
                 errors: result.errors?.map((e) => e.message) || [
                   'Unknown error',
                 ],

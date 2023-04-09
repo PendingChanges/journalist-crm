@@ -18,6 +18,10 @@ export const currentClient = createSelector(
   }
 );
 
+export const currentClientPitches = createSelector(currentClient, (client) => {
+  return client?.pitches || [];
+});
+
 export const loading = createSelector(
   selectClientState,
   (clientState: ClientState) => {

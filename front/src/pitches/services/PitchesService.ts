@@ -23,12 +23,15 @@ export class PitchesService {
     QueryAllPitchesArgs
   > | null = null;
 
-  private _allPitchesByClientIdQueryRef: {
-    [id: string]: QueryRef<
-      { allPitches: AllPitchesCollectionSegment },
-      QueryAllPitchesArgs
-    > | null;
-  } = {};
+  private _currrentClientallPitchesQueryRef: QueryRef<
+    { allPitches: AllPitchesCollectionSegment },
+    QueryAllPitchesArgs
+  > | null = null;
+
+  private _currrentIdeaallPitchesQueryRef: QueryRef<
+    { allPitches: AllPitchesCollectionSegment },
+    QueryAllPitchesArgs
+  > | null = null;
 
   private _allPitchesByIDeaIdQueryRef: {
     [id: string]: QueryRef<
@@ -43,10 +46,24 @@ export class PitchesService {
     private _addPitchMutation: AddPitchMutation
   ) {
     this._allPitchesQueryRef = this._allPitchesQuery.watch();
+    this._currrentClientallPitchesQueryRef = this._allPitchesQuery.watch();
+    this._currrentIdeaallPitchesQueryRef = this._allPitchesQuery.watch();
     this.pitchListResult$ = this._allPitchesQueryRef.valueChanges;
+    this.currentClientPitchListResult$ =
+      this._currrentClientallPitchesQueryRef.valueChanges;
+    this.currentIdeaPitchListResult$ =
+    this._currrentIdeaallPitchesQueryRef.valueChanges;
   }
 
   public pitchListResult$: Observable<
+    ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
+  >;
+
+  public currentClientPitchListResult$: Observable<
+    ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
+  >;
+  
+  public currentIdeaPitchListResult$: Observable<
     ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
   >;
 
@@ -66,28 +83,11 @@ export class PitchesService {
     return this._addPitchMutation.mutate(value);
   }
 
-  public pitchesByClientId$(clientId: string) {
-    if (!this._allPitchesByClientIdQueryRef[clientId]) {
-      this._allPitchesByClientIdQueryRef[clientId] =
-        this._allPitchesQuery.watch({
-          clientId: clientId,
-          ideaId: null,
-        });
-    }
-    return this._allPitchesByClientIdQueryRef[clientId]?.valueChanges.pipe(
-      map((result: any) => result.data.allPitches.items)
-    );
+  public refreshClientPitches(args: QueryAllPitchesArgs): void {
+    this._currrentClientallPitchesQueryRef?.refetch(args);
   }
 
-  public pitchesByIdeaId$(ideaId: string) {
-    if (!this._allPitchesByIDeaIdQueryRef[ideaId]) {
-      this._allPitchesByIDeaIdQueryRef[ideaId] = this._allPitchesQuery.watch({
-        ideaId: ideaId,
-        clientId: null,
-      });
-    }
-    return this._allPitchesByIDeaIdQueryRef[ideaId]?.valueChanges.pipe(
-      map((result: any) => result.data.allPitches.items)
-    );
+  public refreshIdeaPitches(args: QueryAllPitchesArgs): void {
+    this._currrentIdeaallPitchesQueryRef?.refetch(args);
   }
 }

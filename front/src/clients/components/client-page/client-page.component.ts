@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Client, Pitch } from 'src/models/generated/graphql';
+import {
+  Client,
+  Pitch,
+  QueryAllPitchesArgs,
+} from 'src/models/generated/graphql';
 import { PitchesService } from 'src/pitches/services/PitchesService';
 import { PitchListComponent } from '../../../pitches/components/pitch-list/pitch-list.component';
 import { ClientActionMenuComponent } from '../client-action-menu/client-action-menu.component';
@@ -9,7 +13,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { ClientsActions } from 'src/clients/state/clients.actions';
-import { currentClient } from 'src/clients/state/clients.selectors';
+import {
+  currentClient,
+  currentClientPitches,
+} from 'src/clients/state/clients.selectors';
 
 @Component({
   selector: 'app-client-page',
@@ -25,19 +32,24 @@ import { currentClient } from 'src/clients/state/clients.selectors';
   ],
 })
 export class ClientPageComponent implements OnInit {
-  constructor(
-    private _route: ActivatedRoute,
-    private _store: Store,
-    private _pitchesService: PitchesService
-  ) {}
+  constructor(private _route: ActivatedRoute, private _store: Store) {}
 
   public client$: Observable<Client | null> = this._store.select(currentClient);
-  public pitches$?: Observable<Pitch[]>;
+  public pitches$?: Observable<readonly Pitch[]> =
+    this._store.select(currentClientPitches);
 
   ngOnInit(): void {
     const clientId = this._route.snapshot.params['id'];
     this._store.dispatch(ClientsActions.loadClient({ clientId: clientId }));
-
-    this.pitches$ = this._pitchesService.pitchesByClientId$(clientId);
+    this._store.dispatch(
+      ClientsActions.loadClientPitchList({
+        args: <QueryAllPitchesArgs>{
+          skip: 0,
+          take: 10,
+          clientId: clientId,
+          sortBy: 'name',
+        },
+      })
+    );
   }
 }

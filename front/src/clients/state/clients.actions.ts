@@ -4,7 +4,9 @@ import {
   ClientAddedPayload,
   CreateClientInput,
   DeleteClientInput,
+  Pitch,
   QueryAllClientsArgs,
+  QueryAllPitchesArgs,
   RenameClientInput,
 } from 'src/models/generated/graphql';
 import { ErrorProps } from '../../common/state/ErrorProps';
@@ -19,6 +21,9 @@ export const ClientsActions = createActionGroup({
     'Load Client List': props<{ args: QueryAllClientsArgs; date?: Date }>(),
     'Client List Loaded Success': props<{ clients: ReadonlyArray<Client> }>(),
     'Client List Loaded Failure': props<ErrorProps>(),
+    'Load Client Pitch List': props<{ args: QueryAllPitchesArgs }>(),
+    'Client Pitch List Loaded Success': props<{ pitches: ReadonlyArray<Pitch> }>(),
+    'Client Pitch List Loaded Failure': props<ErrorProps>(),
     'Client Loaded Success': props<{ client: Client }>(),
     'Client Loaded Failure': props<ErrorProps>(),
     'Client Added Success': props<{
