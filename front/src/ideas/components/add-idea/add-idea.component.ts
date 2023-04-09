@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { CreateIdeaInput, MutationAddIdeaArgs } from 'src/models/generated/graphql';
+import { CreateIdeaInput } from 'src/models/generated/graphql';
 import { IdeasActions } from 'src/ideas/state/ideas.actions';
 
 interface IdeaForm {

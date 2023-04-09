@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Mutation, gql } from 'apollo-angular';
 import {
-  MutationAddPitchArgs,
   PitchAddedPayload,
   CreatePitchInput,
 } from 'src/models/generated/graphql';
@@ -9,7 +8,10 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class AddPitchMutation extends Mutation<PitchAddedPayload, CreatePitchInput> {
+export class AddPitchMutation extends Mutation<
+  { addPitch: PitchAddedPayload },
+  CreatePitchInput
+> {
   override document = gql`
     mutation addPitch(
       $title: String!

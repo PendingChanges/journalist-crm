@@ -9,9 +9,9 @@ import {
   QueryAllIdeasArgs,
   QueryAutoCompleteIdeaArgs,
 } from 'src/models/generated/graphql';
-import { AddIdeaMutation } from 'src/pitches/mutations/AddIdeaMutation';
+import { AddIdeaMutation } from 'src/ideas/mutations/AddIdeaMutation';
 import { CreateIdeaInput } from 'src/models/generated/graphql';
-import { DeleteIdeaMutation } from 'src/pitches/mutations/DeleteIdeaMutation';
+import { DeleteIdeaMutation } from 'src/ideas/mutations/DeleteIdeaMutation';
 import { AllIdeasQuery } from 'src/ideas/queries/AllIdeasQuery';
 import { AutoCompleteIdeaQuery } from 'src/ideas/queries/AutoCompleteIdeaQuery';
 import { IdeaQuery } from 'src/ideas/queries/IdeaQuery';

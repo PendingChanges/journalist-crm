@@ -12,6 +12,8 @@ import { EditorComponent } from '@tinymce/tinymce-angular';
 import { ClientSelectorComponent } from '../../../clients/components/client-selector/client-selector.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { IdeaSelectorComponent } from 'src/ideas/components/idea-selector/idea-selector.component';
+import { Store } from '@ngrx/store';
+import { PitchesActions } from 'src/pitches/state/pitches.actions';
 
 interface PitchForm {
   client: FormControl<Client | null>;
@@ -60,10 +62,7 @@ export class AddPitchComponent implements OnInit {
     issueDate: new FormControl<Date | null>(null),
   });
 
-  constructor(
-    public _activeModal: NgbActiveModal,
-    private _pitchesService: PitchesService
-  ) {}
+  constructor(public _activeModal: NgbActiveModal, private _store: Store) {}
   ngOnInit(): void {
     this.pitchFormGroup.patchValue({
       client: this.data?.client,
@@ -85,14 +84,16 @@ export class AddPitchComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.pitchFormGroup.valid) {
-      this._pitchesService.addPitch(<CreatePitchInput>{
-        clientId: this.pitchFormGroup.value.client?.id,
-        ideaId: this.pitchFormGroup.value.idea?.id,
-        content: this.pitchFormGroup.value.content,
-        deadLineDate: this.pitchFormGroup.value.deadLineDate,
-        issueDate: this.pitchFormGroup.value.issueDate,
-        title: this.pitchFormGroup.value.title,
-      });
+      this._store.dispatch(
+        PitchesActions.addPitch(<CreatePitchInput>{
+          clientId: this.pitchFormGroup.value.client?.id,
+          ideaId: this.pitchFormGroup.value.idea?.id,
+          content: this.pitchFormGroup.value.content,
+          deadLineDate: this.pitchFormGroup.value.deadLineDate,
+          issueDate: this.pitchFormGroup.value.issueDate,
+          title: this.pitchFormGroup.value.title,
+        })
+      );
       this._activeModal.close();
     }
   }

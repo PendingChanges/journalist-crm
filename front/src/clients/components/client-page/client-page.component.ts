@@ -36,9 +36,7 @@ export class ClientPageComponent implements OnInit {
 
   ngOnInit(): void {
     const clientId = this._route.snapshot.params['id'];
-    this._store.dispatch(
-      ClientsActions.loadClient({ clientId: clientId })
-    );
+    this._store.dispatch(ClientsActions.loadClient({ clientId: clientId }));
 
     this.pitches$ = this._pitchesService.pitchesByClientId$(clientId);
   }

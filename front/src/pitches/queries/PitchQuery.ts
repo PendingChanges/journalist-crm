@@ -5,7 +5,7 @@ import { Pitch } from 'src/models/generated/graphql';
 @Injectable({
   providedIn: 'root',
 })
-export class PitchQuery extends Query<Pitch, { id: string }> {
+export class PitchQuery extends Query<{ pitch: Pitch }, { id: string }> {
   override document = gql`
     query pitch($id: String!) {
       pitch(id: $id) {

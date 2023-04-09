@@ -3,9 +3,16 @@
   <div class="action-list">
     <app-pitches-action-menu></app-pitches-action-menu>
   </div>
-  <app-pitch-list
-    [pitches]="pitches$ | async"
-    [showClient]="true"
-    [showIdea]="true"
-  ></app-pitch-list>
+  <ng-container *ngIf="loading$ | async; else idealist">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </ng-container>
+  <ng-template #idealist>
+    <app-pitch-list
+      [pitches]="pitches$ | async"
+      [showClient]="true"
+      [showIdea]="true"
+    ></app-pitch-list>
+  </ng-template>
 </ng-container>

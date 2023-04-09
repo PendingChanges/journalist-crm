@@ -1,53 +1,69 @@
 import { Injectable } from '@angular/core';
-import { QueryRef } from 'apollo-angular';
-import { map } from 'rxjs';
+import { MutationResult, QueryRef } from 'apollo-angular';
+import { map, Observable } from 'rxjs';
 import {
   AllPitchesCollectionSegment,
-  MutationAddPitchArgs,
-  CreatePitchInput,
+  Pitch,
+  PitchAddedPayload,
+  DeletePitchInput,
   QueryAllPitchesArgs,
 } from 'src/models/generated/graphql';
 import { AddPitchMutation } from 'src/pitches/mutations/AddPitchMutation';
+import { CreatePitchInput } from 'src/models/generated/graphql';
 import { AllPitchesQuery } from 'src/pitches/queries/AllPitchesQuery';
 import { PitchQuery } from 'src/pitches/queries/PitchQuery';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PitchesService {
-  constructor(
-    private _allPitchesQuery: AllPitchesQuery,
-    private _pitchQuery: PitchQuery,
-    private _addPitchMutation: AddPitchMutation
-  ) {}
-
   private _allPitchesQueryRef: QueryRef<
-    AllPitchesCollectionSegment,
+    { allPitches: AllPitchesCollectionSegment },
     QueryAllPitchesArgs
   > | null = null;
 
   private _allPitchesByClientIdQueryRef: {
     [id: string]: QueryRef<
-      AllPitchesCollectionSegment,
+      { allPitches: AllPitchesCollectionSegment },
       QueryAllPitchesArgs
     > | null;
   } = {};
 
   private _allPitchesByIDeaIdQueryRef: {
     [id: string]: QueryRef<
-      AllPitchesCollectionSegment,
+      { allPitches: AllPitchesCollectionSegment },
       QueryAllPitchesArgs
     > | null;
   } = {};
 
-  public get pitches$() {
-    if (!this._allPitchesQueryRef) {
-      this._allPitchesQueryRef = this._allPitchesQuery.watch();
-    }
+  constructor(
+    private _allPitchesQuery: AllPitchesQuery,
+    private _pitchQuery: PitchQuery,
+    private _addPitchMutation: AddPitchMutation
+  ) {
+    this._allPitchesQueryRef = this._allPitchesQuery.watch();
+    this.pitchListResult$ = this._allPitchesQueryRef.valueChanges;
+  }
 
-    return this._allPitchesQueryRef.valueChanges.pipe(
-      map((result: any) => result.data.allPitches.items)
-    );
+  public pitchListResult$: Observable<
+    ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
+  >;
+
+  public refreshPitches(args: QueryAllPitchesArgs): void {
+    this._allPitchesQueryRef?.refetch(args);
+  }
+
+  public getPitch(id: string) {
+    return this._pitchQuery.watch({
+      id: id,
+    }).valueChanges;
+  }
+
+  public addPitch(
+    value: CreatePitchInput
+  ): Observable<MutationResult<{ addPitch: PitchAddedPayload }>> {
+    return this._addPitchMutation.mutate(value);
   }
 
   public pitchesByClientId$(clientId: string) {
@@ -73,23 +89,5 @@ export class PitchesService {
     return this._allPitchesByIDeaIdQueryRef[ideaId]?.valueChanges.pipe(
       map((result: any) => result.data.allPitches.items)
     );
-  }
-
-  public refreshPitches(): void {
-    this._allPitchesQueryRef?.refetch();
-  }
-
-  public getPitch(id: string) {
-    return this._pitchQuery
-      .watch({
-        id: id,
-      })
-      .valueChanges.pipe(map((result: any) => result.data.pitch));
-  }
-
-  public addPitch(value: CreatePitchInput) {
-    this._addPitchMutation.mutate(value).subscribe(() => {
-      this.refreshPitches();
-    });
   }
 }

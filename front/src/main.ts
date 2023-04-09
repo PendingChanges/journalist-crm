@@ -1,4 +1,3 @@
-
 import { TranslocoRootModule } from './infrastructure/transloco-root.module';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import {
@@ -28,9 +27,11 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import * as clientsEffects from './clients/state/clients.effects';
 import * as ideasEffects from './ideas/state/ideas.effects';
+import * as pitchesEffects from './pitches/state/pitches.effects';
 import { ideasReducer } from './ideas/state/ideas.reducer';
 import { provideRouter } from '@angular/router';
 import { AppComponent } from './layout/components/app.component';
+import { pitchesReducer } from './pitches/state/pitches.reducer';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -67,8 +68,12 @@ bootstrapApplication(AppComponent, {
     provideRouter(ROUTES),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideStore({ clientState: clientsReducer, ideaState: ideasReducer }),
-    provideEffects(clientsEffects, ideasEffects),
+    provideStore({
+      clientState: clientsReducer,
+      ideaState: ideasReducer,
+      pitchState: pitchesReducer,
+    }),
+    provideEffects(clientsEffects, ideasEffects, pitchesEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
