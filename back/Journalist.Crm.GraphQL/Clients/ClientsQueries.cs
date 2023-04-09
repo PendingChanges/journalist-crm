@@ -23,10 +23,11 @@ public class ClientsQueries
             int? skip,
             int? take,
             string? sortBy,
+            string? sortDirection,
             CancellationToken cancellationToken = default
         )
     {
-        var request = new GetClientsRequest(null, skip, take, sortBy, context.UserId);
+        var request = new GetClientsRequest(null, skip, take, sortBy, sortDirection, context.UserId);
         var clientResultSet = await clientReader.GetClientsAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(clientResultSet.HasNextPage, clientResultSet.HasPreviousPage);

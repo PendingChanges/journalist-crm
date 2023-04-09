@@ -1,10 +1,11 @@
 ﻿using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
+using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Commands;
 using MediatR;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,10 +20,10 @@ public class ClientsMutations
     public async Task<ClientAddedPayload> AddClientAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
-        CreateClientInput clientInput,
+        CreateClient createClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreateClient(clientInput.Name, context.UserId);
+        var command = new WrappedCommand<CreateClient, ClientAggregate>(createClient, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -35,10 +36,10 @@ public class ClientsMutations
     public async Task<string> RemoveClientAsync(
         [Service] IMediator mediator,
         [Service] IContext context,
-        string id,
+        DeleteClient deleteClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new DeleteClient(id, context.UserId);
+        var command = new WrappedCommand<DeleteClient, ClientAggregate>(deleteClient, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -48,10 +49,10 @@ public class ClientsMutations
     [Authorize(Roles = new[] { "user" })]
     [Error(typeof(DomainException))]
     [GraphQLName("renameClient")]
-    public async Task<string> RenameClientAsync([Service] IMediator mediator, [Service] IContext context, RenameClientInput renameClientInput,
+    public async Task<string> RenameClientAsync([Service] IMediator mediator, [Service] IContext context, RenameClient renameClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new RenameClient(renameClientInput.Id, renameClientInput.Name, context.UserId);
+        var command = new WrappedCommand<RenameClient, ClientAggregate>(renameClient, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

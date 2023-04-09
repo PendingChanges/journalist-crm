@@ -2,5 +2,5 @@
 
 namespace Journalist.Crm.Domain.Clients.Commands
 {
-    public record DeleteClient(string Id, string OwnerId) : IRequest<ClientAggregate>;
+    public record DeleteClient(string Id) : ICommand;
 }

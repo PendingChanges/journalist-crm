@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class RenameClientHandler : IRequestHandler<RenameClient, ClientAggregate>
+    internal class RenameClientHandler : IRequestHandler<WrappedCommand<RenameClient, ClientAggregate>, ClientAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -18,16 +18,17 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<ClientAggregate> Handle(RenameClient request, CancellationToken cancellationToken)
+        public async Task<ClientAggregate> Handle(WrappedCommand<RenameClient, ClientAggregate> request, CancellationToken cancellationToken)
         {
-            var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(request.Id, ct: cancellationToken);
+            var command = request.Command;
+            var clientAggregate = await _aggregateStore.LoadAsync<ClientAggregate>(command.Id, ct: cancellationToken);
 
             if (clientAggregate == null)
             {
                 throw new DomainException(new[] { new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists") });
             }
 
-            clientAggregate.Rename(request.NewName, request.OwnerId);
+            clientAggregate.Rename(command.NewName, request.OwnerId);
             var errors = clientAggregate.GetUncommitedErrors();
 
             if (errors.Any())

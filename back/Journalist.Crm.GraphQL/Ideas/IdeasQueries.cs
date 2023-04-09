@@ -25,9 +25,10 @@ public class IdeasQueries
             int? skip,
             int? take,
             string? sortBy,
+            string? sortDirection,
             CancellationToken cancellationToken = default)
     {
-        var request = new GetIdeasRequest(null, skip, take, sortBy, context.UserId);
+        var request = new GetIdeasRequest(null, skip, take, sortBy, sortDirection, context.UserId);
         var pitchesResultSet = await ideasReader.GetIdeasAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);

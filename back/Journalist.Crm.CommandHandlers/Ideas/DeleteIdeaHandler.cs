@@ -1,5 +1,4 @@
 ﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
 using Journalist.Crm.Marten;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class DeleteIdeaHandler : IRequestHandler<DeleteIdea, IdeaAggregate>
+    internal class DeleteIdeaHandler : IRequestHandler<WrappedCommand<DeleteIdea, IdeaAggregate>, IdeaAggregate>
     {
         private readonly IStoreAggregates _aggregateStore;
 
@@ -19,9 +18,10 @@ namespace Journalist.Crm.CommandHandlers.Clients
             _aggregateStore = aggregateStore;
         }
 
-        public async Task<IdeaAggregate> Handle(DeleteIdea request, CancellationToken cancellationToken)
+        public async Task<IdeaAggregate> Handle(WrappedCommand<DeleteIdea, IdeaAggregate> request, CancellationToken cancellationToken)
         {
-            var ideaAggregate = await _aggregateStore.LoadAsync<IdeaAggregate>(request.Id, ct: cancellationToken);
+            var command = request.Command;
+            var ideaAggregate = await _aggregateStore.LoadAsync<IdeaAggregate>(command.Id, ct: cancellationToken);
 
             if (ideaAggregate == null)
             {
@@ -29,7 +29,7 @@ namespace Journalist.Crm.CommandHandlers.Clients
             }
 
 
-            ideaAggregate.Delete(request.Id, request.OwnerId);
+            ideaAggregate.Delete(command.Id, request.OwnerId);
             var errors = ideaAggregate.GetUncommitedErrors();
             if (errors.Any())
             {

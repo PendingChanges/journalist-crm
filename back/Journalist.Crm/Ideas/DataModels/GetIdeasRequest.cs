@@ -4,19 +4,17 @@ namespace Journalist.Crm.Domain.Ideas.DataModels
 {
     public class GetIdeasRequest : PaginatedRequestBase
     {
-        private const int DEFAULT_IDEA_PAGENUMBER = 1;
-        private const int DEFAULT_IDEA_PAGE_SIZE = 10;
-        private const string DEFAULT_IDEA_SORTBY = "Title";
-
         public GetIdeasRequest(
              string? pitchId,
             int? skip,
             int? take,
             string? sortBy,
+            string? sortDirection,
             string userId) : base(
-                skip ?? DEFAULT_IDEA_PAGENUMBER,
-                take ?? DEFAULT_IDEA_PAGE_SIZE,
-                sortBy ?? DEFAULT_IDEA_SORTBY,
+                skip ?? Constants.DEFAULT_PAGENUMBER,
+                take ?? Constants.DEFAULT_PAGESIZE,
+                sortBy ?? Constants.DEFAULT_IDEA_SORTBY,
+                sortDirection ?? Constants.DEFAULT_SORT_DIRECTION,
                 userId)
         {
             PitchId = pitchId;

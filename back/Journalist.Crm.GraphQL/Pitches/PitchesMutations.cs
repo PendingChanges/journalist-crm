@@ -1,7 +1,9 @@
 ﻿using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
+using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
 using MediatR;
 using System.Threading;
@@ -18,10 +20,10 @@ namespace Journalist.Crm.GraphQL.Pitches
         public async Task<PitchAddedPayload> AddPitchAsync(
                     [Service] IMediator mediator,
         [Service] IContext context,
-    PitchInput pitchInput,
+    CreatePitch createPitch,
     CancellationToken cancellationToken = default)
         {
-            var command = new CreatePitch(pitchInput.Title, pitchInput.Content, pitchInput.DeadLineDate, pitchInput.IssueDate, pitchInput.ClientId, pitchInput.IdeaId, context.UserId);
+            var command = new WrappedCommand<CreatePitch, PitchAggregate>(createPitch, context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 
@@ -33,10 +35,10 @@ namespace Journalist.Crm.GraphQL.Pitches
         public async Task<string> RemovePitchAsync(
                     [Service] IMediator mediator,
         [Service] IContext context,
-            string id,
+            DeletePitch deletePitch,
             CancellationToken cancellationToken = default)
         {
-            var command = new DeletePitch(id, context.UserId);
+            var command = new WrappedCommand<DeletePitch, PitchAggregate>(deletePitch, context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 

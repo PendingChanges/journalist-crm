@@ -1,0 +1,14 @@
+<ng-container *transloco="let t; read: 'ideas'">
+  <h1>{{ t("title") }}</h1>
+  <div class="action-list">
+    <app-ideas-action-menu></app-ideas-action-menu>
+  </div>
+  <ng-container *ngIf="loading$ | async; else idealist">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </ng-container>
+  <ng-template #idealist>
+    <app-idea-list [ideas]="ideas$ | async"></app-idea-list>
+  </ng-template>
+</ng-container>

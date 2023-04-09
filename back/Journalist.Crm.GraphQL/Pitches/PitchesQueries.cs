@@ -26,9 +26,10 @@ public class PitchesQueries
             int? skip,
     int? take,
     string? sortBy,
+    string? sortDirection,
             CancellationToken cancellationToken = default)
     {
-        var request = new GetPitchesRequest(clientId, ideaId, skip, take, sortBy, context.UserId);
+        var request = new GetPitchesRequest(clientId, ideaId, skip, take, sortBy, sortDirection, context.UserId);
         var pitchesResultSet = await pitchesReader.GetPitchesAsync(request, cancellationToken);
 
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
