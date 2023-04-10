@@ -127,11 +127,18 @@ export type IdeaAddedPayload = {
   ideaId?: Maybe<Scalars['String']>;
 };
 
+export type ModifyIdeaInput = {
+  id: Scalars['String'];
+  newDescription?: InputMaybe<Scalars['String']>;
+  newName: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addClient: ClientAddedPayload;
   addIdea: IdeaAddedPayload;
   addPitch: PitchAddedPayload;
+  modifyIdea: Scalars['String'];
   removeClient: Scalars['String'];
   removeIdea: Scalars['String'];
   removePitch: Scalars['String'];
@@ -151,6 +158,11 @@ export type MutationAddIdeaArgs = {
 
 export type MutationAddPitchArgs = {
   createPitch: CreatePitchInput;
+};
+
+
+export type MutationModifyIdeaArgs = {
+  modifyIdea: ModifyIdeaInput;
 };
 
 
@@ -208,6 +220,7 @@ export type Query = {
 export type QueryAllClientsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   sortBy?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<Scalars['String']>;
   take?: InputMaybe<Scalars['Int']>;
 };
 
@@ -215,6 +228,7 @@ export type QueryAllClientsArgs = {
 export type QueryAllIdeasArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   sortBy?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<Scalars['String']>;
   take?: InputMaybe<Scalars['Int']>;
 };
 
@@ -224,6 +238,7 @@ export type QueryAllPitchesArgs = {
   ideaId?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   sortBy?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<Scalars['String']>;
   take?: InputMaybe<Scalars['Int']>;
 };
 

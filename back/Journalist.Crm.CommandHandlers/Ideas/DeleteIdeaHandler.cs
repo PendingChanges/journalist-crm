@@ -1,7 +1,6 @@
 ﻿using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
-using Journalist.Crm.Marten;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -29,7 +28,7 @@ namespace Journalist.Crm.CommandHandlers.Clients
             }
 
 
-            ideaAggregate.Delete(command.Id, request.OwnerId);
+            ideaAggregate.Delete(request.OwnerId);
             var errors = ideaAggregate.GetUncommitedErrors();
             if (errors.Any())
             {

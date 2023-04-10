@@ -1,5 +1,5 @@
 <div id="form-area">
-  <h1>Add Idea</h1>
+  <h1>{{getTitle()}</h1>
   <form id="idea-form" [formGroup]="ideaFormGroup" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="idea-name" class="form-label">Name</label>
@@ -23,6 +23,8 @@
     >
       Save
     </button>
-    <button type="button" class="btn btn-secondary" (click)="onCancelClick()">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancelClick()">
+      Cancel
+    </button>
   </div>
 </div>

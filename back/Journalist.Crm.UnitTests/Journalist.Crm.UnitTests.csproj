@@ -24,6 +24,9 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Journalist.Crm.Api\Journalist.Crm.Api.csproj" />
+	  <ProjectReference Include="..\Journalist.Crm.CommandHandlers\Journalist.Crm.CommandHandlers.csproj" />
+	  <ProjectReference Include="..\Journalist.Crm.GraphQL\Journalist.Crm.GraphQL.csproj" />
+	  <ProjectReference Include="..\Journalist.Crm.Marten\Journalist.Crm.Marten.csproj" />
 	  <ProjectReference Include="..\Journalist.Crm\Journalist.Crm.Domain.csproj" />
 	</ItemGroup>
 

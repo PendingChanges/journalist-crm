@@ -1,7 +1,6 @@
 ﻿using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
-using Journalist.Crm.Marten;
 using MediatR;
 using System.Linq;
 using System.Threading;

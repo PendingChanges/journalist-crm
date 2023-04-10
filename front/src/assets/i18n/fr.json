@@ -17,7 +17,8 @@
       "nbOfPitches": "Nb de pitches",
       "select": "Sélectionner"
     },
-    "add_idea": "Ajouter une idée"
+    "add_idea": "Ajouter une idée",
+    "modify_idea": "Modifier {{ideaName}}"
   },
   "pitches": {
     "title": "Pitches",

@@ -8,6 +8,7 @@ import {
   DeleteIdeaInput,
   QueryAllIdeasArgs,
   QueryAutoCompleteIdeaArgs,
+  ModifyIdeaInput,
 } from 'src/models/generated/graphql';
 import { AddIdeaMutation } from 'src/ideas/mutations/AddIdeaMutation';
 import { CreateIdeaInput } from 'src/models/generated/graphql';
@@ -16,6 +17,7 @@ import { AllIdeasQuery } from 'src/ideas/queries/AllIdeasQuery';
 import { AutoCompleteIdeaQuery } from 'src/ideas/queries/AutoCompleteIdeaQuery';
 import { IdeaQuery } from 'src/ideas/queries/IdeaQuery';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { ModifyIdeaMutation } from '../mutations/ModifyIdeaMutation';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +33,8 @@ export class IdeasService {
     private _ideaQuery: IdeaQuery,
     private _addIdeaMutation: AddIdeaMutation,
     private _deleteIdeaMutation: DeleteIdeaMutation,
-    private _autoCompleteIdeaQuery: AutoCompleteIdeaQuery
+    private _autoCompleteIdeaQuery: AutoCompleteIdeaQuery,
+    private _modifyIdeaMutation: ModifyIdeaMutation
   ) {
     this._allIdeasQueryRef = allIdeasQuery.watch();
     this.ideaListResult$ = this._allIdeasQueryRef.valueChanges;
@@ -61,6 +64,12 @@ export class IdeasService {
     deleteIdeaInput: DeleteIdeaInput
   ): Observable<MutationResult<{ removeIdea: string }>> {
     return this._deleteIdeaMutation.mutate(deleteIdeaInput);
+  }
+
+  public modifyIdea(
+    value: ModifyIdeaInput
+  ): Observable<MutationResult<string>> {
+    return this._modifyIdeaMutation.mutate(value);
   }
 
   public autoComplete(text: string): Observable<Idea[]> {

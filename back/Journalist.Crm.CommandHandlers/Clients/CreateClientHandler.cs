@@ -1,7 +1,6 @@
 ﻿using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Commands;
-using Journalist.Crm.Marten;
 using MediatR;
 using System.Linq;
 using System.Threading;

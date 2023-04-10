@@ -2,7 +2,6 @@
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
-using Journalist.Crm.Marten;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -21,10 +20,9 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
         public async Task<IdeaAggregate> Handle(WrappedCommand<CreateIdea, IdeaAggregate> request, CancellationToken cancellationToken)
         {
-            var ideaAggregate = new IdeaAggregate();
-
             var command = request.Command;
-            ideaAggregate.Create(command.Name, command.Description, request.OwnerId);
+
+            var ideaAggregate = new IdeaAggregate(command.Name, command.Description, request.OwnerId);
 
             //Store Aggregate
             var errors = ideaAggregate.GetUncommitedErrors();

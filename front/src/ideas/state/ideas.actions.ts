@@ -7,6 +7,7 @@ import {
   QueryAllIdeasArgs,
   QueryAllPitchesArgs,
   Pitch,
+  ModifyIdeaInput,
 } from 'src/models/generated/graphql';
 import { ErrorProps } from '../../common/state/ErrorProps';
 
@@ -15,6 +16,7 @@ export const IdeasActions = createActionGroup({
   events: {
     'Add Idea': props<CreateIdeaInput>(),
     'Remove Idea': props<DeleteIdeaInput>(),
+    'Modify Idea': props<ModifyIdeaInput>(),
     'Load Idea': props<{ ideaId: string }>(),
     'Load Idea List': props<{ args: QueryAllIdeasArgs; date?: Date }>(),
     'Idea List Loaded Success': props<{ ideas: ReadonlyArray<Idea> }>(),
@@ -34,5 +36,11 @@ export const IdeasActions = createActionGroup({
     'Idea Added Failure': props<ErrorProps>(),
     'Idea Removed Success': props<{ payload: string }>(),
     'Idea Removed Failure': props<ErrorProps>(),
+    'Idea Modified Success': props<{
+      payload: string;
+      newName: string;
+      newDescription?: string | null;
+    }>(),
+    'Idea Modified Failure': props<ErrorProps>(),
   },
 });
