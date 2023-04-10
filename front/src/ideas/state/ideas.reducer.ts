@@ -29,6 +29,12 @@ export const ideasReducer = createReducer(
       loading: true,
     };
   }),
+  on(IdeasActions.modifyIdea, (state, _a) => {
+    return {
+      ...state,
+      loading: true,
+    };
+  }),
   on(IdeasActions.ideaListLoadedSuccess, (state, result) => {
     return <IdeaState>{
       ...state,
@@ -89,6 +95,24 @@ export const ideasReducer = createReducer(
     };
   }),
   on(IdeasActions.ideaRemovedFailure, (state, result) => {
+    return <IdeaState>{
+      ...state,
+      loading: false,
+      errors: result.errors,
+    };
+  }),
+  on(IdeasActions.ideaModifiedSuccess, (state, modifyIdea) => {
+    return <IdeaState>{
+      ...state,
+      currentIdea: {
+        ...state.currentIdea,
+        name: modifyIdea.newName,
+        description: modifyIdea.newDescription,
+      },
+      loading: false,
+    };
+  }),
+  on(IdeasActions.ideaModifiedFailure, (state, result) => {
     return <IdeaState>{
       ...state,
       loading: false,

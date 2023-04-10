@@ -1,5 +1,6 @@
 ﻿using Journalist.Crm.Domain.Ideas.Events;
 using System;
+using System.Xml.Linq;
 
 namespace Journalist.Crm.Domain.Ideas
 {
@@ -10,32 +11,19 @@ namespace Journalist.Crm.Domain.Ideas
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
-        public IdeaAggregate()
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public IdeaAggregate(string name, string? description, string ownerId)
         {
-            Name = string.Empty;
-            Description = string.Empty;
-            OwnerId = string.Empty;
-            Deleted = false;
-        }
-
-        public void Create(string name, string? description, string ownerId)
-        {
-            if(State == AggregateState.Set)
-            {
-                AddUncommitedError(new Error("AGGREGATE_ALREADY_SET", "The aggregate is already set"));
-            }
-
-            if (HasErrors)
-            {
-                return;
-            }
-
             var id = Guid.NewGuid().ToString();
 
             var @event = new IdeaCreated(id, name, description, ownerId);
             Apply(@event);
             AddUncommitedEvent(@event);
         }
+
+        private IdeaAggregate() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         public void Delete(string ownerId)
         {
@@ -54,7 +42,7 @@ namespace Journalist.Crm.Domain.Ideas
             AddUncommitedEvent(@event);
         }
 
-        public void Modify(string newName, string newDescrition, string ownerId)
+        public void Modify(string newName, string? newDescrition, string ownerId)
         {
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {

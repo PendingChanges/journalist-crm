@@ -129,7 +129,7 @@ export type IdeaAddedPayload = {
 
 export type ModifyIdeaInput = {
   id: Scalars['String'];
-  newDescription: Scalars['String'];
+  newDescription?: InputMaybe<Scalars['String']>;
   newName: Scalars['String'];
 };
 

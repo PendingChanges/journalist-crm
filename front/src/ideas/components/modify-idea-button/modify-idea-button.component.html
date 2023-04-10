@@ -1,0 +1,8 @@
+<button
+  *transloco="let t"
+  type="button"
+  class="btn btn-primary"
+  (click)="openDialog()"
+>
+  {{ t("ideas.modify_idea", { ideaName: idea?.name }) }}
+</button>

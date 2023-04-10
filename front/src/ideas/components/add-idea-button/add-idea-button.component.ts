@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddIdeaComponent } from '../add-idea/add-idea.component';
+import { SaveIdeaComponent } from '../save-idea/save-idea.component';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
@@ -14,6 +14,6 @@ export class AddIdeaButtonComponent {
   constructor(private modalService: NgbModal) {}
 
   openDialog(): void {
-    const dialogRef = this.modalService.open(AddIdeaComponent);
+    const dialogRef = this.modalService.open(SaveIdeaComponent);
   }
 }

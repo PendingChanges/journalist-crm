@@ -20,10 +20,9 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
         public async Task<IdeaAggregate> Handle(WrappedCommand<CreateIdea, IdeaAggregate> request, CancellationToken cancellationToken)
         {
-            var ideaAggregate = new IdeaAggregate();
-
             var command = request.Command;
-            ideaAggregate.Create(command.Name, command.Description, request.OwnerId);
+
+            var ideaAggregate = new IdeaAggregate(command.Name, command.Description, request.OwnerId);
 
             //Store Aggregate
             var errors = ideaAggregate.GetUncommitedErrors();

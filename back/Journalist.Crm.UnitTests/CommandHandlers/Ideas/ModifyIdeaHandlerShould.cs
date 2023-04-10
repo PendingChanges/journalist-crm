@@ -24,9 +24,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         public async Task Handle_wrapped_command_modify_idea_properly()
         {
             //Arrange
-            var aggregate = new IdeaAggregate();
             var ownerId = "ownerId";
-            aggregate.Create("name", "description", "ownerId");
+            var aggregate = new IdeaAggregate("name", "description", ownerId);
             aggregate.ClearUncommitedEvents();
             _aggregateStoreMock.Setup(_ => _.LoadAsync<IdeaAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);

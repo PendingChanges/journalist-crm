@@ -27,8 +27,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [When(@"A user with id ""([^""]*)"" create an idea with name ""([^""]*)"" and descrition ""([^""]*)""")]
         public void WhenAUserWithIdCreateAnIdeaWithNameAndDescrition(string ownerId, string name, string description)
         {
-            var aggregate = new IdeaAggregate();
-            aggregate.Create(name, description, ownerId);
+            var aggregate = new IdeaAggregate(name, description, ownerId);
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -53,8 +52,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [Given(@"An existing idea with name ""([^""]*)"", description ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingIdeaWithNameDescriptionAndAnOwner(string name, string description, string ownerId)
         {
-            var aggregate = new IdeaAggregate();
-            aggregate.Create(name, description, ownerId);
+            var aggregate = new IdeaAggregate(name, description, ownerId);
             aggregate.ClearUncommitedEvents();
             _aggregateContext.Aggregate = aggregate;
         }

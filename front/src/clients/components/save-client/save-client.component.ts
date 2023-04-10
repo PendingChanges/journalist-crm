@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { Client, RenameClientInput } from 'src/models/generated/graphql';
 import { CreateClientInput } from 'src/models/generated/graphql';
 import { ClientsActions } from 'src/clients/state/clients.actions';
+import { SaveType } from 'src/models/SaveType';
 
 interface ClientForm {
   name: FormControl<string>;
@@ -79,7 +80,6 @@ export class SaveClientComponent implements OnInit {
         });
   }
 }
-export type SaveType = 'add' | 'modify';
 
 export class SaveClientModel {
   constructor(public type: SaveType, public client: Client | null) {}

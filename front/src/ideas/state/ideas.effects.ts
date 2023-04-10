@@ -158,6 +158,35 @@ export const removeIdea = createEffect(
   { functional: true, dispatch: true }
 );
 
+export const modifyIdea = createEffect(
+  (actions$ = inject(Actions), ideasService = inject(IdeasService)) => {
+    return actions$.pipe(
+      ofType(IdeasActions.modifyIdea),
+      switchMap((modifyIdea) => {
+        return ideasService.modifyIdea(modifyIdea).pipe(
+          map((modifyIdeaResult) =>
+            IdeasActions.ideaModifiedSuccess({
+              payload: <string>modifyIdeaResult.data,
+              newName: modifyIdea.newName,
+              newDescription: modifyIdea.newDescription
+            })
+          ),
+          catchError((result: MutationResult<{ modifyIdea: string }>) =>
+            of(
+              IdeasActions.ideaModifiedFailure({
+                errors: result.errors?.map((e) => e.message) || [
+                  'Unknown error',
+                ],
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  { functional: true, dispatch: true }
+);
+
 export const redirectToIdea = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
