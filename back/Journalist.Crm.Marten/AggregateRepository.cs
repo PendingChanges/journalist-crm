@@ -27,7 +27,7 @@ namespace Journalist.Crm.Marten
             aggregate.ClearUncommitedEvents();
         }
 
-        public async Task<T> LoadAsync<T>(
+        public async Task<T?> LoadAsync<T>(
             string id,
             int? version = null,
             CancellationToken ct = default
@@ -35,7 +35,7 @@ namespace Journalist.Crm.Marten
         {
             await using var session = store.LightweightSession();
             var aggregate = await session.Events.AggregateStreamAsync<T>(id, version ?? 0, token: ct);
-            return aggregate ?? throw new InvalidOperationException($"No aggregate by id {id}.");
+            return aggregate;
         }
     }
 }

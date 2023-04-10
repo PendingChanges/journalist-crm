@@ -37,13 +37,8 @@ namespace Journalist.Crm.Domain.Ideas
             AddUncommitedEvent(@event);
         }
 
-        public void Delete(string ideaId, string ownerId)
+        public void Delete(string ownerId)
         {
-            if (string.CompareOrdinal(Id, ideaId) != 0)
-            {
-                AddUncommitedError(new Error("INVALID_IDEA_ID", "The idea id is invalid"));
-            }
-
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
                 AddUncommitedError(new Error("NOT_IDEA_OWNER", "The user is not the owner of this idea"));
@@ -59,6 +54,23 @@ namespace Journalist.Crm.Domain.Ideas
             AddUncommitedEvent(@event);
         }
 
+        public void Modify(string newName, string newDescrition, string ownerId)
+        {
+            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
+            {
+                AddUncommitedError(new Error("NOT_IDEA_OWNER", "The user is not the owner of this idea"));
+            }
+
+            if (HasErrors)
+            {
+                return;
+            }
+            
+            var @event = new IdeaModified(Id, newName, newDescrition);
+            Apply(@event);
+            AddUncommitedEvent(@event);
+        }
+
         private void Apply(IdeaCreated @event)
         {
             SetId(@event.Id);
@@ -67,6 +79,14 @@ namespace Journalist.Crm.Domain.Ideas
             Description = @event.Description;
             OwnerId = @event.OwnerId;
             Deleted = false;
+
+            IncrementVersion();
+        }
+
+        private void Apply(IdeaModified @event)
+        {
+            Name = @event.NewName;
+            Description = @event.NewDescription;
 
             IncrementVersion();
         }

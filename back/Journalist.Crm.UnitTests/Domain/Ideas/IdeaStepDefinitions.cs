@@ -1,8 +1,7 @@
-using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Events;
+using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Events;
-using System;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -56,6 +55,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         {
             var aggregate = new IdeaAggregate();
             aggregate.Create(name, description, ownerId);
+            aggregate.ClearUncommitedEvents();
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -66,7 +66,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
 
             Assert.NotNull(ideaAggregate);
 
-            ideaAggregate.Delete(ideaAggregate.Id, ownerId);
+            ideaAggregate.Delete( ownerId);
         }
 
         [Then(@"The idea is deleted")]
@@ -95,5 +95,36 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
             Assert.DoesNotContain(ideaAggregate.GetUncommitedEvents(), e => e is IdeaDeleted);
         }
 
+        [When(@"A user with id ""([^""]*)"" modify the idea to new name ""([^""]*)"" and new description ""([^""]*)""")]
+        public void WhenAUserWithIdModifyTheIdeaToNewNameAndNewDescription(string ownerId, string newName, string newDescrition)
+        {
+            var ideaAggregate = _aggregateContext.Aggregate as IdeaAggregate;
+
+            if(ideaAggregate == null)
+            {
+                return;
+            }
+
+            ideaAggregate.Modify(newName, newDescrition, ownerId);
+        }
+
+        [Then(@"The idea is modified with new name ""([^""]*)"" and new description ""([^""]*)""")]
+        public void ThenTheIdeaIsModifiedWithNewNameAndNewDescription(string newName, string newDescription)
+        {
+            var ideaAggregate = _aggregateContext.Aggregate as IdeaAggregate;
+
+            Assert.NotNull(ideaAggregate);
+            Assert.Equal(newName, ideaAggregate.Name);
+            Assert.Equal(newDescription, ideaAggregate.Description);
+
+            var events = ideaAggregate.GetUncommitedEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as IdeaModified;
+
+            Assert.NotNull(@event);
+            Assert.Equal(ideaAggregate.Id, @event.Id);
+            Assert.Equal(newName, @event.NewName);
+            Assert.Equal(newDescription, @event.NewDescription);
+        }
     }
 }

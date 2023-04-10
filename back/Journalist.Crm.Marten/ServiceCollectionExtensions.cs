@@ -1,4 +1,5 @@
-﻿using Journalist.Crm.Domain.Clients;
+﻿using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
