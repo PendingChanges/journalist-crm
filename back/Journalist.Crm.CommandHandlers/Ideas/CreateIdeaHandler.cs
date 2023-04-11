@@ -9,31 +9,15 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateIdeaHandler : IRequestHandler<WrappedCommand<CreateIdea, IdeaAggregate>, IdeaAggregate>
+    internal class CreateIdeaHandler : SingleAggregateCommandHandlerBase<CreateIdea, IdeaAggregate>
     {
-        private readonly IStoreAggregates _aggregateStore;
+        public CreateIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        public CreateIdeaHandler(IStoreAggregates aggregateStore)
+        protected override void ExecuteCommand(IdeaAggregate aggregate, CreateIdea command, string ownerId)
         {
-            _aggregateStore = aggregateStore;
         }
 
-        public async Task<IdeaAggregate> Handle(WrappedCommand<CreateIdea, IdeaAggregate> request, CancellationToken cancellationToken)
-        {
-            var command = request.Command;
-
-            var ideaAggregate = new IdeaAggregate(command.Name, command.Description, request.OwnerId);
-
-            //Store Aggregate
-            var errors = ideaAggregate.GetUncommitedErrors();
-            if (errors.Any())
-            {
-                throw new DomainException(errors);
-            }
-
-            await _aggregateStore.StoreAsync(ideaAggregate, cancellationToken);
-
-            return ideaAggregate;
-        }
+        protected override Task<IdeaAggregate?> LoadAggregate(CreateIdea command, string ownerId, CancellationToken cancellationToken)
+            => Task.FromResult<IdeaAggregate?>(new IdeaAggregate(command.Name, command.Description, ownerId));
     }
 }

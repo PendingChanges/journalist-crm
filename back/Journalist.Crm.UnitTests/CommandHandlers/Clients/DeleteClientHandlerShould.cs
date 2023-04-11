@@ -1,36 +1,36 @@
 ﻿using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.CommandHandlers.Clients;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Ideas;
-using Journalist.Crm.Domain.Ideas.Commands;
+using Journalist.Crm.Domain.Clients;
+using Journalist.Crm.Domain.Clients.Commands;
 using Moq;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
+namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
 {
-    public class ModifyIdeaHandlerShould
+    public class DeleteClientHandlerShould
     {
         private Mock<IStoreAggregates> _aggregateStoreMock;
 
-        public ModifyIdeaHandlerShould()
+        public DeleteClientHandlerShould()
         {
             _aggregateStoreMock = new Mock<IStoreAggregates>();
         }
 
         [Fact]
-        public async Task Handle_wrapped_command_modify_idea_properly()
+        public async Task Handle_wrapped_command_delete_client_properly()
         {
             //Arrange
             var ownerId = "ownerId";
-            var aggregate = new IdeaAggregate("name", "description", ownerId);
+            var aggregate = new ClientAggregate("name", ownerId);
             aggregate.ClearUncommitedEvents();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<IdeaAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
-            var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
-            var command = new ModifyIdea(aggregate.Id, "new name", "new description");
-            var wrappedCommand = new WrappedCommand<ModifyIdea, IdeaAggregate>(command, ownerId);
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<ClientAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var handler = new DeleteClientHandler(_aggregateStoreMock.Object);
+            var command = new DeleteClient(aggregate.Id);
+            var wrappedCommand = new WrappedCommand<DeleteClient, ClientAggregate>(command, ownerId);
 
             //Act
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
@@ -45,10 +45,10 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
             //Arrange
             var ownerId = "ownerId";
             var aggegateId = "id";
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<IdeaAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((IdeaAggregate?)null);
-            var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
-            var command = new ModifyIdea(aggegateId, "new name", "new description");
-            var wrappedCommand = new WrappedCommand<ModifyIdea, IdeaAggregate>(command, ownerId);
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<ClientAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((ClientAggregate?)null);
+            var handler = new DeleteClientHandler(_aggregateStoreMock.Object);
+            var command = new DeleteClient(aggegateId);
+            var wrappedCommand = new WrappedCommand<DeleteClient, ClientAggregate>(command, ownerId);
 
             //Act
             var exception = await Assert.ThrowsAsync<DomainException>(() => handler.Handle(wrappedCommand, CancellationToken.None));

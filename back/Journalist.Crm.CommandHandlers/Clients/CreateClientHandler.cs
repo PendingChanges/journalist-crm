@@ -8,30 +8,15 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateClientHandler : IRequestHandler<WrappedCommand<CreateClient, ClientAggregate>, ClientAggregate>
+    internal class CreateClientHandler : SingleAggregateCommandHandlerBase<CreateClient, ClientAggregate>
     {
-        private readonly IStoreAggregates _aggregateStore;
+        public CreateClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        public CreateClientHandler(IStoreAggregates aggregateStore)
+        protected override void ExecuteCommand(ClientAggregate aggregate, CreateClient command, string ownerId)
         {
-            _aggregateStore = aggregateStore;
         }
 
-        public async Task<ClientAggregate> Handle(WrappedCommand<CreateClient, ClientAggregate> request, CancellationToken cancellationToken)
-        {
-            var command = request.Command;
-            var clientAggregate = new ClientAggregate(command.Name, request.OwnerId);
-
-            //Store Aggregate
-            var errors = clientAggregate.GetUncommitedErrors();
-            if (errors.Any())
-            {
-                throw new DomainException(errors);
-            }
-
-            await _aggregateStore.StoreAsync(clientAggregate, cancellationToken);
-
-            return clientAggregate;
-        }
+        protected override Task<ClientAggregate?> LoadAggregate(CreateClient command, string ownerId, CancellationToken cancellationToken)
+            => Task.FromResult<ClientAggregate?>(new ClientAggregate(command.Name, ownerId));
     }
 }

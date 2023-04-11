@@ -14,17 +14,8 @@ namespace Journalist.Crm.Domain.Pitches
         public string OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
-        public PitchAggregate()
-        {
-            Title = string.Empty;
-            Content = string.Empty;
-            ClientId = string.Empty;
-            IdeaId = string.Empty;
-            OwnerId = string.Empty;
-            Deleted = false;
-        }
-
-        public void Create(string title, string? content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public PitchAggregate(string title, string? content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
         {
             var id = Guid.NewGuid().ToString();
 
@@ -34,13 +25,12 @@ namespace Journalist.Crm.Domain.Pitches
             AddUncommitedEvent(@event);
         }
 
-        public void Delete(string pitchId, string ownerId)
-        {
-            if (string.CompareOrdinal(Id, pitchId) != 0)
-            {
-                AddUncommitedError(new Error("INVALID_PITCH_ID", "The pitch id is invalid"));
-            }
+        private PitchAggregate() { }
 
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+        public void Delete(string ownerId)
+        {
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
                 AddUncommitedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
