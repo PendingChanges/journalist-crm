@@ -1,40 +1,20 @@
 ﻿using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
-using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
-    internal class CreatePitchHandler : IRequestHandler<WrappedCommand<CreatePitch, PitchAggregate>, PitchAggregate>
+    internal class CreatePitchHandler : SingleAggregateCommandHandlerBase<CreatePitch, PitchAggregate>
     {
-        private readonly IStoreAggregates _aggregateStore;
+        public CreatePitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        public CreatePitchHandler(IStoreAggregates aggregateStore)
+        protected override void ExecuteCommand(PitchAggregate aggregate, CreatePitch command, string ownerId)
         {
-            _aggregateStore = aggregateStore;
         }
 
-        public async Task<PitchAggregate> Handle(WrappedCommand<CreatePitch, PitchAggregate> request, CancellationToken cancellationToken)
-        {
-            var command = request.Command;
-
-            //TODO: Check existence of clientId and ideaId
-            var pitchAggregate = new PitchAggregate();
-
-            pitchAggregate.Create(command.Title, command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, request.OwnerId);
-
-            //Store Aggregate
-            var errors = pitchAggregate.GetUncommitedErrors();
-            if (errors.Any())
-            {
-                throw new DomainException(errors);
-            }
-
-            await _aggregateStore.StoreAsync(pitchAggregate, cancellationToken);
-            return pitchAggregate;
-        }
+        protected override Task<PitchAggregate?> LoadAggregate(CreatePitch command, string ownerId, CancellationToken cancellationToken)
+         => Task.FromResult<PitchAggregate?>(new PitchAggregate(command.Title, command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId));
     }
 }

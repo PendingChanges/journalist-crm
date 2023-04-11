@@ -21,7 +21,7 @@ namespace Journalist.Crm.CommandHandlers
         {
             var command = request.Command;
 
-            var aggregate = await LoadAggregate(command, cancellationToken);
+            var aggregate = await LoadAggregate(command, request.OwnerId, cancellationToken);
 
             if (aggregate == null)
             {
@@ -41,7 +41,7 @@ namespace Journalist.Crm.CommandHandlers
             return aggregate;
         }
 
-        protected abstract Task<TAggregate?> LoadAggregate(TCommand command, CancellationToken cancellationToken);
+        protected abstract Task<TAggregate?> LoadAggregate(TCommand command, string ownerId, CancellationToken cancellationToken);
 
         protected abstract void ExecuteCommand(TAggregate aggregate, TCommand command, string ownerId);
     }

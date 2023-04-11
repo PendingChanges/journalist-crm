@@ -1,43 +1,17 @@
 ﻿using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
-using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class DeleteIdeaHandler : IRequestHandler<WrappedCommand<DeleteIdea, IdeaAggregate>, IdeaAggregate>
+    internal class DeleteIdeaHandler : SingleAggregateCommandHandlerBase<DeleteIdea, IdeaAggregate>
     {
-        private readonly IStoreAggregates _aggregateStore;
+        public DeleteIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        public DeleteIdeaHandler(IStoreAggregates aggregateStore)
-        {
-            _aggregateStore = aggregateStore;
-        }
+        protected override void ExecuteCommand(IdeaAggregate aggregate, DeleteIdea command, string ownerId) => aggregate.Delete(ownerId);
 
-        public async Task<IdeaAggregate> Handle(WrappedCommand<DeleteIdea, IdeaAggregate> request, CancellationToken cancellationToken)
-        {
-            var command = request.Command;
-            var ideaAggregate = await _aggregateStore.LoadAsync<IdeaAggregate>(command.Id, ct: cancellationToken);
-
-            if (ideaAggregate == null)
-            {
-                throw new DomainException(new[] { new Domain.Error("AGGREGATE_NOT_FOUND", "Aggregate does not exists") });
-            }
-
-
-            ideaAggregate.Delete(request.OwnerId);
-            var errors = ideaAggregate.GetUncommitedErrors();
-            if (errors.Any())
-            {
-                throw new DomainException(errors);
-            }
-
-            await _aggregateStore.StoreAsync(ideaAggregate, cancellationToken);
-
-            return ideaAggregate;
-        }
+        protected override Task<IdeaAggregate?> LoadAggregate(DeleteIdea command, string ownerId, CancellationToken cancellationToken) => _aggregateStore.LoadAsync<IdeaAggregate>(command.Id, ct: cancellationToken);
     }
 }
