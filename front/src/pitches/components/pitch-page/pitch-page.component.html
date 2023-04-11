@@ -6,6 +6,9 @@
       </div>
     </div>
     <div class="row">
+      <app-pitch-action-menu [pitch]="pitch"></app-pitch-action-menu>
+    </div>
+    <div class="row">
       <div class="col-2 fw-bold">{{ t("pitches.table.client") }}:</div>
       <div class="col">
         <a [routerLink]="['/client', pitch.client?.id]"
