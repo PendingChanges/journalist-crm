@@ -102,6 +102,33 @@ export const addPitch = createEffect(
   { functional: true, dispatch: true }
 );
 
+export const removePitch = createEffect(
+  (actions$ = inject(Actions), pitchesService = inject(PitchesService)) => {
+    return actions$.pipe(
+      ofType(PitchesActions.removePitch),
+      switchMap((removePitch) => {
+        return pitchesService.removePitch(removePitch).pipe(
+          map((removePitchResult) =>
+            PitchesActions.pitchRemovedSuccess({
+              payload: <string>removePitchResult.data?.removePitch,
+            })
+          ),
+          catchError((result: MutationResult<{ removePitch: string }>) =>
+            of(
+              PitchesActions.pitchRemovedFailure({
+                errors: result.errors?.map((e) => e.message) || [
+                  'Unknown error',
+                ],
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  { functional: true, dispatch: true }
+);
+
 export const redirectToPitch = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(

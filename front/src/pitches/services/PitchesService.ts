@@ -13,6 +13,7 @@ import { CreatePitchInput } from 'src/models/generated/graphql';
 import { AllPitchesQuery } from 'src/pitches/queries/AllPitchesQuery';
 import { PitchQuery } from 'src/pitches/queries/PitchQuery';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { DeletePitchMutation } from '../mutations/DeletePitchMutation';
 
 @Injectable({
   providedIn: 'root',
@@ -33,17 +34,11 @@ export class PitchesService {
     QueryAllPitchesArgs
   > | null = null;
 
-  private _allPitchesByIDeaIdQueryRef: {
-    [id: string]: QueryRef<
-      { allPitches: AllPitchesCollectionSegment },
-      QueryAllPitchesArgs
-    > | null;
-  } = {};
-
   constructor(
     private _allPitchesQuery: AllPitchesQuery,
     private _pitchQuery: PitchQuery,
-    private _addPitchMutation: AddPitchMutation
+    private _addPitchMutation: AddPitchMutation,
+    private _deletePitchMutation: DeletePitchMutation
   ) {
     this._allPitchesQueryRef = this._allPitchesQuery.watch();
     this._currrentClientallPitchesQueryRef = this._allPitchesQuery.watch();
@@ -52,7 +47,7 @@ export class PitchesService {
     this.currentClientPitchListResult$ =
       this._currrentClientallPitchesQueryRef.valueChanges;
     this.currentIdeaPitchListResult$ =
-    this._currrentIdeaallPitchesQueryRef.valueChanges;
+      this._currrentIdeaallPitchesQueryRef.valueChanges;
   }
 
   public pitchListResult$: Observable<
@@ -62,7 +57,7 @@ export class PitchesService {
   public currentClientPitchListResult$: Observable<
     ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
   >;
-  
+
   public currentIdeaPitchListResult$: Observable<
     ApolloQueryResult<{ allPitches: AllPitchesCollectionSegment }>
   >;
@@ -81,6 +76,12 @@ export class PitchesService {
     value: CreatePitchInput
   ): Observable<MutationResult<{ addPitch: PitchAddedPayload }>> {
     return this._addPitchMutation.mutate(value);
+  }
+
+  public removePitch(
+    deletePitchInput: DeletePitchInput
+  ): Observable<MutationResult<{ removePitch: string }>> {
+    return this._deletePitchMutation.mutate(deletePitchInput);
   }
 
   public refreshClientPitches(args: QueryAllPitchesArgs): void {
