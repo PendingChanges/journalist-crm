@@ -3,6 +3,7 @@ using Journalist.Crm.CommandHandlers.Pitches;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
+using Journalist.Crm.Domain.Pitches.ValueObjects;
 using Moq;
 using System;
 using System.Linq;
@@ -26,7 +27,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitchs
         {
             //Arrange
             var ownerId = "ownerId";
-            var aggregate = new PitchAggregate("name", "description", DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
+            var pitchContent = new PitchContent("name", "content");
+            var aggregate = new PitchAggregate(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
             aggregate.ClearUncommitedEvents();
             _aggregateStoreMock.Setup(_ => _.LoadAsync<PitchAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new DeletePitchHandler(_aggregateStoreMock.Object);

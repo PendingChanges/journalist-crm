@@ -36,7 +36,8 @@
       "content": "Synopsis",
       "idea": "Idée",
       "client": "Client"
-    }
+    },
+    "modify_pitch": "Modifier {{pitchTitle}}"
   },
   "common": {
     "delete": "Supprimer",

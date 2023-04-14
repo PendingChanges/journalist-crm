@@ -15,6 +15,6 @@ namespace Journalist.Crm.CommandHandlers.Pitches
         }
 
         protected override Task<PitchAggregate?> LoadAggregate(CreatePitch command, string ownerId, CancellationToken cancellationToken)
-         => Task.FromResult<PitchAggregate?>(new PitchAggregate(command.Title, command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId));
+         => Task.FromResult<PitchAggregate?>(new PitchAggregate(command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId));
     }
 }

@@ -47,11 +47,11 @@ namespace Journalist.Crm.Marten.Pitches
         {
             "desc" => request.SortBy switch
             {
-                _ => query.OrderByDescending(c => c.Title)
+                _ => query.OrderByDescending(c => c.Content.Title)
             },
             _ => request.SortBy switch
             {
-                _ => query.OrderBy(c => c.Title)
+                _ => query.OrderBy(c => c.Content.Title)
             },
         };
     }

@@ -30,6 +30,7 @@ namespace Journalist.Crm.GraphQL.Pitches
             return new PitchAddedPayload { PitchId = result.Id };
         }
 
+        [GraphQLName("removePitch")]
         [Authorize(Roles = new[] { "user" })]
         [Error(typeof(DomainException))]
         public async Task<string> RemovePitchAsync(
@@ -39,6 +40,22 @@ namespace Journalist.Crm.GraphQL.Pitches
             CancellationToken cancellationToken = default)
         {
             var command = new WrappedCommand<DeletePitch, PitchAggregate>(deletePitch, context.UserId);
+
+            var result = await mediator.Send(command, cancellationToken);
+
+            return result.Id;
+        }
+
+        [GraphQLName("modifyPitch")]
+        [Authorize(Roles = new[] { "user" })]
+        [Error(typeof(DomainException))]
+        public async Task<string> ModifyPitchAsync(
+            [Service] IMediator mediator,
+            [Service] IContext context,
+            ModifyPitch modifyPitch,
+            CancellationToken cancellationToken = default)
+        {
+            var command = new WrappedCommand<ModifyPitch, PitchAggregate>(modifyPitch, context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 

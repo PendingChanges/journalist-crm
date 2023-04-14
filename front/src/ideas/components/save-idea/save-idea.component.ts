@@ -72,10 +72,9 @@ export class SaveIdeaComponent implements OnInit {
             newName: this.ideaFormGroup.value.name,
             newDescription: this.ideaFormGroup.value.description,
           })
-        );
-
-        this._activeModal.close();
+        );  
       }
+      this._activeModal.close();
     }
   }
 

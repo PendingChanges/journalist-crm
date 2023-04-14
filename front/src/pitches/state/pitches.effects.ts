@@ -129,6 +129,38 @@ export const removePitch = createEffect(
   { functional: true, dispatch: true }
 );
 
+export const modifyPitch = createEffect(
+  (actions$ = inject(Actions), pitchesService = inject(PitchesService)) => {
+    return actions$.pipe(
+      ofType(PitchesActions.modifyPitch),
+      switchMap((modifyPitch) => {
+        return pitchesService.modifyPitch(modifyPitch).pipe(
+          map((modifyPitchResult) =>
+            PitchesActions.pitchModifiedSuccess({
+              payload: <string>modifyPitchResult.data,
+              newClientId: modifyPitch.clientId,
+              newContent: modifyPitch.content,
+              newIdeaId: modifyPitch.ideaId,
+              newDeadLineDate : modifyPitch.deadLineDate,
+              newIssueDate: modifyPitch.issueDate,
+            })
+          ),
+          catchError((result: MutationResult<{ modifyIdea: string }>) =>
+            of(
+              PitchesActions.pitchModifiedFailure({
+                errors: result.errors?.map((e) => e.message) || [
+                  'Unknown error',
+                ],
+              })
+            )
+          )
+        );
+      })
+    );
+  },
+  { functional: true, dispatch: true }
+);
+
 export const redirectToPitch = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(

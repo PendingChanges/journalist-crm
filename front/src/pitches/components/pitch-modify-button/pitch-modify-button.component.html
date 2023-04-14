@@ -1,0 +1,8 @@
+<button
+  *transloco="let t"
+  type="button"
+  class="btn btn-primary"
+  (click)="openDialog()"
+>
+  {{ t("pitches.modify_pitch", { pitchTitle: pitch?.content?.title }) }}
+</button>
