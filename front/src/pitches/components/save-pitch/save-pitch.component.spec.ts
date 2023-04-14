@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPitchComponent } from './add-pitch.component';
+import { AddPitchComponent } from './save-pitch.component';
 
 describe('AddPitchComponent', () => {
   let component: AddPitchComponent;

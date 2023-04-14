@@ -3,6 +3,7 @@ using Journalist.Crm.CommandHandlers.Pitches;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
+using Journalist.Crm.Domain.Pitches.ValueObjects;
 using Moq;
 using System;
 using System.Threading;
@@ -26,7 +27,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Picthes
             //Arrange
             var ownerId = "ownerId";
             var handler = new CreatePitchHandler(_aggregateStoreMock.Object);
-            var command = new CreatePitch("name", "content", DateTime.Now, DateTime.Now, "client id", "idea id");
+            var pitchContent = new PitchContent("name", "content");
+            var command = new CreatePitch(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id");
             var wrappedCommand = new WrappedCommand<CreatePitch, PitchAggregate>(command, ownerId);
 
             //Act

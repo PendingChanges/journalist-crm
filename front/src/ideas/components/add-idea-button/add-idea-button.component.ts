@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaveIdeaComponent } from '../save-idea/save-idea.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { SaveClientModel } from 'src/clients/components/save-client/save-client.component';
 
 @Component({
     selector: 'app-add-idea-button',
@@ -15,5 +16,6 @@ export class AddIdeaButtonComponent {
 
   openDialog(): void {
     const dialogRef = this.modalService.open(SaveIdeaComponent);
+    dialogRef.componentInstance.data = new SaveClientModel('add', null);
   }
 }

@@ -25,8 +25,8 @@ export class DeletePitchButtonComponent {
   openConfirmDialog(): void {
     const dialogRef = this._modalService.open(ConfirmDialogComponent);
     dialogRef.componentInstance.data = new ConfirmDialogModel(
-      `Confirm ${this.pitch?.title} deletion`,
-      `Are you sure you want to delete pitch ${this.pitch?.title} ?`
+      `Confirm ${this.pitch?.content.title} deletion`,
+      `Are you sure you want to delete pitch ${this.pitch?.content.title} ?`
     );
 
     dialogRef.closed.subscribe((dialogResult) => {

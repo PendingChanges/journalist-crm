@@ -5,8 +5,8 @@ import { Client, Idea } from 'src/models/generated/graphql';
 import { TranslocoModule } from '@ngneat/transloco';
 import {
   AddPitchComponent,
-  AddPitchDialogModel,
-} from '../add-pitch/add-pitch.component';
+  SavePitchDialogModel,
+} from '../save-pitch/save-pitch.component';
 
 @Component({
   selector: 'app-add-pitch-button',
@@ -29,7 +29,9 @@ export class AddPitchButtonComponent {
     >{
       size: 'lg',
     });
-    dialogRef.componentInstance.data = new AddPitchDialogModel(
+    dialogRef.componentInstance.data = new SavePitchDialogModel(
+      'add',
+      null,
       this.client,
       this.idea,
       this.disableClient,

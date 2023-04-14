@@ -230,6 +230,75 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user modify a pitch")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pitch")]
+        [Xunit.TraitAttribute("Description", "A user modify a pitch")]
+        [Xunit.TraitAttribute("Category", "pitch")]
+        [Xunit.InlineDataAttribute("testuser", "Pitch Test", "Pitch Content", "8 april 2023", "9 april 2023", "client Id", "Idea Id", "Pitch Test Modified", "Pitch Content Modified", "10 april 2023", "11 april 2023", "client Id modified", "Idea Id modified", new string[0])]
+        public void AUserModifyAPitch(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string newPitchTitle, string newPitchSummary, string newPitchDeadLineDate, string newPitchIssueDate, string newPitchClientId, string newPitchIdeaId, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "pitch"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("pitchTitle", pitchTitle);
+            argumentsOfScenario.Add("pitchContent", pitchContent);
+            argumentsOfScenario.Add("pitchDeadLineDate", pitchDeadLineDate);
+            argumentsOfScenario.Add("pitchIssueDate", pitchIssueDate);
+            argumentsOfScenario.Add("pitchClientId", pitchClientId);
+            argumentsOfScenario.Add("pitchIdeaId", pitchIdeaId);
+            argumentsOfScenario.Add("newPitchTitle", newPitchTitle);
+            argumentsOfScenario.Add("newPitchSummary", newPitchSummary);
+            argumentsOfScenario.Add("newPitchDeadLineDate", newPitchDeadLineDate);
+            argumentsOfScenario.Add("newPitchIssueDate", newPitchIssueDate);
+            argumentsOfScenario.Add("newPitchClientId", newPitchClientId);
+            argumentsOfScenario.Add("newPitchIdeaId", newPitchIdeaId);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user modify a pitch", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 36
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 37
+ testRunner.Given(string.Format("An existing pitch with title \"{0}\", content \"{1}\", dead line date \"{2}\", issue da" +
+                            "te \"{3}\", client id \"{4}\", idea id \"{5}\" and an owner \"{6}\"", pitchTitle, pitchContent, pitchDeadLineDate, pitchIssueDate, pitchClientId, pitchIdeaId, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 38
+ testRunner.When(string.Format("A user with id \"{0}\" modify the pitch title \"{1}\", summary \"{2}\", dead line date " +
+                            "\"{3}\", issue date \"{4}\", client id \"{5}\", idea id \"{6}\"", userid, newPitchTitle, newPitchSummary, newPitchDeadLineDate, newPitchIssueDate, newPitchClientId, newPitchIdeaId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
+ testRunner.Then(string.Format("The pitch content change to title \"{0}\" and summary \"{1}\"", newPitchTitle, newPitchSummary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 40
+ testRunner.And(string.Format("The pitch deadline date is rescheduled to \"{0}\"", newPitchDeadLineDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.And(string.Format("The pitch issue date is rescheduled to \"{0}\"", newPitchIssueDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 42
+ testRunner.And(string.Format("The pitch client change to \"{0}\"", newPitchClientId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 43
+ testRunner.And(string.Format("The pitch idea change to \"{0}\"", newPitchIdeaId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 44
+ testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable

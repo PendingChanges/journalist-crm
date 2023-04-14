@@ -7,6 +7,7 @@ import {
   PitchAddedPayload,
   DeletePitchInput,
   QueryAllPitchesArgs,
+  ModifyPitchInput,
 } from 'src/models/generated/graphql';
 import { AddPitchMutation } from 'src/pitches/mutations/AddPitchMutation';
 import { CreatePitchInput } from 'src/models/generated/graphql';
@@ -14,6 +15,7 @@ import { AllPitchesQuery } from 'src/pitches/queries/AllPitchesQuery';
 import { PitchQuery } from 'src/pitches/queries/PitchQuery';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { DeletePitchMutation } from '../mutations/DeletePitchMutation';
+import { ModifyPitchMutation } from '../mutations/ModifyPitchMutation';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +40,8 @@ export class PitchesService {
     private _allPitchesQuery: AllPitchesQuery,
     private _pitchQuery: PitchQuery,
     private _addPitchMutation: AddPitchMutation,
-    private _deletePitchMutation: DeletePitchMutation
+    private _deletePitchMutation: DeletePitchMutation,
+    private _modifyPitchMutation: ModifyPitchMutation
   ) {
     this._allPitchesQueryRef = this._allPitchesQuery.watch();
     this._currrentClientallPitchesQueryRef = this._allPitchesQuery.watch();
@@ -82,6 +85,12 @@ export class PitchesService {
     deletePitchInput: DeletePitchInput
   ): Observable<MutationResult<{ removePitch: string }>> {
     return this._deletePitchMutation.mutate(deletePitchInput);
+  }
+
+  public modifyPitch(
+    value: ModifyPitchInput
+  ): Observable<MutationResult<string>> {
+    return this._modifyPitchMutation.mutate(value);
   }
 
   public refreshClientPitches(args: QueryAllPitchesArgs): void {

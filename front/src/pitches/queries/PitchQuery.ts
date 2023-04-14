@@ -10,8 +10,10 @@ export class PitchQuery extends Query<{ pitch: Pitch }, { id: string }> {
     query pitch($id: String!) {
       pitch(id: $id) {
         id
-        title
-        content
+        content{
+          title
+          summary
+        }
         deadLineDate
         issueDate
         idea {

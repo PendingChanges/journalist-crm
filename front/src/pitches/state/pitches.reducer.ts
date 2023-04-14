@@ -73,5 +73,26 @@ export const pitchesReducer = createReducer(
       loading: false,
       errors: result.errors,
     };
+  }),
+  on(PitchesActions.pitchModifiedSuccess, (state, modifyPitch) => {
+    return <PitchState>{
+      ...state,
+      currentPitch: {
+        ...state.currentPitch,
+        content: modifyPitch.newContent,
+        deadLineDate: modifyPitch.newDeadLineDate,
+        clientId: modifyPitch.newClientId,
+        ideaId: modifyPitch.newIdeaId,
+        issueDate: modifyPitch.newIssueDate,
+      },
+      loading: false,
+    };
+  }),
+  on(PitchesActions.pitchModifiedFailure, (state, result) => {
+    return <PitchState>{
+      ...state,
+      loading: false,
+      errors: result.errors,
+    };
   })
 );

@@ -17,8 +17,10 @@ export class AllPitchesQuery extends Query<
       allPitches(clientId: $clientId, ideaId: $ideaId) {
         items {
           id
-          title
-          content
+          content{
+            title
+            summary
+          }
           deadLineDate
           issueDate
           idea {

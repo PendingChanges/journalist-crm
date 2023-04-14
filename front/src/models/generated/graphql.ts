@@ -82,11 +82,10 @@ export type CreateIdeaInput = {
 
 export type CreatePitchInput = {
   clientId: Scalars['String'];
-  content?: InputMaybe<Scalars['String']>;
+  content: PitchContentInput;
   deadLineDate?: InputMaybe<Scalars['DateTime']>;
   ideaId: Scalars['String'];
   issueDate?: InputMaybe<Scalars['DateTime']>;
-  title: Scalars['String'];
 };
 
 export type DeleteClientInput = {
@@ -133,12 +132,22 @@ export type ModifyIdeaInput = {
   newName: Scalars['String'];
 };
 
+export type ModifyPitchInput = {
+  clientId: Scalars['String'];
+  content: PitchContentInput;
+  deadLineDate?: InputMaybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  ideaId: Scalars['String'];
+  issueDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addClient: ClientAddedPayload;
   addIdea: IdeaAddedPayload;
   addPitch: PitchAddedPayload;
   modifyIdea: Scalars['String'];
+  modifyPitch: Scalars['String'];
   removeClient: Scalars['String'];
   removeIdea: Scalars['String'];
   removePitch: Scalars['String'];
@@ -166,6 +175,11 @@ export type MutationModifyIdeaArgs = {
 };
 
 
+export type MutationModifyPitchArgs = {
+  modifyPitch: ModifyPitchInput;
+};
+
+
 export type MutationRemoveClientArgs = {
   deleteClient: DeleteClientInput;
 };
@@ -189,19 +203,29 @@ export type Pitch = {
   __typename?: 'Pitch';
   client?: Maybe<Client>;
   clientId: Scalars['String'];
-  content?: Maybe<Scalars['String']>;
+  content: PitchContent;
   deadLineDate?: Maybe<Scalars['DateTime']>;
   id: Scalars['String'];
   idea?: Maybe<Idea>;
   ideaId: Scalars['String'];
   issueDate?: Maybe<Scalars['DateTime']>;
-  title: Scalars['String'];
   userId: Scalars['String'];
 };
 
 export type PitchAddedPayload = {
   __typename?: 'PitchAddedPayload';
   pitchId?: Maybe<Scalars['String']>;
+};
+
+export type PitchContent = {
+  __typename?: 'PitchContent';
+  summary?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type PitchContentInput = {
+  summary?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type Query = {

@@ -7,7 +7,6 @@ using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.DataModels;
-using Journalist.Crm.Domain.Pitches.DataModels;
 using Journalist.Crm.GraphQL.Clients;
 using Journalist.Crm.GraphQL.Ideas;
 using System.Data;
