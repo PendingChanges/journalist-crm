@@ -13,31 +13,37 @@ export const ROUTES: Routes = [
     path: 'clients',
     component: ClientsComponent,
     canActivate: [AuthGuard],
+    data: { animation: 0 },
   },
   {
     path: 'clients/:id',
     component: ClientPageComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'right' },
   },
   {
     path: 'ideas',
     component: IdeasComponent,
     canActivate: [AuthGuard],
+    data: { animation: 1 },
   },
   {
     path: 'ideas/:id',
     component: IdeaPageComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'right' },
   },
   {
     path: 'pitches',
     component: PitchesPageComponent,
     canActivate: [AuthGuard],
+    data: { animation: 2 },
   },
   {
     path: 'pitches/:id',
     component: PitchPageComponent,
     canActivate: [AuthGuard],
+    data: { animation: 'right' },
   },
   {
     path: '',

@@ -1,18 +1,19 @@
-<ng-container *transloco="let t; read: 'clients.table'">
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th scope="col">{{ t("name") }}</th>
-        <th scope="col">{{ t("nbOfPitches") }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let client of clients" (click)="onRowClick(client)">
-        <td>
-          {{ client.name }}
-        </td>
-        <td>{{ client.nbOfPitches | number }}</td>
-      </tr>
-    </tbody>
-  </table>
-</ng-container>
+<div
+  *transloco="let t; read: 'clients.table'"
+  class="container shadow"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div
+    class="row border-top p-3 mb-0 bg-body-tertiary justify-content-between"
+    *ngFor="let client of clients$ | async"
+    (click)="onRowClick(client)"
+  >
+    <div class="col">
+      {{ client.name }}
+    </div>
+    <div class="col text-end"><i class="bi bi-arrow-right"></i></div>
+  </div>
+</div>

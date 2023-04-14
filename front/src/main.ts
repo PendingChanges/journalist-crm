@@ -5,7 +5,7 @@ import {
   provideHttpClient,
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { ROUTES } from './infrastructure/routes';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import {
@@ -36,7 +36,7 @@ import { pitchesReducer } from './pitches/state/pitches.reducer';
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserModule,
+      BrowserAnimationsModule,
       ReactiveFormsModule,
       FormsModule,
       EditorModule,
