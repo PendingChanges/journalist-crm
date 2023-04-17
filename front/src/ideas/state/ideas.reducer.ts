@@ -38,7 +38,7 @@ export const ideasReducer = createReducer(
   on(IdeasActions.ideaListLoadedSuccess, (state, result) => {
     return <IdeaState>{
       ...state,
-      ideas: result.ideas,
+      ideas: result.append ? [...state.ideas, ...result.ideas] : result.ideas,
       errors: [],
       loading: false,
     };

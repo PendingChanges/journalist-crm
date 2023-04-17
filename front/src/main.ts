@@ -5,7 +5,10 @@ import {
   provideHttpClient,
 } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 import { ROUTES } from './infrastructure/routes';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import {
@@ -18,7 +21,7 @@ import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializeKeycloak } from './infrastructure/initializeKeycloak';
 import { APP_INITIALIZER, importProvidersFrom, isDevMode } from '@angular/core';
 import { environment } from 'src/infrastructure/environments/environment';
-import { InMemoryCache } from '@apollo/client/core';
+import { DefaultOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { provideStore } from '@ngrx/store';
@@ -33,10 +36,21 @@ import { provideRouter } from '@angular/router';
 import { AppComponent } from './layout/components/app.component';
 import { pitchesReducer } from './pitches/state/pitches.reducer';
 
+const apolloDefaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+};
+
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserModule,
+      BrowserAnimationsModule,
       ReactiveFormsModule,
       FormsModule,
       EditorModule,
@@ -49,10 +63,11 @@ bootstrapApplication(AppComponent, {
       provide: APOLLO_OPTIONS,
       useFactory(httpLink: HttpLink) {
         return {
-          cache: new InMemoryCache(),
+          cache: new InMemoryCache({ resultCaching: false }),
           link: httpLink.create({
             uri: environment.graphqlUrl,
           }),
+          defaultOptions: apolloDefaultOptions,
         };
       },
       deps: [HttpLink],

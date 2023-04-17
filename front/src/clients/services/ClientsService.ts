@@ -29,23 +29,16 @@ export class ClientsService {
   > | null = null;
 
   constructor(
-    allClientsQuery: AllClientsQuery,
+    private _allClientsQuery: AllClientsQuery,
     private _clientQuery: ClientQuery,
     private _addClientMutation: AddClientMutation,
     private _deleteClientMutation: DeleteClientMutation,
     private _autoCompleteClientQuery: AutoCompleteClientQuery,
     private _renameClientMutation: RenameClientMutation
-  ) {
-    this._allClientsQueryRef = allClientsQuery.watch();
-    this.clientListResult$ = this._allClientsQueryRef.valueChanges;
-  }
+  ) {}
 
-  public clientListResult$: Observable<
-    ApolloQueryResult<{ allClients: AllClientsCollectionSegment }>
-  >;
-
-  public refreshClients(args: QueryAllClientsArgs): void {
-    this._allClientsQueryRef?.refetch(args);
+  public getClients(args: QueryAllClientsArgs) {
+    return this._allClientsQuery.fetch(args);
   }
 
   public getClient(id: string) {

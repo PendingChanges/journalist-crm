@@ -22,21 +22,4 @@ import { loading, selectIdeas } from 'src/ideas/state/ideas.selectors';
     AsyncPipe,
   ],
 })
-export class IdeasComponent implements OnInit {
-  public ideas$: Observable<readonly Idea[]> = this._store.select(selectIdeas);
-
-  public loading$: Observable<boolean> = this._store.select(loading);
-  constructor(private _store: Store) {}
-
-  ngOnInit(): void {
-    this._store.dispatch(
-      IdeasActions.loadIdeaList({
-        args: <QueryAllIdeasArgs>{
-          skip: 0,
-          take: 10,
-          sortBy: 'name',
-        },
-      })
-    );
-  }
-}
+export class IdeasComponent {}

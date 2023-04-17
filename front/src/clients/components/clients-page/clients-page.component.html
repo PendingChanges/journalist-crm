@@ -3,12 +3,5 @@
   <div class="action-list">
     <app-clients-action-menu></app-clients-action-menu>
   </div>
-  <ng-container *ngIf="loading$ | async; else clientlist">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </ng-container>
-  <ng-template #clientlist>
-    <app-client-list [clients]="clients$ | async"></app-client-list>
-  </ng-template>
+  <app-client-list></app-client-list>
 </ng-container>

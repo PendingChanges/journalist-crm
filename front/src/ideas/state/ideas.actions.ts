@@ -18,8 +18,11 @@ export const IdeasActions = createActionGroup({
     'Remove Idea': props<DeleteIdeaInput>(),
     'Modify Idea': props<ModifyIdeaInput>(),
     'Load Idea': props<{ ideaId: string }>(),
-    'Load Idea List': props<{ args: QueryAllIdeasArgs; date?: Date }>(),
-    'Idea List Loaded Success': props<{ ideas: ReadonlyArray<Idea> }>(),
+    'Load Idea List': props<{ args: QueryAllIdeasArgs; append: boolean }>(),
+    'Idea List Loaded Success': props<{
+      ideas: ReadonlyArray<Idea>;
+      append: boolean;
+    }>(),
     'Idea List Loaded Failure': props<ErrorProps>(),
     'Load Idea Pitch List': props<{ args: QueryAllPitchesArgs }>(),
     'Idea Pitch List Loaded Success': props<{

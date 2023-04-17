@@ -16,36 +16,23 @@ import { DeleteIdeaMutation } from 'src/ideas/mutations/DeleteIdeaMutation';
 import { AllIdeasQuery } from 'src/ideas/queries/AllIdeasQuery';
 import { AutoCompleteIdeaQuery } from 'src/ideas/queries/AutoCompleteIdeaQuery';
 import { IdeaQuery } from 'src/ideas/queries/IdeaQuery';
-import { ApolloQueryResult } from '@apollo/client/core';
 import { ModifyIdeaMutation } from '../mutations/ModifyIdeaMutation';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IdeasService {
-  private _allIdeasQueryRef: QueryRef<
-    { allIdeas: AllIdeasCollectionSegment },
-    QueryAllIdeasArgs
-  > | null = null;
-
   constructor(
-    allIdeasQuery: AllIdeasQuery,
+    private _allIdeasQuery: AllIdeasQuery,
     private _ideaQuery: IdeaQuery,
     private _addIdeaMutation: AddIdeaMutation,
     private _deleteIdeaMutation: DeleteIdeaMutation,
     private _autoCompleteIdeaQuery: AutoCompleteIdeaQuery,
     private _modifyIdeaMutation: ModifyIdeaMutation
-  ) {
-    this._allIdeasQueryRef = allIdeasQuery.watch();
-    this.ideaListResult$ = this._allIdeasQueryRef.valueChanges;
-  }
+  ) {}
 
-  public ideaListResult$: Observable<
-    ApolloQueryResult<{ allIdeas: AllIdeasCollectionSegment }>
-  >;
-
-  public refreshIdeas(args: QueryAllIdeasArgs): void {
-    this._allIdeasQueryRef?.refetch(args);
+  public getIdeas(args: QueryAllIdeasArgs) {
+    return this._allIdeasQuery.fetch(args);
   }
 
   public getIdea(id: string) {
