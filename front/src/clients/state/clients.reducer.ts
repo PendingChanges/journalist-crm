@@ -38,7 +38,9 @@ export const clientsReducer = createReducer(
   on(ClientsActions.clientListLoadedSuccess, (state, result) => {
     return <ClientState>{
       ...state,
-      clients: result.clients,
+      clients: result.append
+        ? [...state.clients, ...result.clients]
+        : result.clients,
       errors: [],
       loading: false,
     };

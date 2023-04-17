@@ -13,8 +13,13 @@ export class AllIdeasQuery extends Query<
   QueryAllIdeasArgs
 > {
   override document = gql`
-    query {
-      allIdeas {
+    query ($skip: Int, $take: Int, $sortBy: String, $sortDirection: String) {
+      allIdeas(
+        skip: $skip
+        take: $take
+        sortBy: $sortBy
+        sortDirection: $sortDirection
+      ) {
         items {
           id
           name

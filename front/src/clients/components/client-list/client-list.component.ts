@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { loading, selectClients } from 'src/clients/state/clients.selectors';
 import { ClientsActions } from 'src/clients/state/clients.actions';
+import { ClientListItemComponent } from '../client-list-item/client-list-item.component';
 
 @Component({
   selector: 'app-client-list',
@@ -20,33 +21,38 @@ import { ClientsActions } from 'src/clients/state/clients.actions';
     AsyncPipe,
     NgFor,
     DecimalPipe,
+    ClientListItemComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientListComponent {
-  @Input() public clients: readonly Client[] | null = [];
-
   public clients$: Observable<readonly Client[]> =
     this._store.select(selectClients);
 
   public loading$: Observable<boolean> = this._store.select(loading);
 
-  constructor(private _router: Router, private _store: Store) {}
-  public onRowClick(client: Client) {
-    this._router.navigate(['/clients', client.id]);
-  }
+  private skip: number = 1;
+
+  constructor(private _store: Store) {}
 
   ngOnInit(): void {
+    this.loadClientList(false, this.skip);
+  }
+
+  public onScroll() {
+    this.loadClientList(true, ++this.skip);
+  }
+
+  private loadClientList(append: boolean, skip: number) {
     this._store.dispatch(
       ClientsActions.loadClientList({
         args: <QueryAllClientsArgs>{
-          skip: 0,
-          take: 10,
+          skip: skip,
+          take: 15,
           sortBy: 'name',
         },
+        append: append,
       })
     );
   }
-
-  public onScroll() {}
 }

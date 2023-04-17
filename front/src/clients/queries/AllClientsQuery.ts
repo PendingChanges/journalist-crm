@@ -13,8 +13,13 @@ export class AllClientsQuery extends Query<
   QueryAllClientsArgs
 > {
   override document = gql`
-    query {
-      allClients {
+    query allClients(
+      $skip: Int
+      $take: Int
+      $sortBy: String
+      $sortDirection: String
+    ) {
+      allClients (skip: $skip, take: $take, sortBy: $sortBy, sortDirection: $sortDirection ){
         items {
           id
           name

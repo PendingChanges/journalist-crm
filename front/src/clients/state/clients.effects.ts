@@ -20,12 +20,12 @@ export const loadClients = createEffect(
   (actions$ = inject(Actions), clientsService = inject(ClientsService)) => {
     return actions$.pipe(
       ofType(ClientsActions.loadClientList),
-      switchMap((a: { args: QueryAllClientsArgs; date?: Date }) => {
-        clientsService.refreshClients(a.args);
-        return clientsService.clientListResult$.pipe(
+      switchMap((a: { args: QueryAllClientsArgs; append: boolean }) => {
+        return clientsService.getClients(a.args).pipe(
           map((clientListResult) =>
             ClientsActions.clientListLoadedSuccess({
               clients: clientListResult.data.allClients.items || [],
+              append: a.append,
             })
           ),
           catchError((result: ApolloQueryResult<AllClientsCollectionSegment>) =>

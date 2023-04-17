@@ -19,12 +19,12 @@ export const loadIdeas = createEffect(
   (actions$ = inject(Actions), ideasService = inject(IdeasService)) => {
     return actions$.pipe(
       ofType(IdeasActions.loadIdeaList),
-      switchMap((a: { args: QueryAllIdeasArgs; date?: Date }) => {
-        ideasService.refreshIdeas(a.args);
-        return ideasService.ideaListResult$.pipe(
+      switchMap((a: { args: QueryAllIdeasArgs; append: boolean }) => {
+        return ideasService.getIdeas(a.args).pipe(
           map((ideaListResult) =>
             IdeasActions.ideaListLoadedSuccess({
               ideas: ideaListResult.data.allIdeas.items || [],
+              append: a.append,
             })
           ),
           catchError((result: ApolloQueryResult<AllIdeasCollectionSegment>) =>
@@ -168,7 +168,7 @@ export const modifyIdea = createEffect(
             IdeasActions.ideaModifiedSuccess({
               payload: <string>modifyIdeaResult.data,
               newName: modifyIdea.newName,
-              newDescription: modifyIdea.newDescription
+              newDescription: modifyIdea.newDescription,
             })
           ),
           catchError((result: MutationResult<{ modifyIdea: string }>) =>

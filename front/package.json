@@ -6,7 +6,7 @@
     "start": "ng serve --configuration development",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "jest",
     "generate": "graphql-codegen",
     "codegen": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen --config codegen.ts"
   },
@@ -52,13 +52,22 @@
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-resolvers": "^3.2.0",
     "@types/jasmine": "~4.3.0",
+    "@types/jest": "^29.5.0",
     "cross-env": "^7.0.3",
     "jasmine-core": "~4.5.0",
+    "jest": "^29.5.0",
+    "jest-preset-angular": "^13.0.1",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.8.2"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-jest.ts"
+    ]
   }
 }
