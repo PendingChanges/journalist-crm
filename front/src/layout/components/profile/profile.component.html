@@ -1,0 +1,16 @@
+<ng-container *ngIf="isLoggedIn">
+  <div ngbDropdown *transloco="let t">
+    <a
+      id="profile-icon"
+      class="d-block link-light text-decoration-none dropdown-toggle"
+      ngbDropdownToggle
+    >
+      {{ getDisplayName }}
+    </a>
+    <div ngbDropdownMenu aria-labelledby="profile-icon">
+      <button ngbDropdownItem (click)="onDisconnectClick()">
+        {{ t("common.disconnect") }}
+      </button>
+    </div>
+  </div>
+</ng-container>
