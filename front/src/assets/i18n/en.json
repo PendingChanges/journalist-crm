@@ -50,6 +50,7 @@
     "next": "Next",
     "previous": "Previous",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "disconnect": "Disconnect"
   }
 }
