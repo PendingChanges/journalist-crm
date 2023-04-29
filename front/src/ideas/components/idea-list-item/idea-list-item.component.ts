@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Idea } from 'src/models/generated/graphql';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   imports: [CommonModule, TranslocoModule],
   templateUrl: './idea-list-item.component.html',
   styleUrls: ['./idea-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdeaListItemComponent {
   @Input() public idea: Idea | null = null;

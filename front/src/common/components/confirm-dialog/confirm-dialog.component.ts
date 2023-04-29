@@ -1,11 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'app-confirm-dialog',
-    templateUrl: './confirm-dialog.component.html',
-    styleUrls: ['./confirm-dialog.component.scss'],
-    standalone: true
+  selector: 'app-confirm-dialog',
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent implements OnInit {
   public message: string = '';

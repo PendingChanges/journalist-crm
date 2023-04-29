@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { loading, selectPitches } from 'src/pitches/state/pitches.selectors';
 import { PitchesActions } from 'src/pitches/state/pitches.actions';
 import { PitchListItemComponent } from '../pitch-list-item/pitch-list-item.component';
+import { LoadingRowComponent } from 'src/common/components/loading-row/loading-row.component';
 
 @Component({
   selector: 'app-pitch-list',
@@ -22,6 +23,7 @@ import { PitchListItemComponent } from '../pitch-list-item/pitch-list-item.compo
     NgFor,
     PitchListItemComponent,
     AsyncPipe,
+    LoadingRowComponent,
   ],
 })
 export class PitchListComponent {

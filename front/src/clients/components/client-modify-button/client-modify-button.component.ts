@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from 'src/models/generated/graphql';
 
@@ -14,6 +14,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   styleUrls: ['./client-modify-button.component.scss'],
   standalone: true,
   imports: [TranslocoModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientModifyButtonComponent {
   @Input() public client: Client | null = null;

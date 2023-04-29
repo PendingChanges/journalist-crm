@@ -10,4 +10,5 @@
     *ngFor="let pitch of pitches$ | async"
     [pitch]="pitch"
   ></app-pitch-list-item>
+  <app-loading-row [loading]="loading$ | async"></app-loading-row>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -17,6 +17,7 @@ import { IdeasActions } from 'src/ideas/state/ideas.actions';
   styleUrls: ['./delete-idea-button.component.scss'],
   standalone: true,
   imports: [TranslocoModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteIdeaButtonComponent {
   @Input() public idea: Idea | null = null;

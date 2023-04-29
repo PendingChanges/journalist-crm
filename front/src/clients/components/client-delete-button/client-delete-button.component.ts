@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -17,6 +17,7 @@ import { ClientsActions } from 'src/clients/state/clients.actions';
   styleUrls: ['./client-delete-button.component.scss'],
   standalone: true,
   imports: [TranslocoModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientDeleteButtonComponent {
   @Input() public client: Client | null = null;
