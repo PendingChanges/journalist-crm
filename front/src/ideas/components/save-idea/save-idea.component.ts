@@ -14,7 +14,7 @@ import {
 } from 'src/models/generated/graphql';
 import { IdeasActions } from 'src/ideas/state/ideas.actions';
 import { SaveType } from 'src/models/SaveType';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 interface IdeaForm {
   name: FormControl<string>;
@@ -26,7 +26,7 @@ interface IdeaForm {
   templateUrl: './save-idea.component.html',
   styleUrls: ['./save-idea.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoModule],
 })
 export class SaveIdeaComponent implements OnInit {
   public data?: SaveIdeaModel;
@@ -72,7 +72,7 @@ export class SaveIdeaComponent implements OnInit {
             newName: this.ideaFormGroup.value.name,
             newDescription: this.ideaFormGroup.value.description,
           })
-        );  
+        );
       }
       this._activeModal.close();
     }
