@@ -17,8 +17,11 @@ export const PitchesActions = createActionGroup({
     'Remove Pitch': props<DeletePitchInput>(),
     'Modify Pitch': props<ModifyPitchInput>(),
     'Load Pitch': props<{ pitchId: string }>(),
-    'Load Pitch List': props<{ args: QueryAllPitchesArgs; date?: Date }>(),
-    'Pitch List Loaded Success': props<{ pitches: ReadonlyArray<Pitch> }>(),
+    'Load Pitch List': props<{ args: QueryAllPitchesArgs; append: boolean }>(),
+    'Pitch List Loaded Success': props<{
+      pitches: ReadonlyArray<Pitch>;
+      append: boolean;
+    }>(),
     'Pitch List Loaded Failure': props<ErrorProps>(),
     'Pitch Loaded Success': props<{ pitch: Pitch }>(),
     'Pitch Loaded Failure': props<ErrorProps>(),
@@ -32,11 +35,11 @@ export const PitchesActions = createActionGroup({
     'Pitch Removed Failure': props<ErrorProps>(),
     'Pitch Modified Success': props<{
       payload: string;
-      newContent: PitchContent,
-      newClientId: string,
-      newIdeaId: string,
-      newDeadLineDate: Date,
-      newIssueDate: Date
+      newContent: PitchContent;
+      newClientId: string;
+      newIdeaId: string;
+      newDeadLineDate: Date;
+      newIssueDate: Date;
     }>(),
     'Pitch Modified Failure': props<ErrorProps>(),
   },
