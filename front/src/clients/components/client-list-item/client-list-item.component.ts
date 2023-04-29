@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Client } from 'src/models/generated/graphql';
@@ -10,6 +10,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   imports: [CommonModule, TranslocoModule],
   templateUrl: './client-list-item.component.html',
   styleUrls: ['./client-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientListItemComponent {
   constructor(private _router: Router) {}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Idea } from 'src/models/generated/graphql';
 import { DeleteIdeaButtonComponent } from '../delete-idea-button/delete-idea-button.component';
 import { AddPitchButtonComponent } from 'src/pitches/components/add-pitch-button/add-pitch-button.component';
@@ -14,6 +14,7 @@ import { ModifyIdeaButtonComponent } from '../modify-idea-button/modify-idea-but
     DeleteIdeaButtonComponent,
     ModifyIdeaButtonComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdeaActionMenuComponent {
   @Input() public idea: Idea | null = null;

@@ -9,11 +9,5 @@
     *ngFor="let idea of ideas$ | async"
     [idea]="idea"
   ></app-idea-list-item>
-  <div *ngIf="loading$ | async" class="row">
-    <div class="col">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </div>
+  <app-loading-row [loading]="loading$ | async"></app-loading-row>
 </div>

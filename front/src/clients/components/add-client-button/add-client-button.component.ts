@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   SaveClientComponent,
@@ -11,7 +11,8 @@ import { TranslocoModule } from '@ngneat/transloco';
     templateUrl: './add-client-button.component.html',
     styleUrls: ['./add-client-button.component.scss'],
     standalone: true,
-    imports: [TranslocoModule]
+    imports: [TranslocoModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddClientButtonComponent {
   constructor(private _modalService: NgbModal) {}

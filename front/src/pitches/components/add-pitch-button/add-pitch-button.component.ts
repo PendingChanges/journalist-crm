@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Client, Idea } from 'src/models/generated/graphql';
 
@@ -14,6 +14,7 @@ import {
   styleUrls: ['./add-pitch-button.component.scss'],
   standalone: true,
   imports: [TranslocoModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPitchButtonComponent {
   @Input() public client: Client | null = null;

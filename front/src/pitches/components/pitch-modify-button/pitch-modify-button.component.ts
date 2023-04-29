@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Pitch } from 'src/models/generated/graphql';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +14,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   imports: [CommonModule, TranslocoModule],
   templateUrl: './pitch-modify-button.component.html',
   styleUrls: ['./pitch-modify-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PitchModifyButtonComponent {
   @Input() public pitch: Pitch | null = null;

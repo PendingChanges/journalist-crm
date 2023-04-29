@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Pitch } from 'src/models/generated/graphql';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule],
   templateUrl: './pitch-list-item.component.html',
   styleUrls: ['./pitch-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PitchListItemComponent {
   constructor(private _router: Router) {}

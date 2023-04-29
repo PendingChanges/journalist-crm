@@ -9,6 +9,7 @@ import { loading, selectIdeas } from 'src/ideas/state/ideas.selectors';
 import { Store } from '@ngrx/store';
 import { IdeasActions } from 'src/ideas/state/ideas.actions';
 import { IdeaListItemComponent } from '../idea-list-item/idea-list-item.component';
+import { LoadingRowComponent } from 'src/common/components/loading-row/loading-row.component';
 
 @Component({
   selector: 'app-idea-list',
@@ -22,6 +23,7 @@ import { IdeaListItemComponent } from '../idea-list-item/idea-list-item.componen
     DecimalPipe,
     IdeaListItemComponent,
     AsyncPipe,
+    LoadingRowComponent
   ],
 })
 export class IdeaListComponent {

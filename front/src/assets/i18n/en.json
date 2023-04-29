@@ -17,6 +17,10 @@
       "nbOfPitches": "Nb of pitches",
       "select": "Select"
     },
+    "form": {
+      "name": "Name",
+      "description": "Description"
+    },
     "add_idea": "Add an idea",
     "modify_idea": "Modify {{ideaName}}"
   },
@@ -29,7 +33,9 @@
     "form": {
       "title": "Title",
       "deadLineDate": "Deadline Date",
-      "issueDate": "Issue Date"
+      "issueDate": "Issue Date",
+      "client": "Client",
+      "idea": "Idea"
     },
     "table": {
       "title": "Title",

@@ -10,4 +10,5 @@
     *ngFor="let client of clients$ | async"
     [client]="client"
   ></app-client-list-item>
+  <app-loading-row [loading]="loading$ | async"></app-loading-row>
 </div>
