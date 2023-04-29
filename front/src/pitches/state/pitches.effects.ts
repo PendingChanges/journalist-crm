@@ -17,12 +17,13 @@ export const loadPitches = createEffect(
   (actions$ = inject(Actions), pitchesService = inject(PitchesService)) => {
     return actions$.pipe(
       ofType(PitchesActions.loadPitchList),
-      switchMap((a: { args: QueryAllPitchesArgs; date?: Date }) => {
+      switchMap((a: { args: QueryAllPitchesArgs; append: boolean }) => {
         pitchesService.refreshPitches(a.args);
         return pitchesService.pitchListResult$.pipe(
           map((pitchListResult) =>
             PitchesActions.pitchListLoadedSuccess({
               pitches: pitchListResult.data.allPitches.items || [],
+              append: a.append,
             })
           ),
           catchError((result: ApolloQueryResult<AllPitchesCollectionSegment>) =>
@@ -141,7 +142,7 @@ export const modifyPitch = createEffect(
               newClientId: modifyPitch.clientId,
               newContent: modifyPitch.content,
               newIdeaId: modifyPitch.ideaId,
-              newDeadLineDate : modifyPitch.deadLineDate,
+              newDeadLineDate: modifyPitch.deadLineDate,
               newIssueDate: modifyPitch.issueDate,
             })
           ),

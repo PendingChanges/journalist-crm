@@ -11,7 +11,10 @@
         [disableDeleteButton]="pitches.length > 0"
       ></app-client-action-menu>
       <h2>{{ t("pitches.title") }}</h2>
-      <app-pitch-list [pitches]="pitches" [showIdea]="true"></app-pitch-list>
+      <app-pitch-list
+        [showIdea]="true"
+        [clientId]="this.client.id"
+      ></app-pitch-list>
     </ng-container>
   </div>
 </ng-container>
