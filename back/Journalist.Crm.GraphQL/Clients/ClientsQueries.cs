@@ -17,7 +17,7 @@ public class ClientsQueries
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allClients")]
     [UseOffsetPaging(IncludeTotalCount = true)]
-    public async Task<CollectionSegment<Client>> GetClientsAcync(
+    public async Task<CollectionSegment<Client>> GetClientsAsync(
         [Service] IReadClients clientReader,
            [Service] IContext context,
             int? skip,

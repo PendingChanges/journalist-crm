@@ -1,6 +1,6 @@
 ﻿using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Common;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace Journalist.Crm.Api.Infrastructure
 {
@@ -13,6 +13,6 @@ namespace Journalist.Crm.Api.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "public";
+        public OwnerId UserId => new(_httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "public");
     }
 }

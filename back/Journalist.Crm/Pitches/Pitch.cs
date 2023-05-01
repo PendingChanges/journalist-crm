@@ -1,39 +1,39 @@
 ﻿using Journalist.Crm.Domain.Pitches.Events;
-using Journalist.Crm.Domain.Pitches.ValueObjects;
 using System;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Pitches
 {
-    public class PitchAggregate : AggregateBase
+    public class Pitch : Aggregate
     {
         public PitchContent Content { get; private set; }
         public DateTime? DeadLineDate { get; private set; }
         public DateTime? IssueDate { get; private set; }
         public string ClientId { get; private set; }
         public string IdeaId { get; private set; }
-        public string OwnerId { get; private set; }
+        public OwnerId OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public PitchAggregate(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
+        public Pitch(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
         {
-            var id = Guid.NewGuid().ToString();
+            var id = EntityId.NewEntityId();
 
             var @event = new PitchCreated(id, content, deadLineDate, issueDate, clientId, ideaId, ownerId);
 
             Apply(@event);
-            AddUncommitedEvent(@event);
+            AddUncommittedEvent(@event);
         }
 
-        private PitchAggregate() { }
+        private Pitch() { }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        public void Delete(string ownerId)
+        public void Delete(OwnerId ownerId)
         {
-            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
+            if (OwnerId != ownerId)
             {
-                AddUncommitedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
+                AddUncommittedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
             }
 
             if (HasErrors)
@@ -43,14 +43,14 @@ namespace Journalist.Crm.Domain.Pitches
 
             var @event = new PitchDeleted(Id, ClientId, IdeaId);
             Apply(@event);
-            AddUncommitedEvent(@event);
+            AddUncommittedEvent(@event);
         }
 
-        public void Modify(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
+        public void Modify(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
         {
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
-                AddUncommitedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
+                AddUncommittedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
             }
 
             if (HasErrors)
@@ -62,35 +62,35 @@ namespace Journalist.Crm.Domain.Pitches
             {
                 var @event = new PitchContentChanged(Id, content);
                 Apply(@event);
-                AddUncommitedEvent(@event);
+                AddUncommittedEvent(@event);
             }
 
             if (deadLineDate != DeadLineDate)
             {
                 var @event = new PitchDeadLineRescheduled(Id, deadLineDate);
                 Apply(@event);
-                AddUncommitedEvent(@event);
+                AddUncommittedEvent(@event);
             }
 
             if (issueDate != IssueDate)
             {
                 var @event = new PitchIssueRescheduled(Id, issueDate);
                 Apply(@event);
-                AddUncommitedEvent(@event);
+                AddUncommittedEvent(@event);
             }
 
             if (clientId != ClientId)
             {
                 var @event = new PitchClientChanged(Id, clientId);
                 Apply(@event);
-                AddUncommitedEvent(@event);
+                AddUncommittedEvent(@event);
             }
 
             if (ideaId != IdeaId)
             {
                 var @event = new PitchIdeaChanged(Id, ideaId);
                 Apply(@event);
-                AddUncommitedEvent(@event);
+                AddUncommittedEvent(@event);
             }
         }
 
@@ -104,7 +104,6 @@ namespace Journalist.Crm.Domain.Pitches
         private void Apply(PitchCreated @event)
         {
             SetId(@event.Id);
-            Activate();
             Content = @event.Content;
             DeadLineDate = @event.DeadLineDate;
             IssueDate = @event.IssueDate;

@@ -7,6 +7,7 @@ using MediatR;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.Domain.Common;
 using Xunit;
 
 namespace Journalist.Crm.UnitTests.GraphQL.Ideas
@@ -27,11 +28,11 @@ namespace Journalist.Crm.UnitTests.GraphQL.Ideas
         {
             //Arrange
             var ideasMutations = new IdeasMutations();
-            var ownerId = "user id";
-            var aggregate = new IdeaAggregate("name", "description", ownerId);
+            var ownerId = new OwnerId("user id");
+            var aggregate = new Idea("name", "description", ownerId);
             var command = new ModifyIdea(aggregate.Id, "new name", "new description");
             _contextMock.Setup(_ => _.UserId).Returns(ownerId);
-            _mediatorMock.Setup(_ => _.Send(It.IsAny<WrappedCommand<ModifyIdea, IdeaAggregate>>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate).Verifiable();
+            _mediatorMock.Setup(_ => _.Send(It.IsAny<WrappedCommand<ModifyIdea, Idea>>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate).Verifiable();
 
             //Act
             var result = await ideasMutations.ModifyIdeaAsync(_mediatorMock.Object, _contextMock.Object, command, CancellationToken.None);

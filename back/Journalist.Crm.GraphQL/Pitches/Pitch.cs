@@ -1,4 +1,4 @@
-﻿using Journalist.Crm.Domain.Pitches.ValueObjects;
+﻿using Journalist.Crm.Domain.Pitches;
 using System;
 
 namespace Journalist.Crm.GraphQL.Pitches

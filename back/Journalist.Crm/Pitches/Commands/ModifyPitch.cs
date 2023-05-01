@@ -1,5 +1,4 @@
 ﻿using System;
-using Journalist.Crm.Domain.Pitches.ValueObjects;
 
 namespace Journalist.Crm.Domain.Pitches.Commands
 {

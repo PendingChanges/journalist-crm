@@ -24,7 +24,7 @@ public class IdeasMutations
     CreateIdea createIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<CreateIdea, IdeaAggregate>(createIdea, context.UserId);
+        var command = new WrappedCommand<CreateIdea, Idea>(createIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -39,7 +39,7 @@ public class IdeasMutations
         DeleteIdea deleteIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<DeleteIdea, IdeaAggregate>(deleteIdea, context.UserId);
+        var command = new WrappedCommand<DeleteIdea, Idea>(deleteIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -52,7 +52,7 @@ public class IdeasMutations
     public async Task<string> ModifyIdeaAsync([Service] IMediator mediator, [Service] IContext context, ModifyIdea modifyIdea,
     CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<ModifyIdea, IdeaAggregate>(modifyIdea, context.UserId);
+        var command = new WrappedCommand<ModifyIdea, Idea>(modifyIdea, context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

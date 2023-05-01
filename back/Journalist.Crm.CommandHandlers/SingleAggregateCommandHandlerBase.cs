@@ -3,11 +3,12 @@ using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers
 {
     internal abstract class SingleAggregateCommandHandlerBase<TCommand, TAggregate> : IRequestHandler<WrappedCommand<TCommand, TAggregate>, TAggregate>
-        where TAggregate : AggregateBase
+        where TAggregate : Aggregate
         where TCommand : ICommand
     {
         protected readonly IStoreAggregates _aggregateStore;
@@ -30,7 +31,7 @@ namespace Journalist.Crm.CommandHandlers
 
             ExecuteCommand(aggregate, command, request.OwnerId);
 
-            var errors = aggregate.GetUncommitedErrors();
+            var errors = aggregate.GetUncommittedErrors();
             if (errors.Any())
             {
                 throw new DomainException(errors);
@@ -41,8 +42,8 @@ namespace Journalist.Crm.CommandHandlers
             return aggregate;
         }
 
-        protected abstract Task<TAggregate?> LoadAggregate(TCommand command, string ownerId, CancellationToken cancellationToken);
+        protected abstract Task<TAggregate?> LoadAggregate(TCommand command, OwnerId ownerId, CancellationToken cancellationToken);
 
-        protected abstract void ExecuteCommand(TAggregate aggregate, TCommand command, string ownerId);
+        protected abstract void ExecuteCommand(TAggregate aggregate, TCommand command, OwnerId ownerId);
     }
 }

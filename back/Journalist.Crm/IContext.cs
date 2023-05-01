@@ -1,7 +1,9 @@
-﻿namespace Journalist.Crm.Domain
+﻿using Journalist.Crm.Domain.Common;
+
+namespace Journalist.Crm.Domain
 {
     public interface IContext
     {
-        string UserId { get; }
+        OwnerId UserId { get; }
     }
 }

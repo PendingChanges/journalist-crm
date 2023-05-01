@@ -1,7 +1,7 @@
-﻿using System;
-using Journalist.Crm.Domain.Pitches.ValueObjects;
+﻿using Journalist.Crm.Domain.Common;
+using System;
 
 namespace Journalist.Crm.Domain.Pitches.DataModels
 {
-    public record PitchDocument(string Id, PitchContent Content, DateTime? DeadLineDate, DateTime? IssueDate, string ClientId, string IdeaId, string UserId);
+    public record PitchDocument(EntityId Id, PitchContent Content, DateTime? DeadLineDate, DateTime? IssueDate, string ClientId, string IdeaId, OwnerId OwnerId);
 }

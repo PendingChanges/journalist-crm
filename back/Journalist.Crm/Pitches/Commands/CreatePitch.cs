@@ -1,5 +1,4 @@
-﻿using Journalist.Crm.Domain.Pitches.ValueObjects;
-using MediatR;
+﻿using MediatR;
 using System;
 
 namespace Journalist.Crm.Domain.Pitches.Commands

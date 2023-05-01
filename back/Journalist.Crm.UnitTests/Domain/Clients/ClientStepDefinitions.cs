@@ -3,6 +3,7 @@ using TechTalk.SpecFlow;
 using Journalist.Crm.Domain.Clients.Events;
 using System.Linq;
 using Xunit;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.UnitTests.Domain.Clients
 {
@@ -25,19 +26,19 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [When(@"A user with id ""([^""]*)"" create a client with name ""([^""]*)""")]
         public void WhenAUserWithIdCreateAClientWithName(string ownerId, string name)
         {
-            var aggregate = new ClientAggregate(name, ownerId);
+            var aggregate = new Client(name,new OwnerId( ownerId));
             _aggregateContext.Aggregate = aggregate;
         }
 
         [Then(@"A client ""([^""]*)"" owned by ""([^""]*)"" is created")]
         public void ThenAClientOwnedByIsCreated(string name, string ownerId)
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
             Assert.NotNull(clientAggregate);
             Assert.Equal(name, clientAggregate.Name);
             Assert.Equal(ownerId, clientAggregate.OwnerId);
 
-            var events = clientAggregate.GetUncommitedEvents().ToList();
+            var events = clientAggregate.GetUncommittedEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as ClientCreated;
 
@@ -50,30 +51,30 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [Given(@"An existing client with name ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingClientWithNameAndAnOwner(string name, string ownerId)
         {
-            var aggregate = new ClientAggregate(name, ownerId);
-            aggregate.ClearUncommitedEvents();
+            var aggregate = new Client(name, new OwnerId(ownerId));
+            aggregate.ClearUncommittedEvents();
             _aggregateContext.Aggregate = aggregate;
         }
 
         [When(@"A user with id ""([^""]*)"" delete the client")]
         public void WhenAUserWithIdDeleteTheClient(string ownerId)
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
 
             Assert.NotNull(clientAggregate);
 
-            clientAggregate.Delete(ownerId);
+            clientAggregate.Delete(new OwnerId(ownerId));
         }
 
         [Then(@"The client is deleted")]
         public void ThenTheClientIsDeleted()
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
 
             Assert.NotNull(clientAggregate);
             Assert.True(clientAggregate.Deleted);
 
-            var events = clientAggregate.GetUncommitedEvents().ToList();
+            var events = clientAggregate.GetUncommittedEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as ClientDeleted;
 
@@ -87,36 +88,36 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [Then(@"The client is not deleted")]
         public void ThenTheClientIsNotDeleted()
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
 
             Assert.NotNull(clientAggregate);
             Assert.False(clientAggregate.Deleted);
 
-            Assert.DoesNotContain(clientAggregate.GetUncommitedEvents(), e => e is ClientDeleted);
+            Assert.DoesNotContain(clientAggregate.GetUncommittedEvents(), e => e is ClientDeleted);
         }
 
         [When(@"A user with id ""([^""]*)""rename the client to ""([^""]*)""")]
         public void WhenAUserWithIdRenameTheClientTo(string ownerId, string newName)
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
 
             if(clientAggregate == null)
             {
                 return;
             }
 
-            clientAggregate.Rename(newName, ownerId);
+            clientAggregate.Rename(newName, new OwnerId(ownerId));
         }
 
         [Then(@"The client is renamed to ""([^""]*)""")]
         public void ThenTheClientIsRenamedTo(string newName)
         {
-            var clientAggregate = _aggregateContext.Aggregate as ClientAggregate;
+            var clientAggregate = _aggregateContext.Aggregate as Client;
 
             Assert.NotNull(clientAggregate);
             Assert.Equal(newName, clientAggregate.Name);
 
-            var events = clientAggregate.GetUncommitedEvents().ToList();
+            var events = clientAggregate.GetUncommittedEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as ClientRenamed;
 

@@ -37,16 +37,16 @@ namespace Journalist.Crm.Marten
 
                 // Indexes
                 options.Schema.For<ClientDocument>().UniqueIndex(c => c.Id);
-                options.Schema.For<ClientDocument>().Index(c => c.UserId);
+                options.Schema.For<ClientDocument>().Index(c => c.OwnerId);
                 options.Schema.For<ClientDocument>().FullTextIndex(c => c.Name);
 
                 options.Schema.For<PitchDocument>().UniqueIndex(p => p.Id);
-                options.Schema.For<PitchDocument>().Index(p => p.UserId);
+                options.Schema.For<PitchDocument>().Index(p => p.OwnerId);
                 options.Schema.For<PitchDocument>().Index(p => p.ClientId);
                 options.Schema.For<PitchDocument>().Index(p => p.IdeaId);
 
                 options.Schema.For<IdeaDocument>().UniqueIndex(c => c.Id);
-                options.Schema.For<IdeaDocument>().Index(c => c.UserId);
+                options.Schema.For<IdeaDocument>().Index(c => c.OwnerId);
                 options.Schema.For<IdeaDocument>().FullTextIndex(c => c.Name);
             });
 

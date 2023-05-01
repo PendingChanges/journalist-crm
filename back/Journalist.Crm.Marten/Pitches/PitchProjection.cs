@@ -17,7 +17,7 @@ namespace Journalist.Crm.Marten.Pitches
 
             var client = await ops.LoadAsync<ClientDocument>(pitchCreated.ClientId);
 
-            if (client != null && !client.PitchesIds.Any(id => id == pitchCreated.Id))
+            if (client != null && client.PitchesIds.All(id => id != pitchCreated.Id))
             {
                 client.PitchesIds.Add(pitchCreated.Id);
                 ops.Store(client);
@@ -25,7 +25,7 @@ namespace Journalist.Crm.Marten.Pitches
 
             var idea = await ops.LoadAsync<IdeaDocument>(pitchCreated.IdeaId);
 
-            if (idea != null && !idea.PitchesIds.Any(id => id == pitchCreated.Id))
+            if (idea != null && idea.PitchesIds.All(id => id != pitchCreated.Id))
             {
                 idea.PitchesIds.Add(pitchCreated.Id);
                 ops.Store(idea);

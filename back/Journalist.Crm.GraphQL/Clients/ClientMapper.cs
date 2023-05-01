@@ -10,7 +10,7 @@ namespace Journalist.Crm.GraphQL.Clients
             => clientDocument == null ? null : clientDocument.ToClient();
 
         public static Client ToClient(this ClientDocument clientDocument)
-            => new Client(clientDocument.Id, clientDocument.Name, clientDocument.UserId, clientDocument.PitchesIds.Count);
+            => new Client(clientDocument.Id, clientDocument.Name, clientDocument.OwnerId, clientDocument.PitchesIds.Count);
 
         public static IReadOnlyList<Client> ToClients(this IReadOnlyList<ClientDocument> clients)
             => clients.Select(ToClient).ToList();

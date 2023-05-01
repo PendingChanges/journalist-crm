@@ -12,10 +12,10 @@ namespace Journalist.Crm.Domain.Clients.DataModels
             string? sortDirection,
             string userId)
             : base(
-            skip ?? Constants.DEFAULT_PAGENUMBER,
-            take ?? Constants.DEFAULT_PAGESIZE,
-            sortBy ?? Constants.DEFAULT_CLIENT_SORTBY,
-            sortDirection ?? Constants.DEFAULT_SORT_DIRECTION,
+            skip ?? Constants.DefaultPageNumber,
+            take ?? Constants.DefaultPageSize,
+            sortBy ?? Constants.DefaultClientSortBy,
+            sortDirection ?? Constants.DefaultSortDirection,
             userId)
         {
             PitchId = pitchId;

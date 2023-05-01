@@ -1,33 +1,34 @@
 ﻿using Journalist.Crm.Domain.Clients.Events;
 using System;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Clients
 {
-    public sealed class ClientAggregate : AggregateBase
+    public sealed class Client : Aggregate
     {
         public string Name { get; private set; }
-        public string OwnerId { get; private set; }
+        public OwnerId OwnerId { get; private set; }
         public bool Deleted { get; private set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ClientAggregate(string name, string ownerId)
+        public Client(string name, OwnerId ownerId)
         {
-            var id = Guid.NewGuid().ToString();
+            var id = EntityId.NewEntityId();
 
             var @event = new ClientCreated(id, name, ownerId);
 
             Apply(@event);
-            AddUncommitedEvent(@event);
+            AddUncommittedEvent(@event);
         }
 
-        private ClientAggregate() { }
+        private Client() { }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        public void Delete(string ownerId)
+        public void Delete(OwnerId ownerId)
         {
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
-                AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
+                AddUncommittedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
             }
 
             if (HasErrors)
@@ -37,14 +38,14 @@ namespace Journalist.Crm.Domain.Clients
 
             var @event = new ClientDeleted(Id);
             Apply(@event);
-            AddUncommitedEvent(@event);
+            AddUncommittedEvent(@event);
         }
 
-        public void Rename(string newName, string ownerId)
+        public void Rename(string newName, OwnerId ownerId)
         {
             if (string.CompareOrdinal(OwnerId, ownerId) != 0)
             {
-                AddUncommitedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
+                AddUncommittedError(new Error("NOT_CLIENT_OWNER", "The user is not the owner of this client"));
             }
 
             if (HasErrors)
@@ -59,7 +60,7 @@ namespace Journalist.Crm.Domain.Clients
 
             var @event = new ClientRenamed(Id, newName);
             Apply(@event);
-            AddUncommitedEvent(@event);
+            AddUncommittedEvent(@event);
         }
 
         private void Apply(ClientRenamed @event)
@@ -71,7 +72,7 @@ namespace Journalist.Crm.Domain.Clients
         private void Apply(ClientCreated @event)
         {
             SetId(@event.Id);
-            Activate();
+
             Name = @event.Name;
             OwnerId = @event.OwnerId;
             Deleted = false;

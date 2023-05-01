@@ -19,7 +19,7 @@ public class IdeasQueries
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("allIdeas")]
     [UseOffsetPaging(IncludeTotalCount = true)]
-    public async Task<CollectionSegment<Idea>> GetIdeas(
+    public async Task<CollectionSegment<Domain.Ideas.DataModels.Idea>> GetIdeas(
          [Service] IReadIdeas ideasReader,
          [Service] IContext context,
             int? skip,
@@ -33,7 +33,7 @@ public class IdeasQueries
 
         var pageInfo = new CollectionSegmentInfo(pitchesResultSet.HasNextPage, pitchesResultSet.HasPreviousPage);
 
-        var collectionSegment = new CollectionSegment<Idea>(
+        var collectionSegment = new CollectionSegment<Domain.Ideas.DataModels.Idea>(
             pitchesResultSet.Data.ToIdeas(),
             pageInfo,
             ct => ValueTask.FromResult((int)pitchesResultSet.TotalItemCount));
@@ -44,12 +44,12 @@ public class IdeasQueries
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("idea")]
-    public async Task<Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, [Service] IContext context, string id, CancellationToken cancellationToken = default)
+    public async Task<Domain.Ideas.DataModels.Idea?> GetIdeaAsync([Service] IReadIdeas ideasReader, [Service] IContext context, string id, CancellationToken cancellationToken = default)
         => (await ideasReader.GetIdeaAsync(id, context.UserId, cancellationToken)).ToIdeaOrNull();
 
     [Authorize(Roles = new[] { "user" })]
     [GraphQLName("autoCompleteIdea")]
-    public async Task<IReadOnlyList<Idea>> AutoCompleteIdeaAsync(
+    public async Task<IReadOnlyList<Domain.Ideas.DataModels.Idea>> AutoCompleteIdeaAsync(
     [Service] IReadIdeas ideaReader,
     [Service] IContext context,
     string text,

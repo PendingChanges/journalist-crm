@@ -1,4 +1,6 @@
-﻿namespace Journalist.Crm.Domain.Ideas.Events
+﻿using Journalist.Crm.Domain.Common;
+
+namespace Journalist.Crm.Domain.Ideas.Events
 {
-    public sealed record IdeaCreated(string Id, string Name, string? Description, string OwnerId);
+    public sealed record IdeaCreated(EntityId Id, string Name, string? Description, OwnerId OwnerId);
 }

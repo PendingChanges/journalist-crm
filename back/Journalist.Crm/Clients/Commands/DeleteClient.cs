@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Clients.Commands
 {
-    public record DeleteClient(string Id) : ICommand;
+    public record DeleteClient(EntityId Id) : ICommand;
 }

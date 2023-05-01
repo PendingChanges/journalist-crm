@@ -21,14 +21,14 @@ namespace Journalist.Crm.Marten.Ideas
         }
 
         public Task<IReadOnlyList<IdeaDocument>> AutoCompleteIdeaAsync(string text, string userId, CancellationToken cancellationToken)
-            => _session.Query<IdeaDocument>().Where(c => c.UserId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
+            => _session.Query<IdeaDocument>().Where(c => c.OwnerId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
 
         public Task<IdeaDocument?> GetIdeaAsync(string ideaId, string userId, CancellationToken cancellationToken)
-            => _session.Query<IdeaDocument>().Where(c => c.Id == ideaId && c.UserId == userId).FirstOrDefaultAsync(cancellationToken);
+            => _session.Query<IdeaDocument>().Where(c => c.Id == ideaId && c.OwnerId == userId).FirstOrDefaultAsync(cancellationToken);
 
         public async Task<IdeaResultSet> GetIdeasAsync(GetIdeasRequest request, CancellationToken cancellationToken = default)
         {
-            var query = _session.Query<IdeaDocument>().Where(c => c.UserId == request.UserId);
+            var query = _session.Query<IdeaDocument>().Where(c => c.OwnerId == request.UserId);
 
             if (!string.IsNullOrWhiteSpace(request.PitchId))
             {

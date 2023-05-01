@@ -21,14 +21,14 @@ namespace Journalist.Crm.Marten.Clients
         }
 
         public Task<IReadOnlyList<ClientDocument>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken)
-            => _session.Query<ClientDocument>().Where(c => c.UserId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
+            => _session.Query<ClientDocument>().Where(c => c.OwnerId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
 
         public Task<ClientDocument?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken)
-            => _session.Query<ClientDocument>().Where(c => c.Id == clientId && c.UserId == userId).FirstOrDefaultAsync(cancellationToken);
+            => _session.Query<ClientDocument>().Where(c => c.Id == clientId && c.OwnerId == userId).FirstOrDefaultAsync(cancellationToken);
 
         public async Task<ClientResultSet> GetClientsAsync(GetClientsRequest request, CancellationToken cancellationToken = default)
         {
-            var query = _session.Query<ClientDocument>().Where(c => c.UserId == request.UserId);
+            var query = _session.Query<ClientDocument>().Where(c => c.OwnerId == request.UserId);
 
             if (!string.IsNullOrWhiteSpace(request.PitchId))
             {

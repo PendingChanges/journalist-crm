@@ -11,7 +11,7 @@ namespace Journalist.Crm.GraphQL.Pitchs
             => pitchDocument == null ? null : pitchDocument.ToPitch();
 
         public static Pitch ToPitch(this PitchDocument pitchDocument)
-            => new Pitch(pitchDocument.Id, pitchDocument.Content, pitchDocument.DeadLineDate, pitchDocument.IssueDate, pitchDocument.ClientId, pitchDocument.IdeaId, pitchDocument.UserId);
+            => new Pitch(pitchDocument.Id, pitchDocument.Content, pitchDocument.DeadLineDate, pitchDocument.IssueDate, pitchDocument.ClientId, pitchDocument.IdeaId, pitchDocument.OwnerId);
 
         public static IReadOnlyList<Pitch> ToPitches(this IReadOnlyList<PitchDocument> clients)
             => clients.Select(ToPitch).ToList();

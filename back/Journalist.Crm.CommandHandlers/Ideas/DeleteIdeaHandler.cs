@@ -1,17 +1,18 @@
-﻿using Journalist.Crm.Domain;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Common;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Journalist.Crm.CommandHandlers.Clients
+namespace Journalist.Crm.CommandHandlers.Ideas
 {
-    internal class DeleteIdeaHandler : SingleAggregateCommandHandlerBase<DeleteIdea, IdeaAggregate>
+    internal class DeleteIdeaHandler : SingleAggregateCommandHandlerBase<DeleteIdea, Idea>
     {
         public DeleteIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(IdeaAggregate aggregate, DeleteIdea command, string ownerId) => aggregate.Delete(ownerId);
+        protected override void ExecuteCommand(Idea aggregate, DeleteIdea command, OwnerId ownerId) => aggregate.Delete(ownerId);
 
-        protected override Task<IdeaAggregate?> LoadAggregate(DeleteIdea command, string ownerId, CancellationToken cancellationToken) => _aggregateStore.LoadAsync<IdeaAggregate>(command.Id, ct: cancellationToken);
+        protected override Task<Idea?> LoadAggregate(DeleteIdea command, OwnerId ownerId, CancellationToken cancellationToken) => _aggregateStore.LoadAsync<Idea>(command.Id, ct: cancellationToken);
     }
 }
