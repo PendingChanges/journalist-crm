@@ -9,15 +9,19 @@ namespace Journalist.Crm.Domain.Contacts
         public Name Name { get; set; }
 
 #pragma warning disable CS8618
-        public Contact(Name name, OwnerId ownerId)   
+        private Contact()   
 #pragma warning restore CS8618
         {
+        }
+
+        public AggregateResult Create(Name name, OwnerId ownerId)
+        {
+            var result = AggregateResult.Create();
             var id = EntityId.NewEntityId();
-
             var @event = new ContactCreated(id, name, ownerId);
-
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+            return result;
         }
 
         private void Apply(ContactCreated @event)

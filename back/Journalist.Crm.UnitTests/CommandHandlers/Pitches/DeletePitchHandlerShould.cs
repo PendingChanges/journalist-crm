@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,8 +29,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
             //Arrange
             var ownerId = new OwnerId("ownerId");
             var pitchContent = new PitchContent("name", "content");
-            var aggregate = new Pitch(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
-            aggregate.ClearUncommittedEvents();
+            var aggregate = new Pitch();
+            aggregate.Create(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
             _aggregateStoreMock.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new DeletePitchHandler(_aggregateStoreMock.Object);
             var command = new DeletePitch(aggregate.Id);
@@ -39,7 +40,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn, It.IsAny<CancellationToken>()));
+            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]

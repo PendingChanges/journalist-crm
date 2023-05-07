@@ -1,7 +1,6 @@
 ﻿using Journalist.Crm.Domain;
 using Marten;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,22 +8,20 @@ namespace Journalist.Crm.Marten
 {
     public sealed class AggregateRepository : IStoreAggregates
     {
-        private readonly IDocumentStore store;
+        private readonly IDocumentStore _store;
 
         public AggregateRepository(IDocumentStore store)
         {
-            this.store = store;
+            this._store = store;
         }
 
-        public async Task StoreAsync(Aggregate aggregate, CancellationToken ct = default)
+        public async Task StoreAsync(string aggregateId, long version, IEnumerable<object> events, CancellationToken ct = default)
         {
-            await using var session = store.LightweightSession();
-            // Take non-persisted events, push them to the event stream, indexed by the aggregate ID
-            var events = aggregate.GetUncommittedEvents().ToArray();
-            session.Events.Append(aggregate.Id, aggregate.Version, events);
+            await using var session = _store.LightweightSession();
+
+            session.Events.Append(aggregateId, version, events);
+
             await session.SaveChangesAsync(ct);
-            // Once successfully persisted, clear events from list of uncommitted events
-            aggregate.ClearUncommittedEvents();
         }
 
         public async Task<T?> LoadAsync<T>(
@@ -33,7 +30,7 @@ namespace Journalist.Crm.Marten
             CancellationToken ct = default
         ) where T : Aggregate
         {
-            await using var session = store.LightweightSession();
+            await using var session = _store.LightweightSession();
             var aggregate = await session.Events.AggregateStreamAsync<T>(id, version ?? 0, token: ct);
             return aggregate;
         }

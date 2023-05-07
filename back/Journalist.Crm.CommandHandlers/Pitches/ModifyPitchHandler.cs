@@ -16,7 +16,7 @@ namespace Journalist.Crm.CommandHandlers.Pitches
         protected override Task<Pitch?> LoadAggregate(ModifyPitch command, OwnerId ownerId, CancellationToken cancellationToken)
             => AggregateStore.LoadAsync<Pitch>(command.Id, ct: cancellationToken);
 
-        protected override void ExecuteCommand(Pitch aggregate, ModifyPitch command, OwnerId ownerId)
+        protected override AggregateResult ExecuteCommand(Pitch aggregate, ModifyPitch command, OwnerId ownerId)
             => aggregate.Modify(command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId);
     }
 }

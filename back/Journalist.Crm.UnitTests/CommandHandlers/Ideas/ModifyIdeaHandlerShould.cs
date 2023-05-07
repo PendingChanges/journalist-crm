@@ -1,4 +1,5 @@
-﻿using Journalist.Crm.CommandHandlers;
+﻿using System.Collections.Generic;
+using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.CommandHandlers.Clients;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Ideas;
@@ -27,8 +28,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         {
             //Arrange
             var ownerId = new OwnerId("user id");
-            var aggregate = new Idea("name", "description", ownerId);
-            aggregate.ClearUncommittedEvents();
+            var aggregate = new Idea();
+            aggregate.Create("name", "description", ownerId);
             _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
             var command = new ModifyIdea(aggregate.Id, "new name", "new description");
@@ -38,7 +39,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn, It.IsAny<CancellationToken>()));
+            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]

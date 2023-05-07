@@ -28,7 +28,8 @@ namespace Journalist.Crm.UnitTests.GraphQL.Ideas
             //Arrange
             var ideasMutations = new IdeasMutations();
             var ownerId = new OwnerId("user id");
-            var aggregate = new Idea("name", "description", ownerId);
+            var aggregate = new Idea();
+            aggregate.Create("name", "description", ownerId);
             var command = new ModifyIdea(aggregate.Id, "new name", "new description");
             _contextMock.Setup(_ => _.UserId).Returns(ownerId);
             _mediatorMock.Setup(_ => _.Send(It.IsAny<WrappedCommand<Crm.Domain.Ideas.Commands.ModifyIdea, Idea>>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate).Verifiable();

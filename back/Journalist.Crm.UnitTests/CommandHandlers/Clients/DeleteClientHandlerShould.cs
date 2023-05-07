@@ -1,4 +1,5 @@
-﻿using Journalist.Crm.CommandHandlers;
+﻿using System.Collections.Generic;
+using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.CommandHandlers.Clients;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
@@ -26,8 +27,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
         {
             //Arrange
             var ownerId = new OwnerId("user id");
-            var aggregate = new Client("name", ownerId);
-            aggregate.ClearUncommittedEvents();
+            var aggregate = new Client();
+            aggregate.Create("name", ownerId);
             _aggregateStoreMock.Setup(_ => _.LoadAsync<Client>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new DeleteClientHandler(_aggregateStoreMock.Object);
             var command = new DeleteClient(aggregate.Id);
@@ -37,7 +38,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn, It.IsAny<CancellationToken>()));
+            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version,It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]

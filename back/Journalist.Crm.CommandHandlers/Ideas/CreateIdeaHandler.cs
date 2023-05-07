@@ -11,11 +11,15 @@ namespace Journalist.Crm.CommandHandlers.Ideas
     {
         public CreateIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(Idea aggregate, CreateIdea command, OwnerId ownerId)
-        {
-        }
+        protected override AggregateResult ExecuteCommand(Idea aggregate, CreateIdea command, OwnerId ownerId) => AggregateResult.Create();
 
-        protected override Task<Idea?> LoadAggregate(CreateIdea command, OwnerId ownerId, CancellationToken cancellationToken)
-            => Task.FromResult<Idea?>(new Idea(command.Name, command.Description, ownerId));
+        protected override Task<Idea?> LoadAggregate(CreateIdea command, OwnerId ownerId,
+            CancellationToken cancellationToken)
+        {
+            //TODO : still a problem here, public constructor + what if Create fails?
+            var idea = new Idea();
+            idea.Create(command.Name, command.Description, ownerId);
+            return Task.FromResult<Idea?>(idea);
+        }
     }
 }

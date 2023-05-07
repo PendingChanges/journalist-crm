@@ -1,6 +1,5 @@
 ﻿using Journalist.Crm.Domain;
 using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Journalist.Crm.Domain.Common;
@@ -29,21 +28,20 @@ namespace Journalist.Crm.CommandHandlers
                 throw new DomainException(new[] { ErrorBuilder.AggregateNotFound() });
             }
 
-            ExecuteCommand(aggregate, command, request.OwnerId);
+            var aggregateResult = ExecuteCommand(aggregate, command, request.OwnerId);
 
-            var errors = aggregate.GetUncommittedErrors().ToList();
-            if (errors.Any())
+            if (aggregateResult.HasErrors)
             {
-                throw new DomainException(errors);
+                throw new DomainException(aggregateResult.GetErrors());
             }
 
-            await AggregateStore.StoreAsync(aggregate, cancellationToken);
+            await AggregateStore.StoreAsync(aggregate.Id, aggregate.Version, aggregateResult.GetEvents(), cancellationToken);
 
             return aggregate;
         }
 
         protected abstract Task<TAggregate?> LoadAggregate(TCommand command, OwnerId ownerId, CancellationToken cancellationToken);
 
-        protected abstract void ExecuteCommand(TAggregate aggregate, TCommand command, OwnerId ownerId);
+        protected abstract AggregateResult ExecuteCommand(TAggregate aggregate, TCommand command, OwnerId ownerId);
     }
 }

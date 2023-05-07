@@ -11,7 +11,7 @@ namespace Journalist.Crm.CommandHandlers.Pitches
     {
         public DeletePitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(Pitch aggregate, DeletePitch command, OwnerId ownerId)
+        protected override AggregateResult ExecuteCommand(Pitch aggregate, DeletePitch command, OwnerId ownerId)
             => aggregate.Delete(ownerId);
 
         protected override Task<Pitch?> LoadAggregate(DeletePitch command, OwnerId ownerId, CancellationToken cancellationToken)

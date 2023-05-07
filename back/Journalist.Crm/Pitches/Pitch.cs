@@ -1,5 +1,6 @@
 ﻿using Journalist.Crm.Domain.Pitches.Events;
 using System;
+using System.ComponentModel.Design;
 using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Pitches
@@ -18,88 +19,93 @@ namespace Journalist.Crm.Domain.Pitches
         public PitchState CurrentState => _stateMachine.CurrentState;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Pitch(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
+        public Pitch() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+        public AggregateResult Create(PitchContent content, DateTime? deadLineDate, DateTime? issueDate,
+            string clientId, string ideaId, OwnerId ownerId)
         {
+            var result = AggregateResult.Create();
+
             var id = EntityId.NewEntityId();
 
             var @event = new PitchCreated(id, content, deadLineDate, issueDate, clientId, ideaId, ownerId);
 
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+
+            return result;
         }
 
-        private Pitch() { }
 
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        public void Delete(OwnerId ownerId)
+        public AggregateResult Delete(OwnerId ownerId)
         {
-            if (OwnerId != ownerId)
-            {
-                AddUncommittedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
-            }
+            var result = AggregateResult.Create();
 
-            if (!_stateMachine.CanCancel())
-            {
-                AddUncommittedError(new Error("PITCH_NOT_CANCELLABLE", "The pitch is not cancellable"));
-            }
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanCancel(), ErrorCollection.WellKnownErrors.PitchNotCancellable);
 
-            if (HasErrors)
+            if (result.HasErrors)
             {
-                return;
+                return result;
             }
 
             var @event = new PitchCancelled(Id, ClientId, IdeaId);
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+
+            return result;
         }
 
-        public void Modify(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
+        public AggregateResult Modify(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
         {
-            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
-            {
-                AddUncommittedError(new Error("NOT_PITCH_OWNER", "The user is not the owner of this pitch"));
-            }
+            var result = AggregateResult.Create();
 
-            if (HasErrors)
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanSave(), ErrorCollection.WellKnownErrors.PitchNotModifiable);
+
+            if (result.HasErrors)
             {
-                return;
+                return result;
             }
 
             if (content != Content)
             {
                 var @event = new PitchContentChanged(Id, content);
                 Apply(@event);
-                AddUncommittedEvent(@event);
+                result.AddEvent(@event);
             }
 
             if (deadLineDate != DeadLineDate)
             {
                 var @event = new PitchDeadLineRescheduled(Id, deadLineDate);
                 Apply(@event);
-                AddUncommittedEvent(@event);
+                result.AddEvent(@event);
             }
 
             if (issueDate != IssueDate)
             {
                 var @event = new PitchIssueRescheduled(Id, issueDate);
                 Apply(@event);
-                AddUncommittedEvent(@event);
+                result.AddEvent(@event);
             }
 
             if (clientId != ClientId)
             {
                 var @event = new PitchClientChanged(Id, clientId);
                 Apply(@event);
-                AddUncommittedEvent(@event);
+                result.AddEvent(@event);
             }
 
             if (ideaId != IdeaId)
             {
                 var @event = new PitchIdeaChanged(Id, ideaId);
                 Apply(@event);
-                AddUncommittedEvent(@event);
+                result.AddEvent(@event);
             }
+
+            return result;
         }
 
         private void Apply(PitchContentChanged @event)

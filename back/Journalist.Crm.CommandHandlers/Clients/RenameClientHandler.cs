@@ -11,7 +11,7 @@ namespace Journalist.Crm.CommandHandlers.Clients
     {
         public RenameClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(Client aggregate, RenameClient command, OwnerId ownerId)
+        protected override AggregateResult ExecuteCommand(Client aggregate, RenameClient command, OwnerId ownerId)
             => aggregate.Rename(command.NewName, ownerId);
 
 

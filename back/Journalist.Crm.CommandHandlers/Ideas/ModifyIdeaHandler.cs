@@ -11,7 +11,7 @@ namespace Journalist.Crm.CommandHandlers.Ideas
     {
         public ModifyIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(Idea aggregate, ModifyIdea command, OwnerId ownerId) => aggregate.Modify(command.NewName, command.NewDescription, ownerId);
+        protected override AggregateResult ExecuteCommand(Idea aggregate, ModifyIdea command, OwnerId ownerId) => aggregate.Modify(command.NewName, command.NewDescription, ownerId);
 
         protected override Task<Idea?> LoadAggregate(ModifyIdea command, OwnerId ownerId, CancellationToken cancellationToken) => AggregateStore.LoadAsync<Idea>(command.Id, ct: cancellationToken);
     }

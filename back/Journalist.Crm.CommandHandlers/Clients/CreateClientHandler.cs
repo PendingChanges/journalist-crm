@@ -11,11 +11,15 @@ namespace Journalist.Crm.CommandHandlers.Clients
     {
         public CreateClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(Client aggregate, CreateClient command, OwnerId ownerId)
-        {
-        }
+        protected override AggregateResult ExecuteCommand(Client aggregate, CreateClient command, OwnerId ownerId) => AggregateResult.Create();
 
-        protected override Task<Client?> LoadAggregate(CreateClient command, OwnerId ownerId, CancellationToken cancellationToken)
-            => Task.FromResult<Client?>(new Client(command.Name, ownerId));
+        protected override Task<Client?> LoadAggregate(CreateClient command, OwnerId ownerId,
+            CancellationToken cancellationToken)
+        {
+            //TODO : still a problem here, public constructor + what if Create fails?
+            var client = new Client();
+            client.Create(command.Name, ownerId);
+            return Task.FromResult<Client?>(client);
+        }
     }
 }
