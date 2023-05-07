@@ -7,13 +7,15 @@ using Moq;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.CommandHandlers.Ideas;
 using Xunit;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class ModifyIdeaHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
 
         public ModifyIdeaHandlerShould()
         {
@@ -24,13 +26,13 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         public async Task Handle_wrapped_command_modify_idea_properly()
         {
             //Arrange
-            var ownerId = "ownerId";
-            var aggregate = new IdeaAggregate("name", "description", ownerId);
-            aggregate.ClearUncommitedEvents();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<IdeaAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var ownerId = new OwnerId("user id");
+            var aggregate = new Idea("name", "description", ownerId);
+            aggregate.ClearUncommittedEvents();
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
             var command = new ModifyIdea(aggregate.Id, "new name", "new description");
-            var wrappedCommand = new WrappedCommand<ModifyIdea, IdeaAggregate>(command, ownerId);
+            var wrappedCommand = new WrappedCommand<ModifyIdea, Idea>(command, ownerId);
 
             //Act
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
@@ -43,12 +45,12 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         public async Task Throw_domain_exception_when_aggregate_does_not_exists()
         {
             //Arrange
-            var ownerId = "ownerId";
-            var aggegateId = "id";
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<IdeaAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((IdeaAggregate?)null);
+            var ownerId = new OwnerId("user id");
+            var aggregateId = EntityId.NewEntityId();
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Idea?)null);
             var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
-            var command = new ModifyIdea(aggegateId, "new name", "new description");
-            var wrappedCommand = new WrappedCommand<ModifyIdea, IdeaAggregate>(command, ownerId);
+            var command = new ModifyIdea(aggregateId, "new name", "new description");
+            var wrappedCommand = new WrappedCommand<ModifyIdea, Idea>(command, ownerId);
 
             //Act
             var exception = await Assert.ThrowsAsync<DomainException>(() => handler.Handle(wrappedCommand, CancellationToken.None));

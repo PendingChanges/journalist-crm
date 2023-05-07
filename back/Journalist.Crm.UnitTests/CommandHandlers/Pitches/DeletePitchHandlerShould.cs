@@ -1,21 +1,21 @@
-﻿using Journalist.Crm.CommandHandlers;
-using Journalist.Crm.CommandHandlers.Pitches;
-using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Pitches;
-using Journalist.Crm.Domain.Pitches.Commands;
-using Journalist.Crm.Domain.Pitches.ValueObjects;
-using Moq;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.CommandHandlers;
+using Journalist.Crm.CommandHandlers.Pitches;
+using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.Pitches;
+using Journalist.Crm.Domain.Pitches.Commands;
+using Moq;
 using Xunit;
 
-namespace Journalist.Crm.UnitTests.CommandHandlers.Pitchs
+namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
 {
     public class DeletePitchHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
 
         public DeletePitchHandlerShould()
         {
@@ -26,14 +26,14 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitchs
         public async Task Handle_wrapped_command_delete_Pitch_properly()
         {
             //Arrange
-            var ownerId = "ownerId";
+            var ownerId = new OwnerId("ownerId");
             var pitchContent = new PitchContent("name", "content");
-            var aggregate = new PitchAggregate(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
-            aggregate.ClearUncommitedEvents();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<PitchAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var aggregate = new Pitch(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
+            aggregate.ClearUncommittedEvents();
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
             var handler = new DeletePitchHandler(_aggregateStoreMock.Object);
             var command = new DeletePitch(aggregate.Id);
-            var wrappedCommand = new WrappedCommand<DeletePitch, PitchAggregate>(command, ownerId);
+            var wrappedCommand = new WrappedCommand<DeletePitch, Pitch>(command, ownerId);
 
             //Act
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
@@ -46,12 +46,12 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitchs
         public async Task Throw_domain_exception_when_aggregate_does_not_exists()
         {
             //Arrange
-            var ownerId = "ownerId";
-            var aggegateId = "id";
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<PitchAggregate>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((PitchAggregate?)null);
+            var ownerId = new OwnerId("ownerId");
+            var aggregateId = EntityId.NewEntityId();
+            _aggregateStoreMock.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Pitch?)null);
             var handler = new DeletePitchHandler(_aggregateStoreMock.Object);
-            var command = new DeletePitch(aggegateId);
-            var wrappedCommand = new WrappedCommand<DeletePitch, PitchAggregate>(command, ownerId);
+            var command = new DeletePitch(aggregateId);
+            var wrappedCommand = new WrappedCommand<DeletePitch, Pitch>(command, ownerId);
 
             //Act
             var exception = await Assert.ThrowsAsync<DomainException>(() => handler.Handle(wrappedCommand, CancellationToken.None));

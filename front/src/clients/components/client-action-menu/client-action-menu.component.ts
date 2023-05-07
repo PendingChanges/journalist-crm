@@ -17,6 +17,6 @@ import { AddPitchButtonComponent } from 'src/pitches/components/add-pitch-button
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientActionMenuComponent {
-  @Input() public client: Client | null = null;
+  @Input({ required: true }) public client: Client | null = null;
   @Input() public disableDeleteButton: boolean = true;
 }

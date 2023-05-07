@@ -17,7 +17,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModifyIdeaButtonComponent {
-  @Input() public idea: Idea | null = null;
+  @Input({ required: true }) public idea: Idea | null = null;
 
   constructor(private _modalService: NgbModal) {}
   openDialog(): void {

@@ -17,6 +17,6 @@ import { ModifyIdeaButtonComponent } from '../modify-idea-button/modify-idea-but
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdeaActionMenuComponent {
-  @Input() public idea: Idea | null = null;
+  @Input({ required: true }) public idea: Idea | null = null;
   @Input() public disableDeleteButton: boolean = true;
 }

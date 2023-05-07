@@ -20,7 +20,7 @@ import { ClientsActions } from 'src/clients/state/clients.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientDeleteButtonComponent {
-  @Input() public client: Client | null = null;
+  @Input({ required: true }) public client: Client | null = null;
   @Input() public disabled = false;
   constructor(private _modalService: NgbModal, private _store: Store) {}
 

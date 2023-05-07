@@ -16,22 +16,22 @@ namespace Journalist.Crm.Marten
             this.store = store;
         }
 
-        public async Task StoreAsync(AggregateBase aggregate, CancellationToken ct = default)
+        public async Task StoreAsync(Aggregate aggregate, CancellationToken ct = default)
         {
             await using var session = store.LightweightSession();
             // Take non-persisted events, push them to the event stream, indexed by the aggregate ID
-            var events = aggregate.GetUncommitedEvents().ToArray();
+            var events = aggregate.GetUncommittedEvents().ToArray();
             session.Events.Append(aggregate.Id, aggregate.Version, events);
             await session.SaveChangesAsync(ct);
             // Once successfully persisted, clear events from list of uncommitted events
-            aggregate.ClearUncommitedEvents();
+            aggregate.ClearUncommittedEvents();
         }
 
         public async Task<T?> LoadAsync<T>(
             string id,
             int? version = null,
             CancellationToken ct = default
-        ) where T : AggregateBase
+        ) where T : Aggregate
         {
             await using var session = store.LightweightSession();
             var aggregate = await session.Events.AggregateStreamAsync<T>(id, version ?? 0, token: ct);

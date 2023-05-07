@@ -6,13 +6,15 @@ using Journalist.Crm.Domain.Ideas.Commands;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.CommandHandlers.Ideas;
 using Xunit;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class CreateIdeaHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
 
         public CreateIdeaHandlerShould()
         {
@@ -23,10 +25,10 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         public async Task Handle_wrapped_command_create_idea_properly()
         {
             //Arrange
-            var ownerId = "ownerId";
+            var ownerId = new OwnerId("user id");
             var handler = new CreateIdeaHandler(_aggregateStoreMock.Object);
             var command = new CreateIdea("name", "description");
-            var wrappedCommand = new WrappedCommand<CreateIdea, IdeaAggregate>(command, ownerId);
+            var wrappedCommand = new WrappedCommand<CreateIdea, Idea>(command, ownerId);
 
             //Act
             await handler.Handle(wrappedCommand, CancellationToken.None);

@@ -19,12 +19,12 @@ namespace Journalist.Crm.Marten.Pitches
         }
 
         public Task<PitchDocument?> GetPitchAsync(string id, string userId, CancellationToken cancellationToken = default)
-            => _session.Query<PitchDocument>().Where(c => c.Id == id && c.UserId == userId).FirstOrDefaultAsync(cancellationToken);
+            => _session.Query<PitchDocument>().Where(c => c.Id == id && c.OwnerId == userId).FirstOrDefaultAsync(cancellationToken);
 
 
         public async Task<PitchResultSet> GetPitchesAsync(GetPitchesRequest request, CancellationToken cancellationToken = default)
         {
-            var query = _session.Query<PitchDocument>().Where(p => p.UserId == request.UserId);
+            var query = _session.Query<PitchDocument>().Where(p => p.OwnerId == request.UserId);
 
             if (!string.IsNullOrWhiteSpace(request.ClientId))
             {

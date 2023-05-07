@@ -1,13 +1,14 @@
 ﻿using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Common;
 using MediatR;
 
 namespace Journalist.Crm.CommandHandlers
 {
     public class WrappedCommand<TCommand, TAggregate> : IRequest<TAggregate>
         where TCommand : ICommand
-        where TAggregate : AggregateBase
+        where TAggregate : Aggregate
     {
-        public WrappedCommand(TCommand command, string ownerId)
+        public WrappedCommand(TCommand command, OwnerId ownerId)
         {
             Command = command;
             OwnerId = ownerId;
@@ -15,6 +16,6 @@ namespace Journalist.Crm.CommandHandlers
         }
         public TCommand Command { get; }
 
-        public string OwnerId { get; }
+        public OwnerId OwnerId { get; }
     }
 }

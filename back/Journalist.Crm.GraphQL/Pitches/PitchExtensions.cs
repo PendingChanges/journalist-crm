@@ -12,6 +12,7 @@ using Journalist.Crm.GraphQL.Ideas;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Client = Journalist.Crm.GraphQL.Clients.Client;
 
 namespace Journalist.Crm.GraphQL.Pitches;
 
@@ -20,7 +21,7 @@ namespace Journalist.Crm.GraphQL.Pitches;
 public class PitchExtensions
 {
     [Authorize(Roles = new[] { "user" })]
-    public async Task<Idea?> GetIdeaAsync(
+    public async Task<Domain.Ideas.DataModels.Idea?> GetIdeaAsync(
 [Parent] Pitch pitch,
 [Service] IReadIdeas ideasReader,
 [Service] IContext context,

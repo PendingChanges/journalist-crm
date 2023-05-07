@@ -1,4 +1,6 @@
-﻿namespace Journalist.Crm.Domain.Clients.Events
+﻿using Journalist.Crm.Domain.Common;
+
+namespace Journalist.Crm.Domain.Clients.Events
 {
-    public sealed record ClientCreated(string Id, string Name, string OwnerId);
+    public sealed record ClientCreated(EntityId Id, string Name, OwnerId OwnerId);
 }

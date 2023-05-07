@@ -80,8 +80,8 @@ export class SaveIdeaComponent implements OnInit {
 
   public getTitle(): string {
     return this.data?.type === 'add'
-      ? this._translocoService.translate('clients.add_client')
-      : this._translocoService.translate('clients.modify_client', {
+      ? this._translocoService.translate('ideas.add_idea')
+      : this._translocoService.translate('ideas.modify_idea', {
           clientName: this.data?.idea?.name,
         });
   }

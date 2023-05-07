@@ -1,4 +1,6 @@
-﻿namespace Journalist.Crm.Domain.Clients.Events
+﻿using Journalist.Crm.Domain.Common;
+
+namespace Journalist.Crm.Domain.Clients.Events
 {
-    public sealed record ClientDeleted(string Id);
+    public sealed record ClientDeleted(EntityId Id);
 }

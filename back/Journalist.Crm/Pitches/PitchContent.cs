@@ -1,4 +1,4 @@
-﻿namespace Journalist.Crm.Domain.Pitches.ValueObjects
+﻿namespace Journalist.Crm.Domain.Pitches
 {
     public record PitchContent(string Title, string? Summary);
 }

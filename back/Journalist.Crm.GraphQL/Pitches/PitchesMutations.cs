@@ -23,7 +23,7 @@ namespace Journalist.Crm.GraphQL.Pitches
     CreatePitch createPitch,
     CancellationToken cancellationToken = default)
         {
-            var command = new WrappedCommand<CreatePitch, PitchAggregate>(createPitch, context.UserId);
+            var command = new WrappedCommand<Domain.Pitches.Commands.CreatePitch, Domain.Pitches.Pitch>(createPitch.ToCommand(), context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Journalist.Crm.GraphQL.Pitches
             DeletePitch deletePitch,
             CancellationToken cancellationToken = default)
         {
-            var command = new WrappedCommand<DeletePitch, PitchAggregate>(deletePitch, context.UserId);
+            var command = new WrappedCommand<Domain.Pitches.Commands.DeletePitch, Domain.Pitches.Pitch>(deletePitch.ToCommand(), context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 
@@ -55,7 +55,7 @@ namespace Journalist.Crm.GraphQL.Pitches
             ModifyPitch modifyPitch,
             CancellationToken cancellationToken = default)
         {
-            var command = new WrappedCommand<ModifyPitch, PitchAggregate>(modifyPitch, context.UserId);
+            var command = new WrappedCommand<Domain.Pitches.Commands.ModifyPitch, Domain.Pitches.Pitch>(modifyPitch.ToCommand(), context.UserId);
 
             var result = await mediator.Send(command, cancellationToken);
 

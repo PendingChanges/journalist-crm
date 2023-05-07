@@ -17,7 +17,7 @@ namespace Journalist.Crm.UnitTests.Domain
         public void ThenAnErrorWithCodeIsRaised(string errorCode)
         {
             Assert.NotNull(_aggregateContext.Aggregate);
-            var error = _aggregateContext.Aggregate.GetUncommitedErrors().FirstOrDefault(e => e.Code == errorCode);
+            var error = _aggregateContext.Aggregate.GetUncommittedErrors().FirstOrDefault(e => e.Code == errorCode);
 
             Assert.NotNull(error);
         }
@@ -26,7 +26,7 @@ namespace Journalist.Crm.UnitTests.Domain
         public void ThenNoErrors()
         {
             Assert.NotNull(_aggregateContext.Aggregate);
-            var errors = _aggregateContext.Aggregate.GetUncommitedErrors();
+            var errors = _aggregateContext.Aggregate.GetUncommittedErrors();
 
             Assert.Empty(errors);
         }

@@ -15,7 +15,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 export class ClientListItemComponent {
   constructor(private _router: Router) {}
 
-  @Input() public client: Client | null = null;
+  @Input({ required: true }) public client: Client | null = null;
 
   public onRowClick(client: Client | null) {
     if (!client) return;

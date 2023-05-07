@@ -4,6 +4,6 @@ namespace Journalist.Crm.UnitTests.Domain
 {
     public class AggregateContext
     {
-        public AggregateBase? Aggregate { get; set; }
+        public Aggregate? Aggregate { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
-using Journalist.Crm.Domain.Pitches.ValueObjects;
+using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Pitches.Commands
 {
-    public record ModifyPitch(string Id, PitchContent Content, DateTime? DeadLineDate, DateTime? IssueDate, string ClientId, string IdeaId) : ICommand;
+    public record ModifyPitch(EntityId Id, PitchContent Content, DateTime? DeadLineDate, DateTime? IssueDate, string ClientId, string IdeaId) : ICommand;
 }

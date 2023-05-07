@@ -11,10 +11,10 @@ namespace Journalist.Crm.Domain.Ideas.DataModels
             string? sortBy,
             string? sortDirection,
             string userId) : base(
-                skip ?? Constants.DEFAULT_PAGENUMBER,
-                take ?? Constants.DEFAULT_PAGESIZE,
-                sortBy ?? Constants.DEFAULT_IDEA_SORTBY,
-                sortDirection ?? Constants.DEFAULT_SORT_DIRECTION,
+                skip ?? Constants.DefaultPageNumber,
+                take ?? Constants.DefaultPageSize,
+                sortBy ?? Constants.DefaultIdeaSortBy,
+                sortDirection ?? Constants.DefaultSortDirection,
                 userId)
         {
             PitchId = pitchId;

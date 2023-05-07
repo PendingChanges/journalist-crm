@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.Domain.Ideas.Commands
 {
-    public record DeleteIdea(string Id): ICommand;
+    public record DeleteIdea(EntityId Id): ICommand;
 }

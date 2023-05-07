@@ -3,8 +3,6 @@ using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
-using Journalist.Crm.Domain.Clients.Commands;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +21,7 @@ public class ClientsMutations
         CreateClient createClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<CreateClient, ClientAggregate>(createClient, context.UserId);
+        var command = new WrappedCommand<Domain.Clients.Commands.CreateClient, Domain.Clients.Client>(createClient.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -39,7 +37,7 @@ public class ClientsMutations
         DeleteClient deleteClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<DeleteClient, ClientAggregate>(deleteClient, context.UserId);
+        var command = new WrappedCommand<Domain.Clients.Commands.DeleteClient, Domain.Clients.Client>(deleteClient.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -52,7 +50,7 @@ public class ClientsMutations
     public async Task<string> RenameClientAsync([Service] IMediator mediator, [Service] IContext context, RenameClient renameClient,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<RenameClient, ClientAggregate>(renameClient, context.UserId);
+        var command = new WrappedCommand<Domain.Clients.Commands.RenameClient, Domain.Clients.Client>(renameClient.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

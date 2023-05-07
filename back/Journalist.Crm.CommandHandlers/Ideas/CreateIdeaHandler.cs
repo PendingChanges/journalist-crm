@@ -1,23 +1,21 @@
-﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Journalist.Crm.Domain;
+using Journalist.Crm.Domain.Common;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
-using MediatR;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Journalist.Crm.CommandHandlers.Clients
+namespace Journalist.Crm.CommandHandlers.Ideas
 {
-    internal class CreateIdeaHandler : SingleAggregateCommandHandlerBase<CreateIdea, IdeaAggregate>
+    internal class CreateIdeaHandler : SingleAggregateCommandHandler<CreateIdea, Idea>
     {
         public CreateIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
-        protected override void ExecuteCommand(IdeaAggregate aggregate, CreateIdea command, string ownerId)
+        protected override void ExecuteCommand(Idea aggregate, CreateIdea command, OwnerId ownerId)
         {
         }
 
-        protected override Task<IdeaAggregate?> LoadAggregate(CreateIdea command, string ownerId, CancellationToken cancellationToken)
-            => Task.FromResult<IdeaAggregate?>(new IdeaAggregate(command.Name, command.Description, ownerId));
+        protected override Task<Idea?> LoadAggregate(CreateIdea command, OwnerId ownerId, CancellationToken cancellationToken)
+            => Task.FromResult<Idea?>(new Idea(command.Name, command.Description, ownerId));
     }
 }
