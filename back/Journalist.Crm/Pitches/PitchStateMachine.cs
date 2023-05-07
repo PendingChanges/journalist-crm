@@ -11,7 +11,7 @@ namespace Journalist.Crm.Domain.Pitches
             _pitchStateMachine = new StateMachine<PitchState, PitchTrigger>(initialState);
 
             _pitchStateMachine.Configure(PitchState.Draft)
-                .Permit(PitchTrigger.Save, PitchState.Draft)
+                .PermitReentry(PitchTrigger.Save)
                 .Permit(PitchTrigger.Cancel, PitchState.Cancelled)
                 .Permit(PitchTrigger.Validate, PitchState.ReadyToSend);
 
