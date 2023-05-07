@@ -16,7 +16,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
 {
     public class CreateClientHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
 
         public CreateClientHandlerShould()
         {

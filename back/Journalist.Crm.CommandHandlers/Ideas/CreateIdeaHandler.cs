@@ -7,7 +7,7 @@ using Journalist.Crm.Domain.Ideas.Commands;
 
 namespace Journalist.Crm.CommandHandlers.Ideas
 {
-    internal class CreateIdeaHandler : SingleAggregateCommandHandlerBase<CreateIdea, Idea>
+    internal class CreateIdeaHandler : SingleAggregateCommandHandler<CreateIdea, Idea>
     {
         public CreateIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 

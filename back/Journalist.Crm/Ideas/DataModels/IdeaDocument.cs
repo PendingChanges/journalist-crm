@@ -3,4 +3,4 @@ using System.Collections.Generic;
 
 namespace Journalist.Crm.Domain.Ideas.DataModels;
 
-public record IdeaDocument(EntityId Id, string Name, string? Description, OwnerId OwnerId, List<string> PitchesIds);
+public record IdeaDocument(string Id, string Name, string? Description, string OwnerId, List<string> PitchesIds);

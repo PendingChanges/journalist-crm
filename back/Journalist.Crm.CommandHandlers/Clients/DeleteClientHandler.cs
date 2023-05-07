@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class DeleteClientHandler : SingleAggregateCommandHandlerBase<DeleteClient, Client>
+    internal class DeleteClientHandler : SingleAggregateCommandHandler<DeleteClient, Client>
     {
         public DeleteClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
@@ -15,6 +15,6 @@ namespace Journalist.Crm.CommandHandlers.Clients
             => aggregate.Delete(ownerId);
 
         protected override Task<Client?> LoadAggregate(DeleteClient command, OwnerId ownerId, CancellationToken cancellationToken)
-            => _aggregateStore.LoadAsync<Client>(command.Id, ct: cancellationToken);
+            => AggregateStore.LoadAsync<Client>(command.Id, ct: cancellationToken);
     }
 }

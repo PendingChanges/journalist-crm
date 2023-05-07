@@ -7,12 +7,12 @@ using Journalist.Crm.Domain.Ideas.Commands;
 
 namespace Journalist.Crm.CommandHandlers.Ideas
 {
-    internal class DeleteIdeaHandler : SingleAggregateCommandHandlerBase<DeleteIdea, Idea>
+    internal class DeleteIdeaHandler : SingleAggregateCommandHandler<DeleteIdea, Idea>
     {
         public DeleteIdeaHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
         protected override void ExecuteCommand(Idea aggregate, DeleteIdea command, OwnerId ownerId) => aggregate.Delete(ownerId);
 
-        protected override Task<Idea?> LoadAggregate(DeleteIdea command, OwnerId ownerId, CancellationToken cancellationToken) => _aggregateStore.LoadAsync<Idea>(command.Id, ct: cancellationToken);
+        protected override Task<Idea?> LoadAggregate(DeleteIdea command, OwnerId ownerId, CancellationToken cancellationToken) => AggregateStore.LoadAsync<Idea>(command.Id, ct: cancellationToken);
     }
 }

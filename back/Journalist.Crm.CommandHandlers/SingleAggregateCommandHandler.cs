@@ -7,15 +7,15 @@ using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers
 {
-    internal abstract class SingleAggregateCommandHandlerBase<TCommand, TAggregate> : IRequestHandler<WrappedCommand<TCommand, TAggregate>, TAggregate>
+    internal abstract class SingleAggregateCommandHandler<TCommand, TAggregate> : IRequestHandler<WrappedCommand<TCommand, TAggregate>, TAggregate>
         where TAggregate : Aggregate
         where TCommand : ICommand
     {
-        protected readonly IStoreAggregates _aggregateStore;
+        protected readonly IStoreAggregates AggregateStore;
 
-        protected SingleAggregateCommandHandlerBase(IStoreAggregates aggregateStore)
+        protected SingleAggregateCommandHandler(IStoreAggregates aggregateStore)
         {
-            _aggregateStore = aggregateStore;
+            AggregateStore = aggregateStore;
         }
 
         public async Task<TAggregate> Handle(WrappedCommand<TCommand, TAggregate> request, CancellationToken cancellationToken)
@@ -31,13 +31,13 @@ namespace Journalist.Crm.CommandHandlers
 
             ExecuteCommand(aggregate, command, request.OwnerId);
 
-            var errors = aggregate.GetUncommittedErrors();
+            var errors = aggregate.GetUncommittedErrors().ToList();
             if (errors.Any())
             {
                 throw new DomainException(errors);
             }
 
-            await _aggregateStore.StoreAsync(aggregate, cancellationToken);
+            await AggregateStore.StoreAsync(aggregate, cancellationToken);
 
             return aggregate;
         }

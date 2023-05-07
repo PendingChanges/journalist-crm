@@ -15,7 +15,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class DeleteIdeaHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
  
         public DeleteIdeaHandlerShould()
         {
@@ -46,7 +46,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         {
             //Arrange
             var ownerId = new OwnerId("user id");
-            var aggregateId = "id";
+            var aggregateId = EntityId.NewEntityId();
             _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Idea?)null);
             var handler = new DeleteIdeaHandler(_aggregateStoreMock.Object);
             var command = new DeleteIdea(aggregateId);

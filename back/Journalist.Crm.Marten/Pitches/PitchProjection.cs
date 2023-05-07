@@ -32,7 +32,7 @@ namespace Journalist.Crm.Marten.Pitches
             }
         }
 
-        public async Task Project(PitchDeleted pitchDeleted, IDocumentOperations ops)
+        public async Task Project(PitchCancelled pitchDeleted, IDocumentOperations ops)
         {
             ops.Delete<PitchDocument>(pitchDeleted.Id);
 

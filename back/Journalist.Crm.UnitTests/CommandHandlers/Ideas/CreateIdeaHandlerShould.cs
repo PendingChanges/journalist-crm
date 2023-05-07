@@ -14,7 +14,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class CreateIdeaHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
 
         public CreateIdeaHandlerShould()
         {

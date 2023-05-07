@@ -1,4 +1,5 @@
-﻿using Journalist.Crm.Domain;
+﻿using System;
+using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
@@ -25,7 +26,7 @@ namespace Journalist.Crm.Marten
         {
             services.AddMarten(options =>
             {
-                options.Connection(configuration.GetConnectionString("Marten"));
+                options.Connection(configuration.GetConnectionString("Marten") ?? throw new ArgumentException(("missing connection string")));
 
                 // Events
                 options.Events.StreamIdentity = StreamIdentity.AsString;

@@ -99,9 +99,7 @@ namespace Journalist.Crm.UnitTests.Domain.Clients
         [When(@"A user with id ""([^""]*)""rename the client to ""([^""]*)""")]
         public void WhenAUserWithIdRenameTheClientTo(string ownerId, string newName)
         {
-            var clientAggregate = _aggregateContext.Aggregate as Client;
-
-            if(clientAggregate == null)
+            if(_aggregateContext.Aggregate is not Client clientAggregate)
             {
                 return;
             }

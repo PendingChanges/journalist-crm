@@ -7,7 +7,7 @@ using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class CreateClientHandler : SingleAggregateCommandHandlerBase<CreateClient, Client>
+    internal class CreateClientHandler : SingleAggregateCommandHandler<CreateClient, Client>
     {
         public CreateClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 

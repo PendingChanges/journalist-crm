@@ -2,7 +2,7 @@
 
 namespace Journalist.Crm.Domain.Common
 {
-    public readonly struct EntityId
+    public record EntityId
     {
         private readonly Guid _value;
 
@@ -10,7 +10,7 @@ namespace Journalist.Crm.Domain.Common
         private EntityId(Guid value) => _value = value;
 
         public static implicit operator string(EntityId id) => id._value.ToString();
-        public static readonly EntityId Empty = new();
+        public static readonly EntityId Empty = new(Guid.Empty);
 
         public static EntityId NewEntityId() => new(Guid.NewGuid());
     }

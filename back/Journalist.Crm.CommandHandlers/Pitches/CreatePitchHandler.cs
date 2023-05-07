@@ -7,7 +7,7 @@ using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
-    internal class CreatePitchHandler : SingleAggregateCommandHandlerBase<CreatePitch, Pitch>
+    internal class CreatePitchHandler : SingleAggregateCommandHandler<CreatePitch, Pitch>
     {
         public CreatePitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 

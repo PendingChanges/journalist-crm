@@ -7,7 +7,7 @@ using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
-    internal class RenameClientHandler : SingleAggregateCommandHandlerBase<RenameClient, Client>
+    internal class RenameClientHandler : SingleAggregateCommandHandler<RenameClient, Client>
     {
         public RenameClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
 
@@ -16,6 +16,6 @@ namespace Journalist.Crm.CommandHandlers.Clients
 
 
         protected override Task<Client?> LoadAggregate(RenameClient command, OwnerId ownerId, CancellationToken cancellationToken)
-            => _aggregateStore.LoadAsync<Client>(command.Id, ct: cancellationToken);
+            => AggregateStore.LoadAsync<Client>(command.Id, ct: cancellationToken);
     }
 }

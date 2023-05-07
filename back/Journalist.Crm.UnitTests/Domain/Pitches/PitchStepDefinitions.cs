@@ -84,11 +84,11 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.True(pitchAggregate.Deleted);
+            Assert.Equal(PitchState.Cancelled, pitchAggregate.CurrentState);
 
             var events = pitchAggregate.GetUncommittedEvents().ToList();
             Assert.Single(events);
-            var @event = events.LastOrDefault() as PitchDeleted;
+            var @event = events.LastOrDefault() as PitchCancelled;
 
             Assert.NotNull(@event);
             Assert.Equal(pitchAggregate.Id, @event.Id);
@@ -100,9 +100,9 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.False(pitchAggregate.Deleted);
+            Assert.NotEqual(PitchState.Cancelled, pitchAggregate.CurrentState);
 
-            Assert.DoesNotContain(pitchAggregate.GetUncommittedEvents(), e => e is PitchDeleted);
+            Assert.DoesNotContain(pitchAggregate.GetUncommittedEvents(), e => e is PitchCancelled);
         }
 
         [When(@"A user with id ""([^""]*)"" modify the pitch title ""([^""]*)"", summary ""([^""]*)"", dead line date ""([^""]*)"", issue date ""([^""]*)"", client id ""([^""]*)"", idea id ""([^""]*)""")]

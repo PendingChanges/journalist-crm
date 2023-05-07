@@ -2,14 +2,11 @@
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain.Ideas.Commands;
 using MediatR;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.CommandHandlers;
-using Journalist.Crm.Domain.Clients.Commands;
 
 namespace Journalist.Crm.GraphQL.Ideas;
 
@@ -24,7 +21,7 @@ public class IdeasMutations
     CreateIdea createIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<CreateIdea, Idea>(createIdea, context.UserId);
+        var command = new WrappedCommand<Domain.Ideas.Commands.CreateIdea, Idea>(createIdea.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -39,7 +36,7 @@ public class IdeasMutations
         DeleteIdea deleteIdea,
         CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<DeleteIdea, Idea>(deleteIdea, context.UserId);
+        var command = new WrappedCommand<Domain.Ideas.Commands.DeleteIdea, Idea>(deleteIdea.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 
@@ -52,7 +49,7 @@ public class IdeasMutations
     public async Task<string> ModifyIdeaAsync([Service] IMediator mediator, [Service] IContext context, ModifyIdea modifyIdea,
     CancellationToken cancellationToken = default)
     {
-        var command = new WrappedCommand<ModifyIdea, Idea>(modifyIdea, context.UserId);
+        var command = new WrappedCommand<Domain.Ideas.Commands.ModifyIdea, Idea>(modifyIdea.ToCommand(), context.UserId);
 
         var result = await mediator.Send(command, cancellationToken);
 

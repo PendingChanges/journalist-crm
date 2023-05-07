@@ -7,14 +7,14 @@ using Journalist.Crm.Domain.Common;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
-    internal class ModifyPitchHandler : SingleAggregateCommandHandlerBase<ModifyPitch, Pitch>
+    internal class ModifyPitchHandler : SingleAggregateCommandHandler<ModifyPitch, Pitch>
     {
         public ModifyPitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore)
         {
         }
 
         protected override Task<Pitch?> LoadAggregate(ModifyPitch command, OwnerId ownerId, CancellationToken cancellationToken)
-            => _aggregateStore.LoadAsync<Pitch>(command.Id, ct: cancellationToken);
+            => AggregateStore.LoadAsync<Pitch>(command.Id, ct: cancellationToken);
 
         protected override void ExecuteCommand(Pitch aggregate, ModifyPitch command, OwnerId ownerId)
             => aggregate.Modify(command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId);

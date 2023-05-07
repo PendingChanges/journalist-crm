@@ -2,13 +2,13 @@
 
 namespace Journalist.Crm.Domain.Common
 {
-    public readonly struct OwnerId
+    public record OwnerId
     {
         private readonly string _value = string.Empty;
 
         public OwnerId(string value) => _value = value;
         public static implicit operator string(OwnerId id) => id._value;
         public static explicit operator OwnerId(string value) => new(value);
-        public static readonly OwnerId Empty = new();
+        public static readonly OwnerId Empty = new(string.Empty);
     }
 }
