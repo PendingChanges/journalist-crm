@@ -20,7 +20,7 @@ import { IdeasActions } from 'src/ideas/state/ideas.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteIdeaButtonComponent {
-  @Input() public idea: Idea | null = null;
+  @Input({ required: true }) public idea: Idea | null = null;
   @Input() public disabled = false;
   constructor(private _modalService: NgbModal, private _store: Store) {}
 

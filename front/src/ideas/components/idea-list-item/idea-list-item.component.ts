@@ -13,7 +13,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdeaListItemComponent {
-  @Input() public idea: Idea | null = null;
+  @Input({ required: true }) public idea: Idea | null = null;
   constructor(private _router: Router) {}
 
   public onRowClick(idea: Idea | null) {

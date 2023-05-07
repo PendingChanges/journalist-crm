@@ -17,7 +17,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientModifyButtonComponent {
-  @Input() public client: Client | null = null;
+  @Input({ required: true }) public client: Client | null = null;
   constructor(private _modalService: NgbModal) {}
   openDialog(): void {
     const dialogRef = this._modalService.open(SaveClientComponent);

@@ -17,5 +17,5 @@ import { PitchModifyButtonComponent } from '../pitch-modify-button/pitch-modify-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PitchActionMenuComponent {
-  @Input() public pitch: Pitch | null = null;
+  @Input({ required: true }) public pitch: Pitch | null = null;
 }

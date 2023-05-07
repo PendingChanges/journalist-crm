@@ -17,7 +17,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PitchModifyButtonComponent {
-  @Input() public pitch: Pitch | null = null;
+  @Input({ required: true }) public pitch: Pitch | null = null;
   constructor(private _modalService: NgbModal) {}
   openDialog(): void {
     const dialogRef = this._modalService.open(AddPitchComponent);
