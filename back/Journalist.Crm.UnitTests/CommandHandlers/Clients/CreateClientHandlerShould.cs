@@ -1,26 +1,25 @@
 ﻿using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.CommandHandlers.Clients;
-using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Commands;
-using Journalist.Crm.Domain.Common;
-using Journalist.Crm.Domain.Ideas;
-using Journalist.Crm.Domain.Ideas.Commands;
+using Journalist.Crm.Domain.CQRS;
 using Moq;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.Domain.ValueObjects;
 using Xunit;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
 {
     public class CreateClientHandlerShould
     {
-        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IWriteEvents> _eventWriterMock;
+        private readonly Mock<IReadAggregates> _aggregateReaderMock;
 
         public CreateClientHandlerShould()
         {
-            _aggregateStoreMock = new Mock<IStoreAggregates>();
+            _eventWriterMock = new Mock<IWriteEvents>();
+            _aggregateReaderMock = new Mock<IReadAggregates>();
         }
 
         [Fact]
@@ -28,7 +27,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
         {
             //Arrange
             var ownerId = new OwnerId("user id");
-            var handler = new CreateClientHandler(_aggregateStoreMock.Object);
+            var handler = new CreateClientHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new CreateClient("name");
             var wrappedCommand = new WrappedCommand<CreateClient, Client>(command, ownerId);
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Journalist.Crm.Domain.Common
+namespace Journalist.Crm.Domain.CQRS
 {
     public class ErrorCollection
     {
@@ -11,6 +11,10 @@ namespace Journalist.Crm.Domain.Common
             public const string PitchNotModifiable = "PITCH_NOT_MODIFIABLE";
             public const string NotClientOwner = "NOT_CLIENT_OWNER";
             public const string NotIdeaOwner = "NOT_IDEA_OWNER";
+            public const string PitchNotSendable = "PITCH_NOT_SENDABLE";
+            public const string PitchNotValidatable = "PITCH_NOT_VALIDATABLE";
+            public const string PitchNotAcceptable = "PITCH_NOT_ACCEPTABLE";
+            public const string PitchNotRefusable = "PITCH_NOT_REFUSABLE";
 
             internal static readonly Dictionary<string, string> Messages = new()
             {
@@ -18,7 +22,11 @@ namespace Journalist.Crm.Domain.Common
                 { PitchNotCancellable, "The pitch is not cancellable"},
                 { PitchNotModifiable, "The pitch is not modifiable"},
                 { NotClientOwner, "The user is not the owner of this client"},
-                {NotIdeaOwner, "The user is not the owner of this idea"}
+                { NotIdeaOwner, "The user is not the owner of this idea"},
+                { PitchNotSendable, "The pitch is not sendable"},
+                { PitchNotValidatable, "The pitch is not validatable"},
+                { PitchNotAcceptable, "The pitch is not acceptable"},
+                { PitchNotRefusable, "The pitch is not refusable"}
             };
         }
 
@@ -32,7 +40,5 @@ namespace Journalist.Crm.Domain.Common
             WellKnownErrors.Messages.TryGetValue(code, out var message) ? message : "Unknown Message"));
 
         public IEnumerable<Error> GetErrors() => _errors;
-
-        public static ErrorCollection Empty() => new();
     }
 }

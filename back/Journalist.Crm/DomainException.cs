@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.Domain
 {

@@ -1,5 +1,6 @@
 ﻿using Journalist.Crm.Domain.Ideas.Events;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.Domain.Ideas
 {

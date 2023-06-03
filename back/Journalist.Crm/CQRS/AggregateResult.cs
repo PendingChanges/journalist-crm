@@ -1,14 +1,13 @@
-﻿using Journalist.Crm.Domain.Pitches.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Journalist.Crm.Domain.Common;
+namespace Journalist.Crm.Domain.CQRS;
 
 public class AggregateResult
 {
     private AggregateResult()
     {
-        
+
     }
     private readonly ErrorCollection _errors = new();
     private readonly EventCollection _events = new();

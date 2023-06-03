@@ -1,7 +1,7 @@
 ﻿using Journalist.Crm.Domain.Pitches.Events;
 using System;
-using System.ComponentModel.Design;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.Domain.Pitches
 {
@@ -16,7 +16,7 @@ namespace Journalist.Crm.Domain.Pitches
 
         private PitchStateMachine _stateMachine;
 
-        public PitchState CurrentState => _stateMachine.CurrentState;
+        public string CurrentState => _stateMachine.CurrentState;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Pitch() { }
@@ -37,9 +37,7 @@ namespace Journalist.Crm.Domain.Pitches
             return result;
         }
 
-
-
-        public AggregateResult Delete(OwnerId ownerId)
+        public AggregateResult Cancel(OwnerId ownerId)
         {
             var result = AggregateResult.Create();
 
@@ -58,12 +56,80 @@ namespace Journalist.Crm.Domain.Pitches
             return result;
         }
 
+        public AggregateResult Validate(OwnerId ownerId)
+        {
+            var result = AggregateResult.Create();
+
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanValidate(), ErrorCollection.WellKnownErrors.PitchNotValidatable);
+
+            if (result.HasErrors)
+            {
+                return result;
+            }
+
+            var @event = new PitchReadyToSend(Id);
+            Apply(@event);
+            result.AddEvent(@event);
+
+            return result;
+        }
+
+        public AggregateResult Send(OwnerId ownerId)
+        {
+            var result = AggregateResult.Create();
+
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanSend(), ErrorCollection.WellKnownErrors.PitchNotSendable);
+
+            if (result.HasErrors)
+            {
+                return result;
+            }
+
+            var @event = new PitchSent(Id);
+            Apply(@event);
+            result.AddEvent(@event);
+
+            return result;
+        }
+
+        public AggregateResult Accept(OwnerId ownerId)
+        {
+            var result = AggregateResult.Create();
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanAccept(), ErrorCollection.WellKnownErrors.PitchNotAcceptable);
+            if (result.HasErrors)
+            {
+                return result;
+            }
+            var @event = new PitchAccepted(Id);
+            Apply(@event);
+            result.AddEvent(@event);
+            return result;
+        }
+
+        public AggregateResult Refuse(OwnerId ownerId)
+        {
+            var result = AggregateResult.Create();
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
+            result.CheckAndAddError(() => !_stateMachine.CanRefuse(), ErrorCollection.WellKnownErrors.PitchNotRefusable);
+            if (result.HasErrors)
+            {
+                return result;
+            }
+            var @event = new PitchRefused(Id);
+            Apply(@event);
+            result.AddEvent(@event);
+            return result;
+        }   
+
         public AggregateResult Modify(PitchContent content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, OwnerId ownerId)
         {
             var result = AggregateResult.Create();
 
             result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotPitchOwner);
-            result.CheckAndAddError(() => !_stateMachine.CanSave(), ErrorCollection.WellKnownErrors.PitchNotModifiable);
+            result.CheckAndAddError(() => !_stateMachine.CanModify(), ErrorCollection.WellKnownErrors.PitchNotModifiable);
 
             if (result.HasErrors)
             {
@@ -124,14 +190,38 @@ namespace Journalist.Crm.Domain.Pitches
             ClientId = @event.ClientId;
             IdeaId = @event.IdeaId;
             OwnerId = @event.OwnerId;
-            _stateMachine = new PitchStateMachine(PitchState.Draft);
+            _stateMachine = new PitchStateMachine(PitchStates.Draft);
 
             IncrementVersion();
         }
 
         private void Apply(PitchCancelled @event)
         {
-            _stateMachine.Cancel();
+            _stateMachine.SetStatus(PitchStates.Cancelled);
+            IncrementVersion();
+        }
+
+        private void Apply(PitchSent @event)
+        {
+            _stateMachine.SetStatus(PitchStates.Sent);
+            IncrementVersion();
+        }
+
+        private void Apply(PitchAccepted @event)
+        {
+            _stateMachine.SetStatus(PitchStates.Accepted);
+            IncrementVersion();
+        }
+
+        private void Apply(PitchRefused @event)
+        {
+            _stateMachine.SetStatus(PitchStates.Refused);
+            IncrementVersion();
+        }
+
+        private void Apply(PitchReadyToSend @event)
+        {
+            _stateMachine.SetStatus(PitchStates.ReadyToSend);
             IncrementVersion();
         }
 
@@ -158,5 +248,12 @@ namespace Journalist.Crm.Domain.Pitches
             IdeaId = @event.IdeaId;
             IncrementVersion();
         }
+
+        public bool CanValidate() => _stateMachine.CanValidate();
+        public bool CanModify() => _stateMachine.CanModify();
+        public bool CanCancel() => _stateMachine.CanCancel();
+        public bool CanSend() => _stateMachine.CanSend();
+        public bool CanAccept() => _stateMachine.CanAccept();
+        public bool CanRefuse() => _stateMachine.CanRefuse();
     }
 }

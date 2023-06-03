@@ -1,15 +1,15 @@
-﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
+﻿using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Commands;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
     internal class CreateClientHandler : SingleAggregateCommandHandler<CreateClient, Client>
     {
-        public CreateClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
+        public CreateClientHandler(IWriteEvents eventWriter, IReadAggregates aggregateReader) : base(eventWriter, aggregateReader) { }
 
         protected override AggregateResult ExecuteCommand(Client aggregate, CreateClient command, OwnerId ownerId) => AggregateResult.Create();
 

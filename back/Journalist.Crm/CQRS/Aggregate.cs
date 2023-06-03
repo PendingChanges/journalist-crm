@@ -1,6 +1,6 @@
-﻿using Journalist.Crm.Domain.Common;
+﻿using Journalist.Crm.Domain.ValueObjects;
 
-namespace Journalist.Crm.Domain
+namespace Journalist.Crm.Domain.CQRS
 {
     public abstract class Aggregate
     {
@@ -15,7 +15,7 @@ namespace Journalist.Crm.Domain
         /// warning: do not put the setter to private (used by Marten)
         /// </summary>
         public long Version { get; set; }
-        
+
         protected void SetId(EntityId id) => Id = id;
 
         protected void IncrementVersion() => Version++;

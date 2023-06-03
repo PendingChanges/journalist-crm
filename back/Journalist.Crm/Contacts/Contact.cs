@@ -1,6 +1,7 @@
 ﻿using System;
-using Journalist.Crm.Domain.Common;
 using Journalist.Crm.Domain.Contacts.Events;
+using Journalist.Crm.Domain.CQRS;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.Domain.Contacts
 {

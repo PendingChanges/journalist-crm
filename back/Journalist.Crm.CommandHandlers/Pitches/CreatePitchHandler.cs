@@ -1,15 +1,15 @@
-﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Pitches;
+﻿using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
     internal class CreatePitchHandler : SingleAggregateCommandHandler<CreatePitch, Pitch>
     {
-        public CreatePitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
+        public CreatePitchHandler(IWriteEvents eventWriter, IReadAggregates aggregateReader) : base(eventWriter, aggregateReader) { }
 
         protected override AggregateResult ExecuteCommand(Pitch aggregate, CreatePitch command, OwnerId ownerId) => AggregateResult.Create();
 

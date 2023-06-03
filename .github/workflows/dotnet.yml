@@ -25,4 +25,9 @@ jobs:
     - name: Build
       run: dotnet build ./back/Journalist.Crm.sln --no-restore
     - name: Test
-      run: dotnet test ./back/Journalist.Crm.sln --no-build --verbosity normal
+      run: dotnet test ./back/Journalist.Crm.UnitTests/Journalist.Crm.UnitTests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+    - name: Publish coverage report to coveralls.io   
+      uses: coverallsapp/github-action@master   
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }} 
+        path-to-lcov: back/Journalist.Crm.UnitTests/TestResults/coverage.info 

@@ -128,12 +128,12 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="A user delete its own pitch")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user cancel its own pitch")]
         [Xunit.TraitAttribute("FeatureTitle", "Pitch")]
-        [Xunit.TraitAttribute("Description", "A user delete its own pitch")]
+        [Xunit.TraitAttribute("Description", "A user cancel its own pitch")]
         [Xunit.TraitAttribute("Category", "pitch")]
         [Xunit.InlineDataAttribute("testuser", "Pitch Test", "Pitch Content", "8 april 2023", "9 april 2023", "client Id", "Idea Id", new string[0])]
-        public void AUserDeleteItsOwnPitch(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string[] exampleTags)
+        public void AUserCancelItsOwnPitch(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "pitch"};
@@ -150,7 +150,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("pitchIssueDate", pitchIssueDate);
             argumentsOfScenario.Add("pitchClientId", pitchClientId);
             argumentsOfScenario.Add("pitchIdeaId", pitchIdeaId);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user delete its own pitch", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user cancel its own pitch", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -166,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "te \"{3}\", client id \"{4}\", idea id \"{5}\" and an owner \"{6}\"", pitchTitle, pitchContent, pitchDeadLineDate, pitchIssueDate, pitchClientId, pitchIdeaId, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
- testRunner.When(string.Format("A user with id \"{0}\" delete the pitch", userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("A user with id \"{0}\" cancel the pitch", userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
  testRunner.Then("The pitch is deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -178,12 +178,62 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="A user tries to delete a pitch he doesn\'t own")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user validate its own pitch")]
         [Xunit.TraitAttribute("FeatureTitle", "Pitch")]
-        [Xunit.TraitAttribute("Description", "A user tries to delete a pitch he doesn\'t own")]
+        [Xunit.TraitAttribute("Description", "A user validate its own pitch")]
+        [Xunit.TraitAttribute("Category", "pitch")]
+        [Xunit.InlineDataAttribute("testuser", "Pitch Test", "Pitch Content", "8 april 2023", "9 april 2023", "client Id", "Idea Id", new string[0])]
+        public void AUserValidateItsOwnPitch(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "pitch"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("userid", userid);
+            argumentsOfScenario.Add("pitchTitle", pitchTitle);
+            argumentsOfScenario.Add("pitchContent", pitchContent);
+            argumentsOfScenario.Add("pitchDeadLineDate", pitchDeadLineDate);
+            argumentsOfScenario.Add("pitchIssueDate", pitchIssueDate);
+            argumentsOfScenario.Add("pitchClientId", pitchClientId);
+            argumentsOfScenario.Add("pitchIdeaId", pitchIdeaId);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user validate its own pitch", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 25
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 26
+ testRunner.Given(string.Format("An existing pitch with title \"{0}\", content \"{1}\", dead line date \"{2}\", issue da" +
+                            "te \"{3}\", client id \"{4}\", idea id \"{5}\" and an owner \"{6}\"", pitchTitle, pitchContent, pitchDeadLineDate, pitchIssueDate, pitchClientId, pitchIdeaId, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 27
+ testRunner.When(string.Format("A user with id \"{0}\" validate the pitch", userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 28
+ testRunner.Then("The pitch is validated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 29
+ testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="A user tries to cancel a pitch he doesn\'t own")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pitch")]
+        [Xunit.TraitAttribute("Description", "A user tries to cancel a pitch he doesn\'t own")]
         [Xunit.TraitAttribute("Category", "pitch")]
         [Xunit.InlineDataAttribute("testuser", "Pitch Test", "Pitch Content", "8 april 2023", "9 april 2023", "client Id", "Idea Id", "testuser2", "NOT_PITCH_OWNER", new string[0])]
-        public void AUserTriesToDeleteAPitchHeDoesntOwn(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string otherUserid, string errorCode, string[] exampleTags)
+        public void AUserTriesToCancelAPitchHeDoesntOwn(string userid, string pitchTitle, string pitchContent, string pitchDeadLineDate, string pitchIssueDate, string pitchClientId, string pitchIdeaId, string otherUserid, string errorCode, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "pitch"};
@@ -202,8 +252,8 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("pitchIdeaId", pitchIdeaId);
             argumentsOfScenario.Add("otherUserid", otherUserid);
             argumentsOfScenario.Add("errorCode", errorCode);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user tries to delete a pitch he doesn\'t own", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user tries to cancel a pitch he doesn\'t own", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 36
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -213,17 +263,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 37
  testRunner.Given(string.Format("An existing pitch with title \"{0}\", content \"{1}\", dead line date \"{2}\", issue da" +
                             "te \"{3}\", client id \"{4}\", idea id \"{5}\" and an owner \"{6}\"", pitchTitle, pitchContent, pitchDeadLineDate, pitchIssueDate, pitchClientId, pitchIdeaId, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
- testRunner.When(string.Format("A user with id \"{0}\" delete the pitch", otherUserid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.When(string.Format("A user with id \"{0}\" cancel the pitch", otherUserid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 39
  testRunner.Then(string.Format("An error with code \"{0}\" is raised", errorCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 29
+#line 40
  testRunner.And("The pitch is not deleted", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -259,7 +309,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("newPitchClientId", newPitchClientId);
             argumentsOfScenario.Add("newPitchIdeaId", newPitchIdeaId);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A user modify a pitch", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 36
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -269,30 +319,30 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 48
  testRunner.Given(string.Format("An existing pitch with title \"{0}\", content \"{1}\", dead line date \"{2}\", issue da" +
                             "te \"{3}\", client id \"{4}\", idea id \"{5}\" and an owner \"{6}\"", pitchTitle, pitchContent, pitchDeadLineDate, pitchIssueDate, pitchClientId, pitchIdeaId, userid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
+#line 49
  testRunner.When(string.Format("A user with id \"{0}\" modify the pitch title \"{1}\", summary \"{2}\", dead line date " +
                             "\"{3}\", issue date \"{4}\", client id \"{5}\", idea id \"{6}\"", userid, newPitchTitle, newPitchSummary, newPitchDeadLineDate, newPitchIssueDate, newPitchClientId, newPitchIdeaId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
+#line 50
  testRunner.Then(string.Format("The pitch content change to title \"{0}\" and summary \"{1}\"", newPitchTitle, newPitchSummary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 40
+#line 51
  testRunner.And(string.Format("The pitch deadline date is rescheduled to \"{0}\"", newPitchDeadLineDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 52
  testRunner.And(string.Format("The pitch issue date is rescheduled to \"{0}\"", newPitchIssueDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 42
+#line 53
  testRunner.And(string.Format("The pitch client change to \"{0}\"", newPitchClientId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 54
  testRunner.And(string.Format("The pitch idea change to \"{0}\"", newPitchIdeaId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 55
  testRunner.And("No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

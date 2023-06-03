@@ -6,6 +6,7 @@ using Marten;
 using Marten.Events.Projections;
 using System.Linq;
 using System.Threading.Tasks;
+using Journalist.Crm.Domain.Pitches;
 
 namespace Journalist.Crm.Marten.Pitches
 {
@@ -13,7 +14,7 @@ namespace Journalist.Crm.Marten.Pitches
     {
         public async Task Project(PitchCreated pitchCreated, IDocumentOperations ops)
         {
-            ops.Store(new PitchDocument(pitchCreated.Id, pitchCreated.Content, pitchCreated.DeadLineDate, pitchCreated.IssueDate, pitchCreated.ClientId, pitchCreated.IdeaId, pitchCreated.OwnerId));
+            ops.Store(new PitchDocument(pitchCreated.Id, pitchCreated.Content, pitchCreated.DeadLineDate, pitchCreated.IssueDate, pitchCreated.ClientId, pitchCreated.IdeaId, pitchCreated.OwnerId, PitchStates.Draft));
 
             var client = await ops.LoadAsync<ClientDocument>(pitchCreated.ClientId);
 
@@ -32,26 +33,28 @@ namespace Journalist.Crm.Marten.Pitches
             }
         }
 
-        public async Task Project(PitchCancelled pitchDeleted, IDocumentOperations ops)
+        private async Task UpdateStatus(string pitchId, string statusCode, IDocumentOperations ops)
         {
-            ops.Delete<PitchDocument>(pitchDeleted.Id);
+            var pitch = await ops.Query<PitchDocument>().SingleOrDefaultAsync(c => c.Id == pitchId);
 
-            var client = await ops.LoadAsync<ClientDocument>(pitchDeleted.ClientId);
-
-            if (client != null && client.PitchesIds.Any(id => id == pitchDeleted.Id))
+            if (pitch != null)
             {
-                client.PitchesIds.Remove(pitchDeleted.Id);
-                ops.Store(client);
-            }
+                var pitchUpdated = pitch with { StatusCode = statusCode };
 
-            var idea = await ops.LoadAsync<IdeaDocument>(pitchDeleted.IdeaId);
-
-            if (idea != null && idea.PitchesIds.Any(id => id == pitchDeleted.Id))
-            {
-                idea.PitchesIds.Add(pitchDeleted.Id);
-                ops.Store(idea);
+                ops.Store(pitchUpdated);
             }
         }
+
+        public Task Project(PitchCancelled pitchCancelled, IDocumentOperations ops)
+            => UpdateStatus(pitchCancelled.Id, PitchStates.Cancelled, ops);
+        public Task Project(PitchSent pitchSent, IDocumentOperations ops)
+            => UpdateStatus(pitchSent.Id, PitchStates.Sent, ops);
+        public Task Project(PitchAccepted pitchAccepted, IDocumentOperations ops)
+            => UpdateStatus(pitchAccepted.Id, PitchStates.Accepted, ops);
+        public Task Project(PitchRefused pitchRefused, IDocumentOperations ops)
+            => UpdateStatus(pitchRefused.Id, PitchStates.Refused, ops);
+        public Task Project(PitchReadyToSend pitchReadyToSend, IDocumentOperations ops)
+            => UpdateStatus(pitchReadyToSend.Id, PitchStates.ReadyToSend, ops);
 
         public async Task Project(PitchContentChanged pitchContentChanged, IDocumentOperations ops)
         {

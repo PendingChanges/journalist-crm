@@ -1,5 +1,4 @@
 ﻿using System;
-using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Linq;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.Marten
 {
@@ -67,7 +67,9 @@ namespace Journalist.Crm.Marten
             }
             services.AddTransient(s => s.GetRequiredService<ISessionFactory>().OpenSession());
 
-            services.AddTransient<IStoreAggregates, AggregateRepository>();
+            services.AddTransient<AggregateRepository>();
+            services.AddTransient<IWriteEvents>(sp => sp.GetRequiredService<AggregateRepository>());
+            services.AddTransient<IReadAggregates>(sp => sp.GetRequiredService<AggregateRepository>());
             services.AddTransient<IReadClients, ClientRepository>();
             services.AddTransient<IReadIdeas, IdeaRepository>();
             services.AddTransient<IReadPitches, PitchRepository>();

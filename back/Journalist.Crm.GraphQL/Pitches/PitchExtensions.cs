@@ -1,22 +1,21 @@
 ﻿using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
-using HotChocolate.Types.Pagination;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Clients;
-using Journalist.Crm.Domain.Clients.DataModels;
 using Journalist.Crm.Domain.Ideas;
-using Journalist.Crm.Domain.Ideas.DataModels;
 using Journalist.Crm.GraphQL.Clients;
 using Journalist.Crm.GraphQL.Ideas;
-using System.Data;
+using Journalist.Crm.GraphQL.Pitches.Outputs;
 using System.Threading;
 using System.Threading.Tasks;
+using Journalist.Crm.Domain.CQRS;
 using Client = Journalist.Crm.GraphQL.Clients.Client;
 
 namespace Journalist.Crm.GraphQL.Pitches;
 
 
+//TODO: Create dataloaders for all extensions
 [ExtendObjectType(typeof(Pitch))]
 public class PitchExtensions
 {
@@ -35,4 +34,12 @@ CancellationToken cancellationToken = default)
 [Service] IContext context,
 CancellationToken cancellationToken = default)
     => (await clientsReader.GetClientAsync(pitch.ClientId, context.UserId, cancellationToken)).ToClientOrNull();
+
+    [Authorize(Roles = new[] { "user" })]
+    public async Task<PitchGuards?> GetGuardsAsync(
+        [Parent] Pitch pitch,
+        [Service] IReadAggregates aggregateReader,
+        [Service] IContext context,
+        CancellationToken cancellationToken = default)
+    => (await aggregateReader.LoadAsync<Domain.Pitches.Pitch>(pitch.Id,ct: cancellationToken)).ToPitchGuardsOrNull();
 }

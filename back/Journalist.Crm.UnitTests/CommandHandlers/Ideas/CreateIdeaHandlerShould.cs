@@ -1,6 +1,4 @@
 ﻿using Journalist.Crm.CommandHandlers;
-using Journalist.Crm.CommandHandlers.Clients;
-using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Ideas;
 using Journalist.Crm.Domain.Ideas.Commands;
 using Moq;
@@ -8,17 +6,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Journalist.Crm.CommandHandlers.Ideas;
 using Xunit;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.CQRS;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class CreateIdeaHandlerShould
     {
-        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IWriteEvents> _eventWriterMock;
+        private readonly Mock<IReadAggregates> _aggregateReaderMock;
 
         public CreateIdeaHandlerShould()
         {
-            _aggregateStoreMock = new Mock<IStoreAggregates>();
+            _eventWriterMock = new Mock<IWriteEvents>();
+            _aggregateReaderMock = new Mock<IReadAggregates>();
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
         {
             //Arrange
             var ownerId = new OwnerId("user id");
-            var handler = new CreateIdeaHandler(_aggregateStoreMock.Object);
+            var handler = new CreateIdeaHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new CreateIdea("name", "description");
             var wrappedCommand = new WrappedCommand<CreateIdea, Idea>(command, ownerId);
 

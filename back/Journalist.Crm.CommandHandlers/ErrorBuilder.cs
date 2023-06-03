@@ -1,4 +1,4 @@
-﻿using Journalist.Crm.Domain;
+﻿using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers
 {

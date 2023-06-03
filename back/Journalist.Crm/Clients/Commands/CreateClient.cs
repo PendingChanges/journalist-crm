@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Journalist.Crm.Domain.CQRS;
+using MediatR;
 
 namespace Journalist.Crm.Domain.Clients.Commands
 {

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Journalist.Crm.Domain.Common;
 using Journalist.Crm.Domain.Pitches.DataModels;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.GraphQL.Pitches.Inputs;
+using Journalist.Crm.GraphQL.Pitches.Outputs;
 
 namespace Journalist.Crm.GraphQL.Pitches
 {
@@ -24,5 +26,11 @@ namespace Journalist.Crm.GraphQL.Pitches
 
         public static Domain.Pitches.Commands.ModifyPitch ToCommand(this ModifyPitch modifyPitch)
          => new(new EntityId(modifyPitch.Id), modifyPitch.Content, modifyPitch.DeadLineDate, modifyPitch.IssueDate, modifyPitch.ClientId, modifyPitch.IdeaId);
+
+        public static PitchGuards ToPitchGuards(this Domain.Pitches.Pitch pitch)
+            => new(pitch.CanModify(), pitch.CanValidate(), pitch.CanCancel(), pitch.CanSend(), pitch.CanAccept(), pitch.CanRefuse());
+
+        public static PitchGuards? ToPitchGuardsOrNull(this Domain.Pitches.Pitch? pitch)
+            => pitch?.ToPitchGuards();
     }
 }

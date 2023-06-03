@@ -11,16 +11,20 @@ using System.Threading.Tasks;
 using Journalist.Crm.CommandHandlers.Ideas;
 using Xunit;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
 {
     public class ModifyIdeaHandlerShould
     {
-        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IWriteEvents> _eventWriterMock;
+        private readonly Mock<IReadAggregates> _aggregateReaderMock;
 
         public ModifyIdeaHandlerShould()
         {
-            _aggregateStoreMock = new Mock<IStoreAggregates>();
+            _eventWriterMock = new Mock<IWriteEvents>();
+            _aggregateReaderMock = new Mock<IReadAggregates>();
         }
 
         [Fact]
@@ -30,8 +34,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
             var ownerId = new OwnerId("user id");
             var aggregate = new Idea();
             aggregate.Create("name", "description", ownerId);
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
-            var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
+            _aggregateReaderMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var handler = new ModifyIdeaHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new ModifyIdea(aggregate.Id, "new name", "new description");
             var wrappedCommand = new WrappedCommand<ModifyIdea, Idea>(command, ownerId);
 
@@ -39,7 +43,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
+            _eventWriterMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]
@@ -48,8 +52,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Ideas
             //Arrange
             var ownerId = new OwnerId("user id");
             var aggregateId = EntityId.NewEntityId();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Idea?)null);
-            var handler = new ModifyIdeaHandler(_aggregateStoreMock.Object);
+            _aggregateReaderMock.Setup(_ => _.LoadAsync<Idea>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Idea?)null);
+            var handler = new ModifyIdeaHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new ModifyIdea(aggregateId, "new name", "new description");
             var wrappedCommand = new WrappedCommand<ModifyIdea, Idea>(command, ownerId);
 

@@ -2,7 +2,8 @@
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers
 {
@@ -10,11 +11,13 @@ namespace Journalist.Crm.CommandHandlers
         where TAggregate : Aggregate
         where TCommand : ICommand
     {
-        protected readonly IStoreAggregates AggregateStore;
+        protected readonly IWriteEvents EventWriter;
+        protected readonly IReadAggregates AggregateReader;
 
-        protected SingleAggregateCommandHandler(IStoreAggregates aggregateStore)
+        protected SingleAggregateCommandHandler(IWriteEvents eventWriter, IReadAggregates aggregateReader)
         {
-            AggregateStore = aggregateStore;
+            EventWriter = eventWriter;
+            AggregateReader = aggregateReader;
         }
 
         public async Task<TAggregate> Handle(WrappedCommand<TCommand, TAggregate> request, CancellationToken cancellationToken)
@@ -35,7 +38,7 @@ namespace Journalist.Crm.CommandHandlers
                 throw new DomainException(aggregateResult.GetErrors());
             }
 
-            await AggregateStore.StoreAsync(aggregate.Id, aggregate.Version, aggregateResult.GetEvents(), cancellationToken);
+            await EventWriter.StoreAsync(aggregate.Id, aggregate.Version, aggregateResult.GetEvents(), cancellationToken);
 
             return aggregate;
         }

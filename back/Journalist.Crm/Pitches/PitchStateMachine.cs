@@ -4,43 +4,38 @@ namespace Journalist.Crm.Domain.Pitches
 {
     internal class PitchStateMachine
     {
-        private readonly StateMachine<PitchState, PitchTrigger> _pitchStateMachine;
+        private StateMachine<string, PitchTrigger> _pitchStateMachine;
 
-        public PitchStateMachine(PitchState initialState)
+        public PitchStateMachine(string initialState)
         {
-            _pitchStateMachine = new StateMachine<PitchState, PitchTrigger>(initialState);
+            _pitchStateMachine = new StateMachine<string, PitchTrigger>(initialState);
 
-            _pitchStateMachine.Configure(PitchState.Draft)
-                .PermitReentry(PitchTrigger.Save)
-                .Permit(PitchTrigger.Cancel, PitchState.Cancelled)
-                .Permit(PitchTrigger.Validate, PitchState.ReadyToSend);
+            _pitchStateMachine.Configure(PitchStates.Draft)
+                .PermitReentry(PitchTrigger.Modify)
+                .Permit(PitchTrigger.Cancel, PitchStates.Cancelled)
+                .Permit(PitchTrigger.Validate, PitchStates.ReadyToSend);
 
-            _pitchStateMachine.Configure(PitchState.ReadyToSend)
-                .Permit(PitchTrigger.Send, PitchState.Sent)
-                .Permit(PitchTrigger.Cancel, PitchState.Cancelled);
+            _pitchStateMachine.Configure(PitchStates.ReadyToSend)
+                .Permit(PitchTrigger.Send, PitchStates.Sent)
+                .Permit(PitchTrigger.Cancel, PitchStates.Cancelled);
 
-            _pitchStateMachine.Configure(PitchState.Sent)
-                .Permit(PitchTrigger.Accept, PitchState.Accepted)
-                .Permit(PitchTrigger.Refuse, PitchState.Refused)
-                .Permit(PitchTrigger.Cancel, PitchState.Cancelled);
+            _pitchStateMachine.Configure(PitchStates.Sent)
+                .Permit(PitchTrigger.Accept, PitchStates.Accepted)
+                .Permit(PitchTrigger.Refuse, PitchStates.Refused)
+                .Permit(PitchTrigger.Cancel, PitchStates.Cancelled);
 
-            _pitchStateMachine.Configure(PitchState.Accepted)
-                .Permit(PitchTrigger.Cancel, PitchState.Cancelled);
+            _pitchStateMachine.Configure(PitchStates.Accepted)
+                .Permit(PitchTrigger.Cancel, PitchStates.Cancelled);
         }
 
-        public void Save() => _pitchStateMachine.Fire(PitchTrigger.Save);
-        public void Validate() => _pitchStateMachine.Fire(PitchTrigger.Validate);
-        public void Send() => _pitchStateMachine.Fire(PitchTrigger.Send);
-        public void Accept() => _pitchStateMachine.Fire(PitchTrigger.Accept);
-        public void Refuse() => _pitchStateMachine.Fire(PitchTrigger.Refuse);
-        public void Cancel() => _pitchStateMachine.Fire(PitchTrigger.Cancel);
+        public void SetStatus(string status) => _pitchStateMachine = new StateMachine<string, PitchTrigger>(status);
 
-        public bool CanSave()=> _pitchStateMachine.CanFire(PitchTrigger.Save);
+        public bool CanModify()=> _pitchStateMachine.CanFire(PitchTrigger.Modify);
         public bool CanValidate() => _pitchStateMachine.CanFire(PitchTrigger.Validate);
         public bool CanSend() => _pitchStateMachine.CanFire(PitchTrigger.Send);
         public bool CanAccept() => _pitchStateMachine.CanFire(PitchTrigger.Accept);
         public bool CanRefuse() => _pitchStateMachine.CanFire(PitchTrigger.Refuse);
         public bool CanCancel() => _pitchStateMachine.CanFire(PitchTrigger.Cancel);
-        public PitchState CurrentState => _pitchStateMachine.State;
+        public string CurrentState => _pitchStateMachine.State;
     }
 }

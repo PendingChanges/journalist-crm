@@ -56,5 +56,5 @@ public class ClientsQueries
         [Service] IContext context,
         string text,
         CancellationToken cancellationToken = default)
-        => (await clientReader.AutoCompleteClientasync(text, context.UserId, cancellationToken)).ToClients();
+        => (await clientReader.AutoCompleteClientAsync(text, context.UserId, cancellationToken)).ToClients();
 }

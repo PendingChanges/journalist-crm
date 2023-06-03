@@ -1,4 +1,4 @@
-﻿using Journalist.Crm.Domain;
+﻿using Journalist.Crm.Domain.CQRS;
 using Marten;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Journalist.Crm.Marten
 {
-    public sealed class AggregateRepository : IStoreAggregates
+    public sealed class AggregateRepository : IWriteEvents, IReadAggregates
     {
         private readonly IDocumentStore _store;
 

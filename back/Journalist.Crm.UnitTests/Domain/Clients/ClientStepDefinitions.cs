@@ -5,6 +5,7 @@ using Journalist.Crm.Domain.Clients.Events;
 using System.Linq;
 using Xunit;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.UnitTests.Domain.Clients
 {

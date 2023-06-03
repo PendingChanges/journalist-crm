@@ -10,16 +10,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
 {
     public class RenameClientHandlerShould
     {
-        private Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IWriteEvents> _eventWriterMock;
+        private readonly Mock<IReadAggregates> _aggregateReaderMock;
 
         public RenameClientHandlerShould()
         {
-            _aggregateStoreMock = new Mock<IStoreAggregates>();
+            _eventWriterMock = new Mock<IWriteEvents>();
+            _aggregateReaderMock = new Mock<IReadAggregates>();
         }
 
         [Fact]
@@ -29,8 +33,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
             var ownerId = new OwnerId("user id");
             var aggregate = new Client();
             aggregate.Create("name", ownerId);
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Client>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
-            var handler = new RenameClientHandler(_aggregateStoreMock.Object);
+            _aggregateReaderMock.Setup(_ => _.LoadAsync<Client>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var handler = new RenameClientHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new RenameClient(aggregate.Id, "new name");
             var wrappedCommand = new WrappedCommand<RenameClient, Client>(command, ownerId);
 
@@ -38,7 +42,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
+            _eventWriterMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]
@@ -47,8 +51,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Clients
             //Arrange
             var ownerId = new OwnerId("user id");
             var aggregateId = EntityId.NewEntityId();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Client>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Client?)null);
-            var handler = new RenameClientHandler(_aggregateStoreMock.Object);
+            _aggregateReaderMock.Setup(_ => _.LoadAsync<Client>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Client?)null);
+            var handler = new RenameClientHandler(_eventWriterMock.Object, _aggregateReaderMock.Object);
             var command = new RenameClient(aggregateId, "new name");
             var wrappedCommand = new WrappedCommand<RenameClient, Client>(command, ownerId);
 

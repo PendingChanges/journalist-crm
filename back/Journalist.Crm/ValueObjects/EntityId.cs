@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Journalist.Crm.Domain.Common
+namespace Journalist.Crm.Domain.ValueObjects
 {
     public record EntityId
     {

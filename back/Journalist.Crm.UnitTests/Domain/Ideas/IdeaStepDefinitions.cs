@@ -4,6 +4,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.UnitTests.Domain.Ideas
 {

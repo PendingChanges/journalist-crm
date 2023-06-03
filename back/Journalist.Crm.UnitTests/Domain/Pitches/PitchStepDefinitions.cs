@@ -3,6 +3,7 @@ using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Events;
 using System;
 using System.Linq;
+using Journalist.Crm.Domain.ValueObjects;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -69,14 +70,14 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             _aggregateContext.Aggregate = aggregate;
         }
 
-        [When(@"A user with id ""([^""]*)"" delete the pitch")]
+        [When(@"A user with id ""([^""]*)"" cancel the pitch")]
         public void WhenAUserWithIdDeleteThePitch(string ownerId)
         {
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
 
-            _aggregateContext.Result = pitchAggregate.Delete(new OwnerId(ownerId));
+            _aggregateContext.Result = pitchAggregate.Cancel(new OwnerId(ownerId));
         }
 
         [Then(@"The pitch is deleted")]
@@ -85,7 +86,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.Equal(PitchState.Cancelled, pitchAggregate.CurrentState);
+            Assert.Equal(PitchStates.Cancelled, pitchAggregate.CurrentState);
 
             var events = _aggregateContext.GetEvents().ToList();
             Assert.Single(events);
@@ -101,7 +102,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.NotEqual(PitchState.Cancelled, pitchAggregate.CurrentState);
+            Assert.NotEqual(PitchStates.Cancelled, pitchAggregate.CurrentState);
 
             Assert.DoesNotContain(_aggregateContext.GetEvents(), e => e is PitchCancelled);
         }
@@ -191,6 +192,32 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
 
             Assert.NotNull(@event);
             Assert.Equal(newPitchIdeaId, @event.IdeaId);
+        }
+
+        [When(@"A user with id ""([^""]*)"" validate the pitch")]
+        public void WhenAUserWithIdValidateThePitch(string ownerId)
+        {
+            var pitchAggregate = _aggregateContext.Aggregate as Pitch;
+
+            Assert.NotNull(pitchAggregate);
+
+            _aggregateContext.Result = pitchAggregate.Validate(new OwnerId(ownerId));
+        }
+
+        [Then(@"The pitch is validated")]
+        public void ThenThePitchIsValidated()
+        {
+            var pitchAggregate = _aggregateContext.Aggregate as Pitch;
+
+            Assert.NotNull(pitchAggregate);
+            Assert.Equal(PitchStates.ReadyToSend, pitchAggregate.CurrentState);
+
+            var events = _aggregateContext.GetEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as PitchReadyToSend;
+
+            Assert.NotNull(@event);
+            Assert.Equal(pitchAggregate.Id, @event.Id);
         }
 
     }

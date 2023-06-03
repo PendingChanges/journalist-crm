@@ -1,5 +1,6 @@
 ﻿using Journalist.Crm.Domain.Clients.Events;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.CQRS;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.Domain.Clients
 {

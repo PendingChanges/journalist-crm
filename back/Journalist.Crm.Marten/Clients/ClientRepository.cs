@@ -20,7 +20,7 @@ namespace Journalist.Crm.Marten.Clients
             _session = session;
         }
 
-        public Task<IReadOnlyList<ClientDocument>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken)
+        public Task<IReadOnlyList<ClientDocument>> AutoCompleteClientAsync(string text, string userId, CancellationToken cancellationToken)
             => _session.Query<ClientDocument>().Where(c => c.OwnerId == userId && c.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
 
         public Task<ClientDocument?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken)

@@ -11,9 +11,9 @@ Examples:
 	| testuser | Pitch Test | Pitch Content | 8 april 2023      | 9 april 2023   | client Id     | Idea Id     |
 
 @pitch
-Scenario: A user delete its own pitch
+Scenario: A user cancel its own pitch
 	Given An existing pitch with title "<pitchTitle>", content "<pitchContent>", dead line date "<pitchDeadLineDate>", issue date "<pitchIssueDate>", client id "<pitchClientId>", idea id "<pitchIdeaId>" and an owner "<userid>"
-	When A user with id "<userid>" delete the pitch
+	When A user with id "<userid>" cancel the pitch
 	Then The pitch is deleted
 	And No errors
 
@@ -22,9 +22,20 @@ Examples:
 	| testuser | Pitch Test | Pitch Content | 8 april 2023      | 9 april 2023   | client Id     | Idea Id     |
 
 @pitch
-Scenario: A user tries to delete a pitch he doesn't own
+Scenario: A user validate its own pitch
 	Given An existing pitch with title "<pitchTitle>", content "<pitchContent>", dead line date "<pitchDeadLineDate>", issue date "<pitchIssueDate>", client id "<pitchClientId>", idea id "<pitchIdeaId>" and an owner "<userid>"
-	When A user with id "<otherUserid>" delete the pitch
+	When A user with id "<userid>" validate the pitch
+	Then The pitch is validated
+	And No errors
+
+Examples:
+	| userid   | pitchTitle | pitchContent  | pitchDeadLineDate | pitchIssueDate | pitchClientId | pitchIdeaId |
+	| testuser | Pitch Test | Pitch Content | 8 april 2023      | 9 april 2023   | client Id     | Idea Id     |
+
+@pitch
+Scenario: A user tries to cancel a pitch he doesn't own
+	Given An existing pitch with title "<pitchTitle>", content "<pitchContent>", dead line date "<pitchDeadLineDate>", issue date "<pitchIssueDate>", client id "<pitchClientId>", idea id "<pitchIdeaId>" and an owner "<userid>"
+	When A user with id "<otherUserid>" cancel the pitch
 	Then An error with code "<errorCode>" is raised
 	And The pitch is not deleted
 

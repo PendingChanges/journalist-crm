@@ -7,8 +7,10 @@ using Journalist.Crm.CommandHandlers;
 using Journalist.Crm.CommandHandlers.Pitches;
 using Journalist.Crm.Domain;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.CQRS;
 using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Commands;
+using Journalist.Crm.Domain.ValueObjects;
 using Moq;
 using Xunit;
 
@@ -16,11 +18,13 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
 {
     public class DeletePitchHandlerShould
     {
-        private readonly Mock<IStoreAggregates> _aggregateStoreMock;
+        private readonly Mock<IWriteEvents> _eventWriterMock;
+        private readonly Mock<IReadAggregates> _aggregateReader;
 
         public DeletePitchHandlerShould()
         {
-            _aggregateStoreMock = new Mock<IStoreAggregates>();
+            _eventWriterMock = new Mock<IWriteEvents>();
+            _aggregateReader = new Mock<IReadAggregates>();
         }
 
         [Fact]
@@ -31,8 +35,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
             var pitchContent = new PitchContent("name", "content");
             var aggregate = new Pitch();
             aggregate.Create(pitchContent, DateTime.Now, DateTime.Now, "client id", "idea id", ownerId);
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
-            var handler = new DeletePitchHandler(_aggregateStoreMock.Object);
+            _aggregateReader.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync(aggregate);
+            var handler = new DeletePitchHandler(_eventWriterMock.Object, _aggregateReader.Object);
             var command = new DeletePitch(aggregate.Id);
             var wrappedCommand = new WrappedCommand<DeletePitch, Pitch>(command, ownerId);
 
@@ -40,7 +44,7 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
             var aggregateInReturn = await handler.Handle(wrappedCommand, CancellationToken.None);
 
             //Assert
-            _aggregateStoreMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
+            _eventWriterMock.Verify(_ => _.StoreAsync(aggregateInReturn.Id, aggregateInReturn.Version, It.IsAny<IEnumerable<object>>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]
@@ -49,8 +53,8 @@ namespace Journalist.Crm.UnitTests.CommandHandlers.Pitches
             //Arrange
             var ownerId = new OwnerId("ownerId");
             var aggregateId = EntityId.NewEntityId();
-            _aggregateStoreMock.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Pitch?)null);
-            var handler = new DeletePitchHandler(_aggregateStoreMock.Object);
+            _aggregateReader.Setup(_ => _.LoadAsync<Pitch>(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<CancellationToken>())).ReturnsAsync((Pitch?)null);
+            var handler = new DeletePitchHandler(_eventWriterMock.Object, _aggregateReader.Object);
             var command = new DeletePitch(aggregateId);
             var wrappedCommand = new WrappedCommand<DeletePitch, Pitch>(command, ownerId);
 

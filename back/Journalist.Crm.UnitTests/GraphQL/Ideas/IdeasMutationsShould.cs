@@ -6,7 +6,7 @@ using MediatR;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 using Xunit;
 
 namespace Journalist.Crm.UnitTests.GraphQL.Ideas
