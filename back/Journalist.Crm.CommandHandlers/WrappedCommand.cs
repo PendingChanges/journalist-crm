@@ -1,5 +1,5 @@
-﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Common;
+﻿using Journalist.Crm.Domain.CQRS;
+using Journalist.Crm.Domain.ValueObjects;
 using MediatR;
 
 namespace Journalist.Crm.CommandHandlers

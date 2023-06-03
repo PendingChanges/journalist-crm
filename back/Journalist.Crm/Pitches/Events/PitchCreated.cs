@@ -1,5 +1,5 @@
 ﻿using System;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.Domain.Pitches.Events
 {

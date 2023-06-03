@@ -3,11 +3,11 @@ using HotChocolate.Types;
 using HotChocolate.Types.Pagination;
 using System.Threading.Tasks;
 using System.Threading;
-using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.DataModels;
 using Journalist.Crm.Domain;
-using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Authorization;
+using Journalist.Crm.Domain.Pitches;
+using Pitch = Journalist.Crm.GraphQL.Pitches.Outputs.Pitch;
 
 namespace Journalist.Crm.GraphQL.Pitches;
 

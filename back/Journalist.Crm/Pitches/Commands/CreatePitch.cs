@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Journalist.Crm.Domain.CQRS;
+using MediatR;
 using System;
 
 namespace Journalist.Crm.Domain.Pitches.Commands

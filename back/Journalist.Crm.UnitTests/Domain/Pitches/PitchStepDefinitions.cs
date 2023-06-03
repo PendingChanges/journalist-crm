@@ -3,6 +3,7 @@ using Journalist.Crm.Domain.Pitches;
 using Journalist.Crm.Domain.Pitches.Events;
 using System;
 using System.Linq;
+using Journalist.Crm.Domain.ValueObjects;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -28,7 +29,8 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
         public void WhenAUserWithIdCreateAPitchWithTitleContentDeadLineDateIssueDateClientIdAndIdeaId(string ownerId, string title, string content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId)
         {
             var pitchContent = new PitchContent(title, content);
-            var aggregate = new Pitch(pitchContent, deadLineDate, issueDate, clientId, ideaId, new OwnerId(ownerId));
+            var aggregate = new Pitch();
+            _aggregateContext.Result = aggregate.Create(pitchContent, deadLineDate, issueDate, clientId, ideaId, new OwnerId(ownerId));
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -45,7 +47,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.Equal(ideaId, pitchAggregate.IdeaId);
             Assert.Equal(ownerId, pitchAggregate.OwnerId);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as PitchCreated;
 
@@ -63,19 +65,19 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
         public void GivenAnExistingPitchWithTitleContentDeadLineDateIssueDateClientIdIdeaIdAndAnOwner(string title, string content, DateTime? deadLineDate, DateTime? issueDate, string clientId, string ideaId, string ownerId)
         {
             var pitchContent = new PitchContent(title, content);
-            var aggregate = new Pitch(pitchContent, deadLineDate, issueDate, clientId, ideaId, new OwnerId(ownerId));
-            aggregate.ClearUncommittedEvents();
+            var aggregate = new Pitch();
+            aggregate.Create(pitchContent, deadLineDate, issueDate, clientId, ideaId, new OwnerId(ownerId));
             _aggregateContext.Aggregate = aggregate;
         }
 
-        [When(@"A user with id ""([^""]*)"" delete the pitch")]
+        [When(@"A user with id ""([^""]*)"" cancel the pitch")]
         public void WhenAUserWithIdDeleteThePitch(string ownerId)
         {
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
 
-            pitchAggregate.Delete(new OwnerId(ownerId));
+            _aggregateContext.Result = pitchAggregate.Cancel(new OwnerId(ownerId));
         }
 
         [Then(@"The pitch is deleted")]
@@ -84,9 +86,9 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.Equal(PitchState.Cancelled, pitchAggregate.CurrentState);
+            Assert.Equal(PitchStates.Cancelled, pitchAggregate.CurrentState);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as PitchCancelled;
 
@@ -100,9 +102,9 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             var pitchAggregate = _aggregateContext.Aggregate as Pitch;
 
             Assert.NotNull(pitchAggregate);
-            Assert.NotEqual(PitchState.Cancelled, pitchAggregate.CurrentState);
+            Assert.NotEqual(PitchStates.Cancelled, pitchAggregate.CurrentState);
 
-            Assert.DoesNotContain(pitchAggregate.GetUncommittedEvents(), e => e is PitchCancelled);
+            Assert.DoesNotContain(_aggregateContext.GetEvents(), e => e is PitchCancelled);
         }
 
         [When(@"A user with id ""([^""]*)"" modify the pitch title ""([^""]*)"", summary ""([^""]*)"", dead line date ""([^""]*)"", issue date ""([^""]*)"", client id ""([^""]*)"", idea id ""([^""]*)""")]
@@ -112,7 +114,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
 
             Assert.NotNull(pitchAggregate);
 
-            pitchAggregate.Modify(new PitchContent(newPitchTitle, newPitchSummary), newPitchDeadLineDate, newPitchIssueDate, newPitchClientId, newPitchIdeaId, new OwnerId(ownerId));
+            _aggregateContext.Result = pitchAggregate.Modify(new PitchContent(newPitchTitle, newPitchSummary), newPitchDeadLineDate, newPitchIssueDate, newPitchClientId, newPitchIdeaId, new OwnerId(ownerId));
         }
 
         [Then(@"The pitch content change to title ""([^""]*)"" and summary ""([^""]*)""")]
@@ -124,7 +126,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.Equal(newPitchTitle, pitchAggregate.Content.Title);
             Assert.Equal(newPitchSummary, pitchAggregate.Content.Summary);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             var @event = events.FirstOrDefault(e => e is PitchContentChanged) as PitchContentChanged;
 
             Assert.NotNull(@event);
@@ -140,7 +142,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.NotNull(pitchAggregate);
             Assert.Equal(newPitchDeadLineDate, pitchAggregate.DeadLineDate);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             var @event = events.FirstOrDefault(e => e is PitchDeadLineRescheduled) as PitchDeadLineRescheduled;
 
             Assert.NotNull(@event);
@@ -155,7 +157,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.NotNull(pitchAggregate);
             Assert.Equal(newPitchIssueDate, pitchAggregate.IssueDate);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             var @event = events.FirstOrDefault(e => e is PitchIssueRescheduled) as PitchIssueRescheduled;
 
             Assert.NotNull(@event);
@@ -170,7 +172,7 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.NotNull(pitchAggregate);
             Assert.Equal(newPitchClientId, pitchAggregate.ClientId);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             var @event = events.FirstOrDefault(e => e is PitchClientChanged) as PitchClientChanged;
 
             Assert.NotNull(@event);
@@ -185,11 +187,37 @@ namespace Journalist.Crm.UnitTests.Domain.Pitches
             Assert.NotNull(pitchAggregate);
             Assert.Equal(newPitchIdeaId, pitchAggregate.IdeaId);
 
-            var events = pitchAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             var @event = events.FirstOrDefault(e => e is PitchIdeaChanged) as PitchIdeaChanged;
 
             Assert.NotNull(@event);
             Assert.Equal(newPitchIdeaId, @event.IdeaId);
+        }
+
+        [When(@"A user with id ""([^""]*)"" validate the pitch")]
+        public void WhenAUserWithIdValidateThePitch(string ownerId)
+        {
+            var pitchAggregate = _aggregateContext.Aggregate as Pitch;
+
+            Assert.NotNull(pitchAggregate);
+
+            _aggregateContext.Result = pitchAggregate.Validate(new OwnerId(ownerId));
+        }
+
+        [Then(@"The pitch is validated")]
+        public void ThenThePitchIsValidated()
+        {
+            var pitchAggregate = _aggregateContext.Aggregate as Pitch;
+
+            Assert.NotNull(pitchAggregate);
+            Assert.Equal(PitchStates.ReadyToSend, pitchAggregate.CurrentState);
+
+            var events = _aggregateContext.GetEvents().ToList();
+            Assert.Single(events);
+            var @event = events.LastOrDefault() as PitchReadyToSend;
+
+            Assert.NotNull(@event);
+            Assert.Equal(pitchAggregate.Id, @event.Id);
         }
 
     }

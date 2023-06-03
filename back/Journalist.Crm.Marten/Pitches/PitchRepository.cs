@@ -36,6 +36,8 @@ namespace Journalist.Crm.Marten.Pitches
                 query = query.Where(p => p.IdeaId == request.IdeaId);
             }
 
+            query = query.Where(p => p.StatusCode != PitchStates.Cancelled);
+
             query = SortBy(request, query);
 
             var pagedResult = await query.ToPagedListAsync(request.Skip, request.Take, cancellationToken);

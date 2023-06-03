@@ -2,21 +2,21 @@
 using Journalist.Crm.Domain.Pitches;
 using System.Threading;
 using System.Threading.Tasks;
-using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers.Pitches
 {
     internal class ModifyPitchHandler : SingleAggregateCommandHandler<ModifyPitch, Pitch>
     {
-        public ModifyPitchHandler(IStoreAggregates aggregateStore) : base(aggregateStore)
+        public ModifyPitchHandler(IWriteEvents eventWriter, IReadAggregates aggregateReader) : base(eventWriter, aggregateReader)
         {
         }
 
         protected override Task<Pitch?> LoadAggregate(ModifyPitch command, OwnerId ownerId, CancellationToken cancellationToken)
-            => AggregateStore.LoadAsync<Pitch>(command.Id, ct: cancellationToken);
+            => AggregateReader.LoadAsync<Pitch>(command.Id, ct: cancellationToken);
 
-        protected override void ExecuteCommand(Pitch aggregate, ModifyPitch command, OwnerId ownerId)
+        protected override AggregateResult ExecuteCommand(Pitch aggregate, ModifyPitch command, OwnerId ownerId)
             => aggregate.Modify(command.Content, command.DeadLineDate, command.IssueDate, command.ClientId, command.IdeaId, ownerId);
     }
 }

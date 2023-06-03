@@ -1,21 +1,21 @@
-﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Clients;
+﻿using Journalist.Crm.Domain.Clients;
 using Journalist.Crm.Domain.Clients.Commands;
 using System.Threading.Tasks;
 using System.Threading;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.CommandHandlers.Clients
 {
     internal class RenameClientHandler : SingleAggregateCommandHandler<RenameClient, Client>
     {
-        public RenameClientHandler(IStoreAggregates aggregateStore) : base(aggregateStore) { }
+        public RenameClientHandler(IWriteEvents eventWriter, IReadAggregates aggregateReader) : base(eventWriter, aggregateReader) { }
 
-        protected override void ExecuteCommand(Client aggregate, RenameClient command, OwnerId ownerId)
+        protected override AggregateResult ExecuteCommand(Client aggregate, RenameClient command, OwnerId ownerId)
             => aggregate.Rename(command.NewName, ownerId);
 
 
         protected override Task<Client?> LoadAggregate(RenameClient command, OwnerId ownerId, CancellationToken cancellationToken)
-            => AggregateStore.LoadAsync<Client>(command.Id, ct: cancellationToken);
+            => AggregateReader.LoadAsync<Client>(command.Id, ct: cancellationToken);
     }
 }

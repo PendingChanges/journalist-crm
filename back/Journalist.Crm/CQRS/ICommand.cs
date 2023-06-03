@@ -1,4 +1,4 @@
-﻿namespace Journalist.Crm.Domain
+﻿namespace Journalist.Crm.Domain.CQRS
 {
     public interface ICommand
     {

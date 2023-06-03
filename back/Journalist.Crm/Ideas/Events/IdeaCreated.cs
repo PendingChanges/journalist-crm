@@ -1,4 +1,4 @@
-﻿using Journalist.Crm.Domain.Common;
+﻿using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.Domain.Ideas.Events
 {

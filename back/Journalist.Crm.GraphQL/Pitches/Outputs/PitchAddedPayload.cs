@@ -1,4 +1,4 @@
-﻿namespace Journalist.Crm.GraphQL.Pitches
+﻿namespace Journalist.Crm.GraphQL.Pitches.Outputs
 {
     public class PitchAddedPayload
     {

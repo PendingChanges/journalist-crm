@@ -1,5 +1,5 @@
 ﻿using Journalist.Crm.Domain;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace Journalist.Crm.Api.Infrastructure

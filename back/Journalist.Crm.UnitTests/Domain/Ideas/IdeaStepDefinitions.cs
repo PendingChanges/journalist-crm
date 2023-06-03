@@ -4,6 +4,7 @@ using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.UnitTests.Domain.Ideas
 {
@@ -26,7 +27,8 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [When(@"A user with id ""([^""]*)"" create an idea with name ""([^""]*)"" and descrition ""([^""]*)""")]
         public void WhenAUserWithIdCreateAnIdeaWithNameAndDescription(string ownerId, string name, string description)
         {
-            var aggregate = new Idea(name, description, new OwnerId(ownerId));
+            var aggregate = new Idea();
+            _aggregateContext.Result = aggregate.Create(name, description, new OwnerId(ownerId));
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -39,7 +41,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
             Assert.Equal(ownerId, ideaAggregate.OwnerId);
             Assert.Equal(description, ideaAggregate.Description);
 
-            var @event = ideaAggregate.GetUncommittedEvents().LastOrDefault() as IdeaCreated;
+            var @event = _aggregateContext.GetEvents().LastOrDefault() as IdeaCreated;
 
             Assert.NotNull(@event);
             Assert.Equal(name, @event.Name);
@@ -51,8 +53,8 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         [Given(@"An existing idea with name ""([^""]*)"", description ""([^""]*)"" and an owner ""([^""]*)""")]
         public void GivenAnExistingIdeaWithNameDescriptionAndAnOwner(string name, string description, string ownerId)
         {
-            var aggregate = new Idea(name, description, new OwnerId(ownerId));
-            aggregate.ClearUncommittedEvents();
+            var aggregate = new Idea();
+            aggregate.Create(name, description, new OwnerId(ownerId));
             _aggregateContext.Aggregate = aggregate;
         }
 
@@ -63,7 +65,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
 
             Assert.NotNull(ideaAggregate);
 
-            ideaAggregate.Delete(new OwnerId(ownerId));
+            _aggregateContext.Result = ideaAggregate.Delete(new OwnerId(ownerId));
         }
 
         [Then(@"The idea is deleted")]
@@ -74,7 +76,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
             Assert.NotNull(ideaAggregate);
             Assert.True(ideaAggregate.Deleted);
 
-            var @event = ideaAggregate.GetUncommittedEvents().LastOrDefault() as IdeaDeleted;
+            var @event = _aggregateContext.GetEvents().LastOrDefault() as IdeaDeleted;
 
             Assert.NotNull(@event);
             Assert.Equal(ideaAggregate.Id, @event.Id);
@@ -89,7 +91,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
             Assert.NotNull(ideaAggregate);
             Assert.False(ideaAggregate.Deleted);
 
-            Assert.DoesNotContain(ideaAggregate.GetUncommittedEvents(), e => e is IdeaDeleted);
+            Assert.DoesNotContain(_aggregateContext.GetEvents(), e => e is IdeaDeleted);
         }
 
         [When(@"A user with id ""([^""]*)"" modify the idea to new name ""([^""]*)"" and new description ""([^""]*)""")]
@@ -97,7 +99,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
         {
             var ideaAggregate = _aggregateContext.Aggregate as Idea;
 
-            ideaAggregate?.Modify(newName, newDescription, new OwnerId(ownerId));
+            _aggregateContext.Result = ideaAggregate?.Modify(newName, newDescription, new OwnerId(ownerId));
         }
 
         [Then(@"The idea is modified with new name ""([^""]*)"" and new description ""([^""]*)""")]
@@ -109,7 +111,7 @@ namespace Journalist.Crm.UnitTests.Domain.Ideas
             Assert.Equal(newName, ideaAggregate.Name);
             Assert.Equal(newDescription, ideaAggregate.Description);
 
-            var events = ideaAggregate.GetUncommittedEvents().ToList();
+            var events = _aggregateContext.GetEvents().ToList();
             Assert.Single(events);
             var @event = events.LastOrDefault() as IdeaModified;
 

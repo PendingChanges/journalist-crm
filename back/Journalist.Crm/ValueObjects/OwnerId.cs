@@ -1,6 +1,6 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Journalist.Crm.Domain.Common
+namespace Journalist.Crm.Domain.ValueObjects
 {
     public record OwnerId
     {

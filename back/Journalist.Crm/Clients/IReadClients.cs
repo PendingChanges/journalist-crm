@@ -7,7 +7,7 @@ namespace Journalist.Crm.Domain.Clients
 {
     public interface IReadClients
     {
-        Task<IReadOnlyList<ClientDocument>> AutoCompleteClientasync(string text, string userId, CancellationToken cancellationToken);
+        Task<IReadOnlyList<ClientDocument>> AutoCompleteClientAsync(string text, string userId, CancellationToken cancellationToken);
         Task<ClientDocument?> GetClientAsync(string clientId, string userId, CancellationToken cancellationToken);
         Task<ClientResultSet> GetClientsAsync(GetClientsRequest request, CancellationToken cancellationToken = default);
     }

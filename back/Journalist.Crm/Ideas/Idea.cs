@@ -1,6 +1,6 @@
 ﻿using Journalist.Crm.Domain.Ideas.Events;
-using System;
-using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
+using Journalist.Crm.Domain.CQRS;
 
 namespace Journalist.Crm.Domain.Ideas
 {
@@ -13,50 +13,56 @@ namespace Journalist.Crm.Domain.Ideas
 
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Idea(string name, string? description, OwnerId ownerId)
+        public Idea() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+        public AggregateResult Create(string name, string? description, OwnerId ownerId)
         {
+            var result = AggregateResult.Create();
+
             var id = EntityId.NewEntityId();
 
             var @event = new IdeaCreated(id, name, description, ownerId);
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+
+            return result;
         }
 
-        private Idea() { }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-        public void Delete(OwnerId ownerId)
+        public AggregateResult Delete(OwnerId ownerId)
         {
-            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
-            {
-                AddUncommittedError(new Error("NOT_IDEA_OWNER", "The user is not the owner of this idea"));
-            }
+            var result = AggregateResult.Create();
 
-            if (HasErrors)
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotIdeaOwner);
+
+            if (result.HasErrors)
             {
-                return;
+                return result;
             }
 
             var @event = new IdeaDeleted(Id);
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+
+            return result;
         }
 
-        public void Modify(string newName, string? newDescription, OwnerId ownerId)
+        public AggregateResult Modify(string newName, string? newDescription, OwnerId ownerId)
         {
-            if (string.CompareOrdinal(OwnerId, ownerId) != 0)
+            var result = AggregateResult.Create();
+
+            result.CheckAndAddError(() => OwnerId != ownerId, ErrorCollection.WellKnownErrors.NotIdeaOwner);
+
+            if (result.HasErrors)
             {
-                AddUncommittedError(new Error("NOT_IDEA_OWNER", "The user is not the owner of this idea"));
+                return result;
             }
 
-            if (HasErrors)
-            {
-                return;
-            }
-            
             var @event = new IdeaModified(Id, newName, newDescription);
             Apply(@event);
-            AddUncommittedEvent(@event);
+            result.AddEvent(@event);
+
+            return result;
         }
 
         private void Apply(IdeaCreated @event)

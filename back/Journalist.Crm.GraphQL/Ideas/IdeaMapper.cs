@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Journalist.Crm.Domain.Common;
+using Journalist.Crm.Domain.ValueObjects;
 
 namespace Journalist.Crm.GraphQL.Ideas
 {
